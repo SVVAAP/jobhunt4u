@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Justcamp Gatsby`,
+    title: `jobhunt4u Gatsby`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

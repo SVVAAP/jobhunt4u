@@ -33,7 +33,7 @@ const Hero = () => {
                   </h1>
                   <p className="font-size-6">
                     Creating a beautiful job website is not easy always. To make
-                    your life easier, we are introducing Justcamp template.
+                    your life easier, we are introducing jobhunt4u template.
                   </p>
                 </div>
               </div>

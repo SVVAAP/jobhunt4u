@@ -20,7 +20,7 @@ const FeaturedJobs = () => {
                 <h2 className="font-size-9 mb-6">Featured Jobs</h2>
                 <p className="font-size-4 text-default-color px-xs-9 px-md-0">
                   Creating a beautiful job website is not easy always. To make
-                  your life easier, we are introducing Justcamp template.
+                  your life easier, we are introducing jobhunt4u template.
                 </p>
               </div>
             </div>

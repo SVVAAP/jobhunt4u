@@ -57,7 +57,7 @@ const Slider = () => {
                             “Being a small but growing brand, we have to
                             definitely do a lot more with less. And when you
                             want to create a business bigger than yourself,
-                            you’re going to need help. And that’s what Justcamp
+                            you’re going to need help. And that’s what jobhunt4u
                             does.”
                           </p>
                           {/* <!-- User Info --> */}
@@ -101,7 +101,7 @@ const Slider = () => {
                             “Being a small but growing brand, we have to
                             definitely do a lot more with less. And when you
                             want to create a business bigger than yourself,
-                            you’re going to need help. And that’s what Justcamp
+                            you’re going to need help. And that’s what jobhunt4u
                             does.”
                           </p>
                           {/* <!-- User Info --> */}
@@ -145,7 +145,7 @@ const Slider = () => {
                             “Being a small but growing brand, we have to
                             definitely do a lot more with less. And when you
                             want to create a business bigger than yourself,
-                            you’re going to need help. And that’s what Justcamp
+                            you’re going to need help. And that’s what jobhunt4u
                             does.”
                           </p>
                           {/* <!-- User Info --> */}

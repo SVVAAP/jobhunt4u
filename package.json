@@ -1,6 +1,6 @@
 {
-  "name": "justcamp-gatsby",
-  "description": "Justcamp Gatsby with Bootstrap 4, Styled Components, Slick Carousel, React Headroom, etc",
+  "name": "jobhunt4u-gatsby",
+  "description": "jobhunt4u Gatsby with Bootstrap 4, Styled Components, Slick Carousel, React Headroom, etc",
   "version": "2.0.0",
   "author": "grayic",
   "dependencies": {
