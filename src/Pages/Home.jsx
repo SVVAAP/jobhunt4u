@@ -4,6 +4,8 @@ import Card from "../components/Card";
 import Jobs from './Jobs';
 import Sidebar from '../Sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
+import {ref,onValue} from "firebase/database";
+import{database} from "../firebase";
 
 
 const Home = () => {
@@ -15,12 +17,19 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("jobs.json").then(res => res.json()).then((data) => {
-      // Use data here or set it to state
-      // console.log(data); // This will work fine here
-      setJobs(data); // Set the data to state if you want to use it elsewhere in your component
-      setIsLoading(false)
-    })
+
+    const jobRef = ref(database, "jobs");
+    onValue(jobRef, (snapshot) => {
+      const jobsData = snapshot.val();
+      const loadedjobs = [];
+      for (const id in jobsData) {
+        if (jobsData[id].status === "approved") {
+          loadedjobs.push({ id, ...jobsData[id] });
+        }
+      }
+      setJobs(loadedjobs);
+      // setLoading(false);
+    });
   }, []);
 
 
