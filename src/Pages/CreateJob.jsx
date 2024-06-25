@@ -1,10 +1,13 @@
-import React from "react";
-import { useState } from "react";
+// CreateJob.js
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
+import { database } from "../firebase"; 
+import { ref, set, push } from "firebase/database";
+import { Navigate } from "react-router-dom";
 
 const CreateJob = () => {
-  const [selectedOption, setselectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const {
     register,
@@ -13,8 +16,17 @@ const CreateJob = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    data.skills = selectedOption;
-    console.log(data);
+    data.skills = selectedOption ? selectedOption.map(option => option.value) : [];
+    const newJobRef = push(ref(database, 'jobs'));
+    set(newJobRef, data)
+      .then(() => {
+        console.log("Data saved successfully!");
+        alert("Post Successfull....");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error saving data: ", error);
+      });
   };
 
   const options = [
@@ -30,10 +42,8 @@ const CreateJob = () => {
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      {/* form  */}
       <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* first row  start*/}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Title</label>
@@ -44,7 +54,6 @@ const CreateJob = () => {
                 className="create-job-input"
               />
             </div>
-
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company Name</label>
               <input
@@ -55,8 +64,6 @@ const CreateJob = () => {
               />
             </div>
           </div>
-
-          {/* second row start */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Minimum Salary</label>
@@ -67,7 +74,6 @@ const CreateJob = () => {
                 className="create-job-input"
               />
             </div>
-
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Maximum Salary</label>
               <input
@@ -78,8 +84,6 @@ const CreateJob = () => {
               />
             </div>
           </div>
-
-          {/* third row start   */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary type</label>
@@ -90,7 +94,6 @@ const CreateJob = () => {
                 <option value="Yearly">Yearly</option>
               </select>
             </div>
-
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Location</label>
               <input
@@ -101,8 +104,6 @@ const CreateJob = () => {
               />
             </div>
           </div>
-
-          {/* fourth row start  */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Posting Date</label>
@@ -113,7 +114,6 @@ const CreateJob = () => {
                 className="create-job-input"
               />
             </div>
-
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience level</label>
               <select
@@ -121,26 +121,22 @@ const CreateJob = () => {
                 className="create-job-input"
               >
                 <option value="">Choose your experience</option>
-                <option value="NoExperience">Hourly</option>
+                <option value="NoExperience">No Experience</option>
                 <option value="Internship">Internship</option>
-                <option value="Work remotely">Work remotely</option>
+                <option value="WorkRemotely">Work Remotely</option>
               </select>
             </div>
           </div>
-
-          {/* fifth row  start */}
           <div>
             <label className="block mb-2 text-lg">Required Skills Set</label>
             <CreatableSelect
               className="create-job-input py-4"
               defaultValue={selectedOption}
-              onChange={setselectedOption}
+              onChange={setSelectedOption}
               options={options}
               isMulti
             />
           </div>
-
-          {/* sixth row start  */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company logo</label>
@@ -151,7 +147,6 @@ const CreateJob = () => {
                 className="create-job-input"
               />
             </div>
-
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Employment Type</label>
               <select
@@ -165,19 +160,15 @@ const CreateJob = () => {
               </select>
             </div>
           </div>
-
-          {/* seventh row start  */}
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
               {...register("description")}
               className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-400"
               rows={6}
-              placeholder="Welcome to our job application form Please fill out the following fields to the best of your ability Your information will help us match you with the perfect opportunity Thank you for considering joining our team."
+              placeholder="Welcome to our job application form. Please fill out the following fields to the best of your ability. Your information will help us match you with the perfect opportunity. Thank you for considering joining our team."
             />
           </div>
-
-          {/* last row start  */}
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Posted by</label>
             <input
@@ -187,7 +178,6 @@ const CreateJob = () => {
               className="create-job-input"
             />
           </div>
-
           <input
             type="submit"
             className=" block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-md cursor-pointer"
