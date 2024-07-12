@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Banner from '../components/Banner'
 import Card from "../components/Card";
 import Jobs from './Jobs';
+import footSection from '../components/footSection';
 import Sidebar from '../Sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
 import {ref,onValue} from "firebase/database";
@@ -121,6 +122,7 @@ const Home = () => {
   const result = filteredData(jobs, selectedCategory, query);
 
   return (
+    <>
     <div>
       <Banner query={query} handleInputChange={handleInputChange} />
       {/* main content */}
@@ -180,6 +182,10 @@ const Home = () => {
 
       </div>
     </div>
+    <div>
+          <footSection/>
+    </div>
+    </>
   )
 }
 
