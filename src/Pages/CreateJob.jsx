@@ -1,13 +1,15 @@
-// CreateJob.js
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
-import { database } from "../firebase"; 
+import { database, storage } from "../firebase"; 
 import { ref, set, push } from "firebase/database";
-import { Navigate } from "react-router-dom";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from 'react-router-dom';
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -15,18 +17,45 @@ const CreateJob = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.skills = selectedOption ? selectedOption.map(option => option.value) : [];
     const newJobRef = push(ref(database, 'jobs'));
-    set(newJobRef, data)
-      .then(() => {
-        console.log("Data saved successfully!");
-        alert("Post Successfull....");
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("Error saving data: ", error);
-      });
+
+    try {
+      // Upload logo if provided
+      if (logoFile) {
+        const logoStorageRef = storageRef(storage, `logos/${logoFile.name}`);
+        await uploadBytes(logoStorageRef, logoFile);
+        const logoURL = await getDownloadURL(logoStorageRef);
+        data.companyLogo = logoURL;
+      } else {
+        delete data.companyLogo;  // Remove companyLogo if no file is provided
+      }
+
+      // Save data to Firebase Database
+      const jobData = {
+        jobTitle: data.jobTitle,
+        companyName: data.companyName,
+        minPrice: data.minPrice,
+        maxPrice: data.maxPrice,
+        salaryType: data.salaryType,
+        jobLocation: data.jobLocation,
+        postingDate: data.postingDate,
+        experienceLevel: data.experienceLevel,
+        skills: data.skills,
+        employmentType: data.employmentType,
+        description: data.description,
+        postedBy: data.postedBy,
+        companyLogo: data.companyLogo
+      };
+
+      await set(newJobRef, jobData);
+      console.log("Data saved successfully!");
+      alert("Post Successful....");
+      navigate("/");
+    } catch (error) {
+      console.error("Error saving data: ", error);
+    }
   };
 
   const options = [
@@ -49,19 +78,20 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Title</label>
               <input
                 type="text"
-                defaultValue={"Web Developer"}
-                {...register("jobTitle")}
+                {...register("jobTitle", { required: "Job Title is required" })}
                 className="create-job-input"
               />
+              {errors.jobTitle && <p className="text-red-500">{errors.jobTitle.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company Name</label>
               <input
                 type="text"
                 placeholder="Ex: Microsoft"
-                {...register("companyName")}
+                {...register("companyName", { required: "Company Name is required" })}
                 className="create-job-input"
               />
+              {errors.companyName && <p className="text-red-500">{errors.companyName.message}</p>}
             </div>
           </div>
           <div className="create-job-flex">
@@ -70,38 +100,42 @@ const CreateJob = () => {
               <input
                 type="text"
                 placeholder="$20K"
-                {...register("minPrice")}
+                {...register("minPrice", { required: "Minimum Salary is required" })}
                 className="create-job-input"
               />
+              {errors.minPrice && <p className="text-red-500">{errors.minPrice.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Maximum Salary</label>
               <input
                 type="text"
                 placeholder="$120k"
-                {...register("maxPrice")}
+                {...register("maxPrice", { required: "Maximum Salary is required" })}
                 className="create-job-input"
               />
+              {errors.maxPrice && <p className="text-red-500">{errors.maxPrice.message}</p>}
             </div>
           </div>
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary type</label>
-              <select {...register("salaryType")} className="create-job-input">
+              <select {...register("salaryType", { required: "Salary Type is required" })} className="create-job-input">
                 <option value="">Choose your salary</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
                 <option value="Yearly">Yearly</option>
               </select>
+              {errors.salaryType && <p className="text-red-500">{errors.salaryType.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Location</label>
               <input
                 type="text"
                 placeholder="Ex: India"
-                {...register("jobLocation")}
+                {...register("jobLocation", { required: "Job Location is required" })}
                 className="create-job-input"
               />
+              {errors.jobLocation && <p className="text-red-500">{errors.jobLocation.message}</p>}
             </div>
           </div>
           <div className="create-job-flex">
@@ -109,15 +143,15 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
                 type="date"
-                placeholder="EX: 2024-02-10"
-                {...register("postingDate")}
+                {...register("postingDate", { required: "Posting Date is required" })}
                 className="create-job-input"
               />
+              {errors.postingDate && <p className="text-red-500">{errors.postingDate.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience level</label>
               <select
-                {...register("experienceLevel")}
+                {...register("experienceLevel", { required: "Experience Level is required" })}
                 className="create-job-input"
               >
                 <option value="">Choose your experience</option>
@@ -125,6 +159,7 @@ const CreateJob = () => {
                 <option value="Internship">Internship</option>
                 <option value="WorkRemotely">Work Remotely</option>
               </select>
+              {errors.experienceLevel && <p className="text-red-500">{errors.experienceLevel.message}</p>}
             </div>
           </div>
           <div>
@@ -141,16 +176,16 @@ const CreateJob = () => {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company logo</label>
               <input
-                type="url"
-                placeholder="Paste your company URL: https://logo.com"
-                {...register("companyLogo")}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setLogoFile(e.target.files[0])}
                 className="create-job-input"
               />
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Employment Type</label>
               <select
-                {...register("employmentType")}
+                {...register("employmentType", { required: "Employment Type is required" })}
                 className="create-job-input"
               >
                 <option value="">Choose your experience</option>
@@ -158,29 +193,32 @@ const CreateJob = () => {
                 <option value="Part-time">Part-time</option>
                 <option value="Temporary">Temporary</option>
               </select>
+              {errors.employmentType && <p className="text-red-500">{errors.employmentType.message}</p>}
             </div>
           </div>
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
-              {...register("description")}
+              {...register("description", { required: "Job Description is required" })}
               className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-400"
               rows={6}
-              placeholder="Welcome to our job application form. Please fill out the following fields to the best of your ability. Your information will help us match you with the perfect opportunity. Thank you for considering joining our team."
+              placeholder="Describe the job..."
             />
+            {errors.description && <p className="text-red-500">{errors.description.message}</p>}
           </div>
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Posted by</label>
             <input
               type="email"
               placeholder="your email"
-              {...register("postedBy")}
+              {...register("postedBy", { required: "Posted By is required" })}
               className="create-job-input"
             />
+            {errors.postedBy && <p className="text-red-500">{errors.postedBy.message}</p>}
           </div>
           <input
             type="submit"
-            className=" block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-md cursor-pointer"
+            className=" block mt-12 bg-blue-600 ring-2 ring-black text-black font-semibold px-8 py-2 rounded-md cursor-pointer"
           />
         </form>
       </div>

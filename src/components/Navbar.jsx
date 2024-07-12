@@ -14,7 +14,7 @@ const Navbar = () => {
     const navItems = [
       { path: "/", title: "Home" },
         { path: "#search", title: "Find Jobs" },
-        { path: "#about", title: "About Us" },
+        { path: "/about", title: "About Us" },
         { path: "/post-job", title: "Post A Job" },
       ];
 
@@ -41,7 +41,7 @@ const Navbar = () => {
      <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
      
      <Link to="/login" className="py-2 px-5 border rounded"> Log in</Link> 
-     <Link to="/sign-up" className="bg-blue py-2 px-5 text-white rounded">Sign up</Link>  
+     <Link to="/signup" className="bg-blue py-2 px-5 text-white rounded">Sign up</Link>  
      
      </div>
 
