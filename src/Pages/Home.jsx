@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner';
 import Card from "../components/Card";
 import Jobs from './Jobs';
+import footSection from '../components/footSection';
 import Sidebar from '../Sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
 import { ref, onValue } from "firebase/database";
@@ -99,6 +100,7 @@ const Home = () => {
   const result = filteredData(jobs, selectedCategory, query);
 
   return (
+    <>
     <div>
       <Banner query={query} handleInputChange={handleInputChange} />
       <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
@@ -146,7 +148,11 @@ const Home = () => {
         <div className="bg-white p-4 rounded"><Newsletter /></div>
       </div>
     </div>
-  );
-};
+    <div>
+          <footSection/>
+    </div>
+    </>
+  )
+}
 
 export default Home;
