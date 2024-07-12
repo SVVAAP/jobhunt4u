@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner';
 import Card from "../components/Card";
 import Jobs from './Jobs';
-import footSection from '../components/footSection';
+import FootSection from '../components/footSection';
 import Sidebar from '../Sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
 import { ref, onValue } from "firebase/database";
@@ -149,7 +149,7 @@ const Home = () => {
       </div>
     </div>
     <div>
-          <footSection/>
+          <FootSection/>
     </div>
     </>
   )

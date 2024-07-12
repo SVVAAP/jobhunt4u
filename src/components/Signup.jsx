@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth, database } from '../firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,7 @@ const Signup = () => {
   const [phone, setPhone] = useState('');
   const [userType, setUserType] = useState('candidate');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ const Signup = () => {
       });
 
       console.log("User signed up:", user);
-      Navigate("/");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       console.error("Error signing up:", error);
