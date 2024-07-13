@@ -20,7 +20,7 @@ const Navbar = () => {
         const userRef = ref(database, `users/${user.uid}`); // Adjust path as per your database structure
         onValue(userRef, (snapshot) => {
           const userData = snapshot.val();
-          if (userData && userData.userType === "employer") {
+          if (userData && (userData.userType === "employer" || userData.userType === "admin") ) {
             setIsEmployer(true);
           } else {
             setIsEmployer(false);

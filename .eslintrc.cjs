@@ -1,6 +1,13 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2020: true,
+    node: true
+  },
+  globals: {
+    process: "readonly"
+  },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -16,7 +23,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'no-unused-vars':0,
-    'react/prop-types':0,
+    'no-unused-vars': 0,
+    'react/prop-types': 0,
   },
-}
+};

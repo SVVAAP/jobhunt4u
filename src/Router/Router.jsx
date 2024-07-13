@@ -5,6 +5,8 @@ import About from "../Pages/About";
 import CreateJob from "../Pages/CreateJob";
 import Login from "../components/login"
 import Signup from "../components/Signup";
+import PrivateRoute from "../components/PrivateRout";
+import Manager from "../Pages/Manager";
 
 const router = createBrowserRouter([
   {
@@ -18,5 +20,9 @@ const router = createBrowserRouter([
   },
   { path: "/login", element:<Login/>},
   {path: "/signup",element:<Signup/>},
+  {path:"/jobhunt4u-admin", element:<PrivateRoute element={Manager}/>,
+children:[
+  // {path:"/jobhunt4u-admin/",element:}
+]},
 ]);
 export default router;
