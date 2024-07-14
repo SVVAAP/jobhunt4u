@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 
 const Card = ({ data }) => {
   // console.log(data);
-  const {_id,companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice,maxPrice, postingDate, description} = data;
+  const {id,companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice,maxPrice, postingDate, description} = data;
   return (
     <div>
       <section className="card">
-        <Link to={`/jobs/${_id}`} className="flex gap-4 flex-col sm:flex-row items-start">
+        <Link to={`/singlejob/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo} alt={jobTitle} className="w-16 h-16 mb-4" />
           <div className="card-details">
             <h4 className="text-primary mb-1">{companyName}</h4>
@@ -21,7 +21,7 @@ const Card = ({ data }) => {
               <span className="flex items-center gap-2"><FiCalendar/> {postingDate}</span>
             </div>
 
-            <p className="text-base text-primary/70 ">{description}</p>
+            <p className="text-base text-primary/70 ">{description.slice(0, 55)}...<span className="text-emerald-700">Read More</span></p>
           </div>
         </Link>
       </section>

@@ -9,6 +9,7 @@ const PrivateRoute = ({ element: Component }) => {
   const [user, loading] = useAuthState(auth);
   const [isLoading, setIsLoading] = useState(true);
   const [isEmployer, setIsEmployer] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!user) {
@@ -19,7 +20,11 @@ const PrivateRoute = ({ element: Component }) => {
     const userRef = ref(database, `users/${user.uid}`); // Adjust path as per your database structure
     const unsubscribe = onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
-      setIsEmployer(userData && userData.userType === "admin");
+      if (userData && userData.userType === "admin") {
+        setIsEmployer(true);
+      } else {
+        setError("You are not authorized to access this page.");
+      }
       setIsLoading(false);
     });
 
@@ -28,6 +33,10 @@ const PrivateRoute = ({ element: Component }) => {
 
   if (loading || isLoading) {
     return <div className='flex justify-center'>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className='flex justify-center text-red-500'>{error}</div>;
   }
 
   return user ? <Component isEmployer={isEmployer} /> : <Navigate to="/login" />;

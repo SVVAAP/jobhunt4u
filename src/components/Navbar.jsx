@@ -1,40 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getAuth,  signOut } from 'firebase/auth';
 import logo from '../assets/logo.png';
+import { useJobs } from '../context/jobsContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {isLoggedIn,user}=useJobs();
   const [isEmployer, setIsEmployer] = useState(false);
   const auth = getAuth();
-  const database = getDatabase(); // or initialize Firestore if you're using Firestore
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        // Fetch user role from the database
-        const userRef = ref(database, `users/${user.uid}`); // Adjust path as per your database structure
-        onValue(userRef, (snapshot) => {
-          const userData = snapshot.val();
-          if (userData && (userData.userType === "employer" || userData.userType === "admin") ) {
+if(isLoggedIn){
+          if (user && (user.userType === "employer" || userData.userType === "admin") ) {
             setIsEmployer(true);
           } else {
             setIsEmployer(false);
           }
-        });
       } else {
         setIsLoggedIn(false);
         setIsEmployer(false);
       }
-    });
-
-    return () => unsubscribe();
-  }, [auth, database]);
-
+    
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
   };
