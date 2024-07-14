@@ -6,7 +6,7 @@ import { FiCalendar, FiClock, FiDollarSign, FiMapPin } from "react-icons/fi";
 import { useJobs } from '../context/jobsContext';
 
 const SingleJob = () => {
-    const { jobs, user, uid } = useJobs();
+    const { jobs, user, uid ,isLoggedIn } = useJobs();
     const { jobId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [applied, setApplied] = useState(false);
@@ -15,10 +15,11 @@ const SingleJob = () => {
     
     const job = jobs.find(job => job.id === jobId);
     console.log("error:"+job);
+    if(isLoggedIn){
     if (user.appliedJobs && user.appliedJobs.includes(jobId)) {
         setApplied(true);
     }
-
+    }
   //  useEffect(() => {
     //     const jobRef = ref(database, `jobs/${jobId}`);
     //     onValue(jobRef, (snapshot) => {
