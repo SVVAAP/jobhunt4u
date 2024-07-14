@@ -18,7 +18,6 @@ if(isLoggedIn){
             setIsEmployer(false);
           }
       } else {
-        setIsLoggedIn(false);
         setIsEmployer(false);
       }
     
