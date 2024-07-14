@@ -8,18 +8,14 @@ import { useJobs } from '../context/jobsContext';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {isLoggedIn,user}=useJobs();
-  const [isEmployer, setIsEmployer] = useState(false);
+  let isEmployer = false; // Changed to let to allow reassignment
   const auth = getAuth();
 
-if(isLoggedIn){
-          if (user && (user.userType === "employer" || userData.userType === "admin") ) {
-            setIsEmployer(true);
-          } else {
-            setIsEmployer(false);
-          }
-      } else {
-        setIsEmployer(false);
-      }
+  if (isLoggedIn) {
+    if (user && (user.userType === "employer" || user.userType === "admin")) {
+      isEmployer = true;
+    }
+  }
     
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
