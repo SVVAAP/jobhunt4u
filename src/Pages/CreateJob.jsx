@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
-import { database, storage } from "../firebase"; 
+import { database, storage } from "../firebase";
 import { ref, set, push } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,8 @@ const CreateJob = () => {
         employmentType: data.employmentType,
         description: data.description,
         postedBy: data.postedBy,
-        companyLogo: data.companyLogo
+        companyLogo: data.companyLogo,
+        Workmode: data.workmode
       };
 
       await set(newJobRef, jobData);
@@ -59,15 +60,30 @@ const CreateJob = () => {
   };
 
   const options = [
-    { value: "JavaScript", label: "JavaScript" },
-    { value: "C++", label: "C++" },
-    { value: "HTML", label: "HTML" },
-    { value: "CSS", label: "CSS" },
-    { value: "React", label: "React" },
-    { value: "NodeJs", label: "NodeJS" },
-    { value: "MongoDB", label: "MongoDB" },
-    { value: "Redux", label: "Redux" },
+    { value: "computer knowledge", label: "Computer Knowledge" },
+    { value: "communication skills", label: "Communication Skills" },
+    { value: "teamwork", label: "Teamwork" },
+    { value: "problem-solving", label: "Problem-Solving" },
+    { value: "time management", label: "Time Management" },
+    { value: "adaptability", label: "Adaptability" },
+    { value: "critical thinking", label: "Critical Thinking" },
+    { value: "customer service", label: "Customer Service" },
+    { value: "project management", label: "Project Management" },
+    { value: "data analysis", label: "Data Analysis" },
+    { value: "interpersonal skills", label: "Interpersonal Skills" },
+    { value: "leadership", label: "Leadership" },
+    { value: "organizational skills", label: "Organizational Skills" },
+    { value: "attention to detail", label: "Attention to Detail" },
+    { value: "creativity", label: "Creativity" },
+    { value: "multitasking", label: "Multitasking" },
+    { value: "technical skills", label: "Technical Skills" },
+    { value: "emotional intelligence", label: "Emotional Intelligence" },
+    { value: "negotiation skills", label: "Negotiation Skills" },
+    { value: "decision making", label: "Decision Making" },
+    { value: "financial literacy", label: "Financial Literacy" },
+    { value: "writing skills", label: "Writing Skills" },
   ];
+
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
@@ -149,18 +165,21 @@ const CreateJob = () => {
               {errors.postingDate && <p className="text-red-500">{errors.postingDate.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Experience level</label>
+              <label className="block mb-2 text-lg">Experience Level</label>
               <select
                 {...register("experienceLevel", { required: "Experience Level is required" })}
                 className="create-job-input"
               >
                 <option value="">Choose your experience</option>
-                <option value="NoExperience">No Experience</option>
+                <option value="NoExperience">No Experience / Fresher</option>
                 <option value="Internship">Internship</option>
-                <option value="WorkRemotely">Work Remotely</option>
+                <option value="1-2 years">1-2 years</option>
+                <option value="3-5 years">3-5 years</option>
+                <option value="MoreThan5Years">More Than 5 years</option>
               </select>
               {errors.experienceLevel && <p className="text-red-500">{errors.experienceLevel.message}</p>}
             </div>
+
           </div>
           <div>
             <label className="block mb-2 text-lg">Required Skills Set</label>
@@ -196,6 +215,20 @@ const CreateJob = () => {
               {errors.employmentType && <p className="text-red-500">{errors.employmentType.message}</p>}
             </div>
           </div>
+          <div className="lg:w-1/2 w-full">
+            <label className="block mb-2 text-lg">Work Mode</label>
+            <select
+              {...register("workMode", { required: "Work Mode is required" })}
+              className="create-job-input"
+            >
+              <option value="">Choose your work mode</option>
+              <option value="Office">Work from Office</option>
+              <option value="Remote">Remote</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+            {errors.workMode && <p className="text-red-500">{errors.workMode.message}</p>}
+          </div>
+
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
