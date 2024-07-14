@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../Pages/Home";
-import About from "../Pages/About";
 import CreateJob from "../Pages/CreateJob";
 import Login from "../components/login"
 import Signup from "../components/Signup";
@@ -11,6 +10,7 @@ import Applicants from "../components/Applicants";
 import EmployeerDetails from "../components/EmployeerDetails";
 import JobList from "../components/JobList";
 import SingleJob from "../Pages/SingleJob";
+import Profile from "../Pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +18,10 @@ const router = createBrowserRouter([
     element: <App></App>,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/about", element: <About /> },
       { path: "/post-job", element: <CreateJob /> },
     ],
   },
+  {path:"/profile" ,element:<Profile/>},
   { path: "/login", element:<Login/>},
   {path: "/signup",element:<Signup/>},
   {path:"/jobhunt4u-admin", element:<PrivateRoute element={Manager}/>,
