@@ -4,6 +4,7 @@ import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
 import { getAuth,  signOut } from 'firebase/auth';
 import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
+import profpic from '../assets/profile.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,9 +97,7 @@ const Navbar = () => {
             </li>
           ))}
           {isLoggedIn ? (
-            <li className="text-white py-1">
-              <button onClick={handleLogout}>Log out</button>
-            </li>
+            <div><Link to="/profile"><img className='h-5' src={profpic}alt='prof'/></Link></div>
           ) : (
             <>
               <li className="text-white py-1">
