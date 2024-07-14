@@ -1,110 +1,159 @@
 import React from 'react';
+import { AcademicCapIcon, ComputerDesktopIcon, HeartIcon, ChatBubbleLeftRightIcon, BookOpenIcon, ShoppingCartIcon, HomeIcon, UserGroupIcon, GlobeAltIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline';
 
 const About = () => {
-  const stats = [
-    { value: "6k", label: "daily active users" },
-    { value: "1,000Plus", label: "open job positions" },
-    { value: "9k", label: "Placement Served" }
-  ];
+    const stats = [
+        { value: "6k", label: "daily active users" },
+        { value: "1,000+", label: "open job positions" },
+        { value: "9k", label: "Placement Served" }
+    ];
 
-  const jobCategories = [
-    { name: "Fintech", positions: 2104 },
-    { name: "Technical Support", positions: 6483 },
-    { name: "Health and Care", positions: 0 },
-    { name: "Automobile", positions: 0 },
-    { name: "Edtech", positions: 1383 },
-    { name: "E-Commerce", positions: 5182 },
-    { name: "Real Estate", positions: 23 },
-    { name: "Human Resource", positions: 425 },
-    { name: "International Process", positions: 1737 },
-    { name: "Domestic Process", positions: 6733 }
-  ];
 
-  const clients = [
-    "First Advantage", "KGISL", "ExpertCallers", "Concentrix", "Accenture", "Teleperformance"
-  ];
 
-  const steps = [
-    "Register an account to start",
-    "Explore over thousands of resumes",
-    "Find the most suitable candidate"
-  ];
+    const jobCategories = [
+        { name: "Fintech", description: "Finance Tech", icon: <AcademicCapIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Technical Support", description: "Tech Help", icon: <ComputerDesktopIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Health and Care", description: "Medical Jobs", icon: <HeartIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Automobile", description: "Car Industry", icon: <ChatBubbleLeftRightIcon className="w-6 h-6 text-gray-600" /> }, // Replace with an available icon
+        { name: "Edtech", description: "Learning Tools", icon: <BookOpenIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "E-Commerce", description: "Online Sales", icon: <ShoppingCartIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Real Estate", description: "Property Sales", icon: <HomeIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Human Resource", description: "HR Management", icon: <UserGroupIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "International Process", description: "Global Business", icon: <GlobeAltIcon className="w-6 h-6 text-gray-600" /> },
+        { name: "Domestic Process", description: "Local Operations", icon: <GlobeAmericasIcon className="w-6 h-6 text-gray-600" /> }
+    ];
 
-  const recruiterSteps = [
-    "Register an account",
-    "Create a new job listing",
-    "Review and submit"
-  ];
 
-  return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-          About Us
-        </h2>
-        <p className="mt-4 text-lg text-gray-500">
-        Welcome to JobHunt4U! Discover your dream job with us – the top destination for reliable job listings and career opportunities in India.
-        </p>
-      </div>
 
-      <div className="mt-10">
-        <div className="flex flex-wrap justify-around text-center">
-          {stats.map((stat, index) => (
-            <div key={index} className="p-4">
-              <p className="text-4xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-lg text-gray-500">{stat.label}</p>
+    const clients = [
+        "First Advantage", "KGISL", "ExpertCallers", "Concentrix", "Accenture", "Teleperformance"
+    ];
+
+    const recruiterSteps = [
+        "Register an account",
+        "Create a new job listing",
+        "Review and submit"
+    ];
+
+    return (
+        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto text-center">
+                <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    About Us
+                </h2>
+                <p className="mt-4 text-lg text-gray-500">
+                    Welcome to JobHunt4U! Discover your dream job with us – the top destination for reliable job listings and career opportunities in India.
+                </p>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="mt-10">
-        <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
-        <div className="flex flex-wrap justify-center mt-4">
-          {jobCategories.map((category, index) => (
-            <div key={index} className="p-4 text-center">
-              <p className="text-lg font-semibold text-gray-900">{category.name}</p>
-              <p className="text-sm text-gray-500">{category.positions} open positions</p>
+            <div className="mt-10">
+                <div className="flex flex-wrap justify-around text-center">
+                    {stats.map((stat, index) => (
+                        <div key={index} className="p-4">
+                            <p className="text-4xl font-bold text-gray-900">{stat.value}</p>
+                            <p className="text-lg text-gray-500">{stat.label}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="mt-10">
-        <h3 className="text-2xl font-bold text-gray-900 text-center">Our Clients</h3>
-        <div className="flex flex-wrap justify-center mt-4">
-          {clients.map((client, index) => (
-            <div key={index} className="p-4">
-              <p className="text-lg text-gray-900">{client}</p>
+            <div className="mt-10">
+            <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
+            <div className="flex flex-wrap justify-center mt-4">
+                {jobCategories.map((category, index) => (
+                    <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center">
+                        <div className="mb-2">
+                            {category.icon}
+                        </div>
+                        <p className="text-lg font-semibold text-gray-900">{category.name}</p>
+                        <p className="text-sm text-gray-500">{category.description}</p>
+                    </div>
+                ))}
             </div>
-          ))}
         </div>
-      </div>
 
-      <div className="mt-10">
-        <h3 className="text-2xl font-bold text-gray-900 text-center">Find Jobs with 3 easy steps</h3>
-        <div className="mt-4 text-center">
-          <ol className="list-decimal list-inside">
-            {steps.map((step, index) => (
-              <li key={index} className="mt-2 text-lg text-gray-500">{step}</li>
-            ))}
-          </ol>
-        </div>
-      </div>
 
-      <div className="mt-10">
-        <h3 className="text-2xl font-bold text-gray-900 text-center">Are you an HR recruiter looking to post a job on our job portal?</h3>
-        <div className="mt-4 text-center">
-          <p className="text-lg text-gray-500 mb-4">Look no further! By registering on our platform, you can easily post job listings and reach a wide pool of qualified candidates.</p>
-          <ol className="list-decimal list-inside">
-            {recruiterSteps.map((step, index) => (
-              <li key={index} className="mt-2 text-lg text-gray-500">{step}</li>
-            ))}
-          </ol>
+            <div className="mt-10">
+                <h3 className="text-2xl font-bold text-gray-900 text-center">Our Clients</h3>
+                <div className="flex flex-wrap justify-center mt-4">
+                    {clients.map((client, index) => (
+                        <div key={index} className="p-4">
+                            <p className="text-lg text-gray-900">{client}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="mt-10 mb-10">
+                <h3 className="text-2xl font-bold text-gray-900 text-center">Are you an HR recruiter looking to post a job on our job portal?</h3>
+                <div className="mt-4 text-center">
+                    <p className="text-lg text-gray-500 mb-4">Look no further! By registering on our platform, you can easily post job listings and reach a wide pool of qualified candidates.</p>
+                </div>
+
+                <h3 className="text-2xl font-bold text-gray-900 text-center">How It Works</h3>
+                <div className="flex items-center justify-center mt-8  p-6 rounded-lg shadow-md">
+                    {/* Step 1 */}
+                    <div className="flex flex-col items-center w-1/4">
+                        <div className="relative mb-4">
+                            <div className="w-16 h-16 mx-auto bg-green-300 rounded-full text-lg text-white flex items-center justify-center">
+                                <img src='https://cdn-icons-png.flaticon.com/128/9428/9428917.png' alt="Register an account" className="w-12 h-12" />
+                            </div>
+                        </div>
+                        <div className="text-sm text-center md:text-base">Register an account</div>
+                    </div>
+
+                    <div className="w-12 flex items-center justify-center h-full">
+                        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+
+                    {/* Step 2 */}
+                    <div className="flex flex-col items-center w-1/4">
+                        <div className="relative mb-4">
+                            <div className="absolute flex align-center items-center justify-center" style={{ width: 'calc(100% - 2.5rem - 1rem)', top: '50%', transform: 'translate(-50%, -50%)' }}>
+                                <div className="w-full bg-gray-200 rounded flex items-center justify-center">
+                                    <div className="w-0 bg-green-300 py-1 rounded" style={{ width: '100%' }}></div>
+                                </div>
+                            </div>
+                            <div className="w-16 h-16 mx-auto bg-green-300 rounded-full text-lg text-white flex items-center justify-center">
+                                <img src='https://cdn-icons-png.flaticon.com/128/3456/3456420.png' alt="Create a new job listing" className="w-12 h-12" />
+                            </div>
+                        </div>
+                        <div className="text-sm text-center md:text-base">Create a new job listing</div>
+                    </div>
+
+                    <div className="w-12 flex items-center justify-center h-full">
+                        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="flex flex-col items-center w-1/4">
+                        <div className="relative mb-4">
+                            <div className="w-16 h-16 mx-auto bg-green-300 rounded-full text-lg text-white flex items-center justify-center">
+                                <img src='https://cdn-icons-png.flaticon.com/128/2680/2680985.png' alt="Review and submit" className="w-12 h-12" />
+                            </div>
+                        </div>
+                        <div className="text-sm text-center md:text-base">Review and submit</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d992841.4544403215!2d74.6143328746088!3d13.579273629093242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbcadd9041400a3%3A0xb7c8f19bc5d97a1d!2sJob%20Hunt%204%20U!5e0!3m2!1sen!2sin!4v1720962589516!5m2!1sen!2sin"
+                    width="100%"
+                    height="450"
+                    style={{ border: '0' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default About;
