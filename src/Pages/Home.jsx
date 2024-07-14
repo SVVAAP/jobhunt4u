@@ -3,6 +3,7 @@ import Banner from '../components/Banner';
 import Card from "../components/Card";
 import Jobs from './Jobs';
 import FootSection from '../components/footSection';
+import About from '../components/About';
 import Sidebar from '../Sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
 import { ref, onValue } from "firebase/database";
@@ -147,6 +148,9 @@ const Home = () => {
 
         <div className="bg-white p-4 rounded"><Newsletter /></div>
       </div>
+    </div>
+    <div>
+          <About/>
     </div>
     <div>
           <FootSection/>
