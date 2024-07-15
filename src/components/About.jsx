@@ -57,20 +57,38 @@ const About = () => {
                 </div>
             </div>
 
-            <div className="mt-10">
-            <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
-            <div className="flex flex-wrap justify-center mt-4">
-                {jobCategories.map((category, index) => (
-                    <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center">
-                        <div className="mb-2">
-                            {category.icon}
-                        </div>
-                        <p className="text-lg font-semibold text-gray-900">{category.name}</p>
-                        <p className="text-sm text-gray-500">{category.description}</p>
-                    </div>
-                ))}
+            <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md">
+                <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">Contact Us Now</h3>
+                <div className="text-center mb-6">
+                    <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
+                    <a href='tel:9035331774'><p className="text-xl font-semibold text-gray-900">9035331774</p></a>
+                </div>
+                <div className="text-center mb-6">
+                    <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
+                    <a href="mailto:jobhunt4u2020@gmail.com" className="text-xl font-semibold text-blue-600 hover:underline">jobhunt4u2020@gmail.com</a>
+                </div>
+                <div className="text-center">
+                    <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
+                    <p className="text-xl font-semibold text-gray-900">Near Alphonso Matrimony, Leo Brother's Shopping Complex</p>
+                    <a href='#map'><p className="text-lg font-semibold text-gray-900">Mukamar, Udupi Dist. 574 111</p></a>
+                </div>
             </div>
-        </div>
+
+
+            <div className="mt-10">
+                <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
+                <div className="flex flex-wrap justify-center mt-4">
+                    {jobCategories.map((category, index) => (
+                        <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center">
+                            <div className="mb-2">
+                                {category.icon}
+                            </div>
+                            <p className="text-lg font-semibold text-gray-900">{category.name}</p>
+                            <p className="text-sm text-gray-500">{category.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
 
             <div className="mt-10">
@@ -141,7 +159,7 @@ const About = () => {
                 </div>
             </div>
 
-            <div>
+            <div id='map'>
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d992841.4544403215!2d74.6143328746088!3d13.579273629093242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbcadd9041400a3%3A0xb7c8f19bc5d97a1d!2sJob%20Hunt%204%20U!5e0!3m2!1sen!2sin!4v1720962589516!5m2!1sen!2sin"
                     width="100%"
