@@ -10,8 +10,8 @@ function Profile() {
     return <div>Loading...</div>;
   }
 
-  // Filtering jobs based on user applied jobs
-  const filteredJobs = jobs.filter((job) => user.appliedJobs.includes(job.id));
+  // Filtering jobs based on user applied jobs Object.values(data).filter(user => user.userType === "employer");
+  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs.includes(job.id));
   console.log(filteredJobs);
     
   return (
