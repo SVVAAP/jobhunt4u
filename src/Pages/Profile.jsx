@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useJobs } from '../context/jobsContext';
+import { signOut } from 'firebase/auth';
+import { auth, database } from '../firebase';
+import { ref, set } from 'firebase/database';
+import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
-import profpic from '../assets/profile.png'; // Ensure you have a placeholder profile image
+import { HiPencil } from 'react-icons/hi';
 
 function Profile() {
   const { user, jobs } = useJobs();
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
+    city: user?.city || '',
+    state: user?.state || '',
+    zipCode: user?.zipCode || '',
+    workStatus: user?.workStatus || 'fresher',
+    yearsOfExperience: user?.yearsOfExperience || '',
+    companyNames: user?.companyNames || '',
+    resume: '', // This will be the file object
+  });
 
   // If user or jobs are not yet loaded, return a loading state or null
   if (!user || !jobs) {
@@ -12,31 +31,260 @@ function Profile() {
   }
 
   // Filtering jobs based on user applied jobs
-  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs.includes(job.id));
+  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
+  console.log(filteredJobs);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/'); // Redirect to the home page after logout
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      resume: e.target.files[0],
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userRef = ref(database, `users/${user.uid}`);
+      const resumeUrl = formData.resume ? await uploadResume(formData.resume) : user.resume;
+
+      await set(userRef, {
+        ...formData,
+        resume: resumeUrl, // Update resume URL if file is uploaded
+      });
+
+      setIsEditing(false);
+      // Optionally, you can fetch updated user data here
+    } catch (error) {
+      console.error('Error updating user details: ', error);
+    }
+  };
+
+  // Dummy function for resume upload
+  const uploadResume = async (file) => {
+    // Add logic to upload resume and return the file URL
+    return ''; // Placeholder
+  };
 
   return (
-    <div className="container mx-auto py-8">
-      {/* Profile Details Section */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-        <div className="flex items-center">
-          <img src={profpic} alt="Profile" className="w-24 h-24 rounded-full mr-6" />
-          <div>
-            <h2 className="text-2xl font-bold mb-2">{user.name}</h2>
-            <p className="text-gray-600">{user.email}</p>
-            <p className="text-gray-600">{user.phone}</p>
-            <p className="text-gray-600">{user.address}</p>
-            <p className="text-gray-600">{user.city}, {user.state}</p>
+    <div className="container mx-auto p-4">
+      <div className="relative bg-white shadow-md rounded-lg p-4">
+        {/* Edit Icon */}
+        {!isEditing && (
+          <HiPencil
+            onClick={handleEditClick}
+            className="absolute top-4 right-4 text-blue-500 cursor-pointer text-xl"
+          />
+        )}
+
+        {/* User Details Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <h1 className="text-2xl font-bold mb-4">Welcome, {user.name}!</h1>
+          <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
+            <img
+              src="//static.naukimg.com/s/7/104/assets/images/green-tick.49de0665.svg"
+              alt="Success"
+              className="w-8 h-8 mr-2"
+            />
+            <span className="text-green-700 text-lg font-medium">
+              Your account is created successfully.
+            </span>
+            <span className="text-gray-700 ml-2">Let’s get started!</span>
           </div>
-        </div>
+          <p className="text-lg mb-4">
+            Search & apply to jobs from India's No.1 Job Site
+          </p>
+
+          {/* Input Fields */}
+          <div className="bg-gray-100 p-4 rounded-lg space-y-4">
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Full name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Mobile number</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Address</label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">City</label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">State</label>
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Zip Code</label>
+              <input
+                type="text"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Work Status</label>
+              <select
+                name="workStatus"
+                value={formData.workStatus}
+                onChange={handleChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              >
+                <option value="fresher">I'm a Fresher</option>
+                <option value="experienced">I'm Experienced</option>
+              </select>
+            </div>
+
+            {formData.workStatus === 'experienced' && (
+              <>
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">Years of Experience</label>
+                  <input
+                    type="text"
+                    name="yearsOfExperience"
+                    value={formData.yearsOfExperience}
+                    onChange={handleChange}
+                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    disabled={!isEditing}
+                  />
+                </div>
+
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">Company Names</label>
+                  <input
+                    type="text"
+                    name="companyNames"
+                    value={formData.companyNames}
+                    onChange={handleChange}
+                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    disabled={!isEditing}
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="formField">
+              <label className="block text-gray-700 mb-1">Upload Resume (DOC, DOCx, PDF, RTF | Max: 2 MB)</label>
+              <input
+                type="file"
+                name="resume"
+                accept=".doc, .docx, .pdf, .rtf"
+                onChange={handleFileChange}
+                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={!isEditing}
+              />
+            </div>
+
+            {/* Submit Button */}
+            {isEditing && (
+              <button
+                type="submit"
+                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+              >
+                Save Changes
+              </button>
+            )}
+          </div>
+        </form>
+
+        {/* Logout Button */}
+        {!isEditing && (
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            Logout
+          </button>
+        )}
       </div>
 
       {/* Applied Jobs Section */}
-      <div>
-        <h1 className="text-xl font-bold mb-4">Applied Jobs</h1>
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold">Applied Jobs</h2>
         {filteredJobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {filteredJobs.map((job, i) => (
-              <Card key={i} data={job} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {filteredJobs.map((data, i) => (
+              <Card key={i} data={data} />
             ))}
           </div>
         ) : (

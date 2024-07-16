@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, database } from '../firebase';
 import { ref, onValue } from "firebase/database";
+import login from "./login";
 
 const PrivateRoute = ({ element: Component }) => {
   const [user, loading] = useAuthState(auth);
@@ -24,6 +25,7 @@ const PrivateRoute = ({ element: Component }) => {
         setIsEmployer(true);
       } else {
         setError("You are not authorized to access this page.");
+        <login/>
       }
       setIsLoading(false);
     });
