@@ -1,38 +1,77 @@
-import React, { useState } from 'react';
-import { useJobs } from '../context/jobsContext';
+import React, { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
-import { auth, database } from '../firebase';
-import { ref, set } from 'firebase/database';
+import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import { HiPencil } from 'react-icons/hi';
 
 function Profile() {
-  const { user, jobs } = useJobs();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    address: user?.address || '',
-    city: user?.city || '',
-    state: user?.state || '',
-    zipCode: user?.zipCode || '',
-    workStatus: user?.workStatus || 'fresher',
-    yearsOfExperience: user?.yearsOfExperience || '',
-    companyNames: user?.companyNames || '',
+    name: '',
+    email: '',
+    phone: '',
+    workStatus: 'fresher',
+    yearsOfExperience: '',
+    companyNames: '',
     resume: '', // This will be the file object
   });
+  const [error, setError] = useState('');
+  const [jobs, setJobs] = useState([]);
+  const [appliedJobs, setAppliedJobs] = useState([]);
 
-  // If user or jobs are not yet loaded, return a loading state or null
-  if (!user || !jobs) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          // Fetch user data
+          const userRef = ref(database, `users/${user.uid}`);
+          onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+              setFormData({
+                name: userData.name || '',
+                email: userData.email || '',
+                phone: userData.phone || '',
+                workStatus: userData.workStatus || 'fresher',
+                yearsOfExperience: userData.yearsOfExperience || '',
+                companyNames: userData.companyNames || '',
+                resume: userData.resume || '',
+              });
+            } else {
+              setError('User data not found.');
+            }
+          }, {
+            onlyOnce: true,
+          });
 
-  // Filtering jobs based on user applied jobs
-  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
-  console.log(filteredJobs);
+          // Fetch applied jobs
+          const jobsRef = ref(database, 'jobs');
+          onValue(jobsRef, (snapshot) => {
+            const jobsData = snapshot.val();
+            if (jobsData) {
+              setJobs(Object.values(jobsData));
+              const appliedJobsList = userData.appliedJobs || [];
+              setAppliedJobs(
+                appliedJobsList.map((jobId) => jobsData[jobId]).filter((job) => job)
+              );
+            } else {
+              setError('Jobs data not found.');
+            }
+          });
+        } else {
+          setError('No user logged in.');
+        }
+      } catch (error) {
+        console.error('Error fetching user details: ', error);
+        setError('Failed to fetch user details.');
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -65,41 +104,53 @@ function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userRef = ref(database, `users/${user.uid}`);
-      const resumeUrl = formData.resume ? await uploadResume(formData.resume) : user.resume;
+      const user = auth.currentUser;
+      if (user) {
+        let resumeUrl = formData.resume ? await uploadResume(formData.resume) : formData.resume;
 
-      await set(userRef, {
-        ...formData,
-        resume: resumeUrl, // Update resume URL if file is uploaded
-      });
+        await set(ref(database, `users/${user.uid}`), {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          workStatus: formData.workStatus,
+          yearsOfExperience: formData.yearsOfExperience,
+          companyNames: formData.companyNames,
+          resume: resumeUrl, // Update resume URL if file is uploaded
+        });
 
-      setIsEditing(false);
-      // Optionally, you can fetch updated user data here
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error('Error updating user details: ', error);
+      setError('Failed to update user details.');
     }
   };
 
-  // Dummy function for resume upload
   const uploadResume = async (file) => {
-    // Add logic to upload resume and return the file URL
-    return ''; // Placeholder
+    try {
+      const resumeRef = storageRef(storage, `resumes/${file.name}`);
+      await uploadBytes(resumeRef, file);
+      const downloadURL = await getDownloadURL(resumeRef);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading resume: ', error);
+      setError('Failed to upload resume.');
+      return '';
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
+      {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="relative bg-white shadow-md rounded-lg p-4">
-        {/* Edit Icon */}
         {!isEditing && (
           <HiPencil
             onClick={handleEditClick}
             className="absolute top-4 right-4 text-blue-500 cursor-pointer text-xl"
           />
         )}
-
-        {/* User Details Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h1 className="text-2xl font-bold mb-4">Welcome, {user.name}!</h1>
+          <h1 className="text-2xl font-bold mb-4">Welcome, {formData.name}!</h1>
           <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
             <img
               src="//static.naukimg.com/s/7/104/assets/images/green-tick.49de0665.svg"
@@ -114,8 +165,6 @@ function Profile() {
           <p className="text-lg mb-4">
             Search & apply to jobs from India's No.1 Job Site
           </p>
-
-          {/* Input Fields */}
           <div className="bg-gray-100 p-4 rounded-lg space-y-4">
             <div className="formField">
               <label className="block text-gray-700 mb-1">Full name</label>
@@ -147,54 +196,6 @@ function Profile() {
                 type="text"
                 name="phone"
                 value={formData.phone}
-                onChange={handleChange}
-                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
-                disabled={!isEditing}
-              />
-            </div>
-
-            <div className="formField">
-              <label className="block text-gray-700 mb-1">Address</label>
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
-                disabled={!isEditing}
-              />
-            </div>
-
-            <div className="formField">
-              <label className="block text-gray-700 mb-1">City</label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
-                disabled={!isEditing}
-              />
-            </div>
-
-            <div className="formField">
-              <label className="block text-gray-700 mb-1">State</label>
-              <input
-                type="text"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
-                disabled={!isEditing}
-              />
-            </div>
-
-            <div className="formField">
-              <label className="block text-gray-700 mb-1">Zip Code</label>
-              <input
-                type="text"
-                name="zipCode"
-                value={formData.zipCode}
                 onChange={handleChange}
                 className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
                 disabled={!isEditing}
@@ -244,26 +245,36 @@ function Profile() {
             )}
 
             <div className="formField">
-              <label className="block text-gray-700 mb-1">Upload Resume (DOC, DOCx, PDF, RTF | Max: 2 MB)</label>
+              <label className="block text-gray-700 mb-1">Resume</label>
               <input
                 type="file"
                 name="resume"
-                accept=".doc, .docx, .pdf, .rtf"
                 onChange={handleFileChange}
                 className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
                 disabled={!isEditing}
               />
+              {formData.resume && (
+                <a
+                  href={formData.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 mt-2 block"
+                >
+                  Your Resume - click here to get resume 
+                </a>
+              )}
             </div>
 
-            {/* Submit Button */}
-            {isEditing && (
-              <button
-                type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              >
-                Save Changes
-              </button>
-            )}
+            <div className="flex justify-between">
+              {isEditing && (
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                >
+                  Save Changes
+                </button>
+              )}
+            </div>
           </div>
         </form>
 
@@ -281,9 +292,9 @@ function Profile() {
       {/* Applied Jobs Section */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold">Applied Jobs</h2>
-        {filteredJobs.length > 0 ? (
+        {appliedJobs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {filteredJobs.map((data, i) => (
+            {appliedJobs.map((data, i) => (
               <Card key={i} data={data} />
             ))}
           </div>
