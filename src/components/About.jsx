@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AcademicCapIcon, ComputerDesktopIcon, HeartIcon, ChatBubbleLeftRightIcon, BookOpenIcon, ShoppingCartIcon, HomeIcon, UserGroupIcon, GlobeAltIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline';
 
 const About = () => {
@@ -36,7 +37,7 @@ const About = () => {
     ];
 
     return (
-        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8" id='about'>
             <div className="max-w-7xl mx-auto text-center">
                 <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     About Us

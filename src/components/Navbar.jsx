@@ -1,23 +1,25 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
-import { getAuth,  signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
 import profpic from '../assets/profile.png';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {isLoggedIn,user}=useJobs();
-  let isEmployer = false; // Changed to let to allow reassignment
+  const { isLoggedIn, user } = useJobs();
+  let isEmployer = false;
   const auth = getAuth();
+  const navigate = useNavigate();
 
   if (isLoggedIn) {
     if (user && (user.userType === "employer" || user.userType === "admin")) {
       isEmployer = true;
     }
   }
-    
+
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -32,11 +34,23 @@ const Navbar = () => {
       });
   };
 
+  const handleLinkClick = (link) => {
+    if (link.startsWith('#')) {
+      const element = document.getElementById(link.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(link);
+    }
+    setIsMenuOpen(false); // Close the menu
+  };
+
   const navItems = [
-    { path: "/", title: "Home" },
-    { path: "#search", title: "Find Jobs" },
-    { path: "/about", title: "About Us" },
-    ...(isEmployer ? [{ path: "/post-job", title: "Post A Job" }] : []),
+    { link: "/", title: "Home" },
+    { link: "#search", title: "Find Jobs" },
+    { link: "#about", title: "About Us" },
+    ...(isEmployer ? [{ link: "/post-job", title: "Post A Job" }] : []),
   ];
 
   return (
@@ -46,11 +60,12 @@ const Navbar = () => {
           <img src={logo} className='w-32 shadow' alt="Logo" />
         </a>
         <ul className="hidden md:flex gap-12">
-          {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-primary">
+          {navItems.map(({ link, title }) => (
+            <li key={link} className="text-base text-primary">
               <NavLink
-                to={path}
+                to={link}
                 className={({ isActive }) => (isActive ? "active" : "")}
+                onClick={() => handleLinkClick(link)}
               >
                 {title}
               </NavLink>
@@ -59,10 +74,7 @@ const Navbar = () => {
         </ul>
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {isLoggedIn ? (
-            // <button onClick={handleLogout} className="py-2 px-5 border rounded">
-            //   Log out
-            // </button>
-            <div><Link to="/profile"><img className='h-5' src={profpic}alt='prof'/></Link></div>
+            <div><Link to="/profile"><img className='h-5' src={profpic} alt='prof' /></Link></div>
           ) : (
             <>
               <Link to="/login" className="py-2 px-5 border rounded">
@@ -86,11 +98,11 @@ const Navbar = () => {
       </nav>
       <div className={`px-4 bg-black py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
         <ul>
-          {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-white first:text-white py-1">
+          {navItems.map(({ link, title }) => (
+            <li key={link} className="text-base text-white first:text-white py-1">
               <NavLink
-                onClick={handleMenuToggler}
-                to={path}
+                onClick={() => handleLinkClick(link)}
+                to={link}
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
                 {title}
@@ -101,7 +113,6 @@ const Navbar = () => {
             <li className="text-white py-1">
               <button onClick={handleLogout}>Log out</button>
             </li>
-            
           ) : (
             <>
               <li className="text-white py-1">
