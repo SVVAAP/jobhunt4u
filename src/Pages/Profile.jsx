@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useJobs } from '../context/jobsContext';
 import { signOut } from 'firebase/auth';
-import { auth, database } from '../firebase';
-import { ref, set } from 'firebase/database';
+import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import { HiPencil } from 'react-icons/hi';
@@ -10,6 +9,7 @@ import { HiPencil } from 'react-icons/hi';
 function Profile() {
   const { user, jobs } = useJobs();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -64,7 +64,7 @@ function Profile() {
       [name]: value,
     }));
   };
-
+  
   const handleFileChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -75,25 +75,39 @@ function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userRef = ref(database, `users/${user.uid}`);
-      const resumeUrl = formData.resume ? await uploadResume(formData.resume) : user.resume;
+      const user = auth.currentUser;
+      if (user) {
+        let resumeUrl = formData.resume ? await uploadResume(formData.resume) : formData.resume;
 
-      await set(userRef, {
-        ...formData,
-        resume: resumeUrl, // Update resume URL if file is uploaded
-      });
+        await set(ref(database, `users/${user.uid}`), {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          workStatus: formData.workStatus,
+          yearsOfExperience: formData.yearsOfExperience,
+          companyNames: formData.companyNames,
+          resume: resumeUrl, // Update resume URL if file is uploaded
+        });
 
-      setIsEditing(false);
-      // Optionally, you can fetch updated user data here
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error('Error updating user details: ', error);
+      setError('Failed to update user details.');
     }
   };
 
-  // Dummy function for resume upload
   const uploadResume = async (file) => {
-    // Add logic to upload resume and return the file URL
-    return ''; // Placeholder
+    try {
+      const resumeRef = storageRef(storage, `resumes/${file.name}`);
+      await uploadBytes(resumeRef, file);
+      const downloadURL = await getDownloadURL(resumeRef);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading resume: ', error);
+      setError('Failed to upload resume.');
+      return '';
+    }
   };
 
   return (
