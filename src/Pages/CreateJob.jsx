@@ -218,7 +218,7 @@ const CreateJob = () => {
           <div className="lg:w-1/2 w-full">
             <label className="block mb-2 text-lg">Work Mode</label>
             <select
-              {...register("workMode", { required: "Work Mode is required" })}
+              {...register("workmode", { required: "Work Mode is required" })}
               className="create-job-input"
             >
               <option value="">Choose your work mode</option>
