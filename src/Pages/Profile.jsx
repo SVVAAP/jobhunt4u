@@ -260,7 +260,7 @@ function Profile() {
                   rel="noopener noreferrer"
                   className="text-blue-500 mt-2 block"
                 >
-                  Your Resume - click here to get resume 
+                  <b>Your Resume - click here to get resume </b>
                 </a>
               )}
             </div>
