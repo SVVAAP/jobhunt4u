@@ -88,7 +88,7 @@ function Profile() {
           companyNames: formData.companyNames,
           resumeUrl: resumeUrl, // Update resume URL if file is uploaded
           appliedJobs: user.appliedJobs,
-
+          userType: user.userType,
         });
 
         setIsEditing(false);
