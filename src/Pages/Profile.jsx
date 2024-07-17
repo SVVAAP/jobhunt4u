@@ -232,11 +232,7 @@ function Profile() {
                  rel="noopener noreferrer"
                  className="text-blue-500 mt-2 block"
                >
-                <img
-                  src={formData.resume}
-                  alt="Resume Thumbnail"
-                  className="w-16 h-16 object-cover"
-                />
+                <b>Your Resume - click here to view</b>
                 </a>
               )}
               {isEditing && (
