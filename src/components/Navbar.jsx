@@ -75,7 +75,7 @@ const Navbar = () => {
         </ul>
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {isLoggedIn ? (
-            <div className='flex justify-normal'><Link to="/profile"><img className='h-7' src={profpic} alt='prof' /></Link></div>
+            <div className='flex justify-normal'><Link to={isEmployer? "/profile-emp" :"/profile"}><img className='h-7' src={profpic} alt='prof' /></Link></div>
           ) : (
             <>
               <Link to="/login" className="py-2 px-5 border rounded">

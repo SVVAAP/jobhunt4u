@@ -11,6 +11,8 @@ import EmployeerDetails from "../components/EmployeerDetails";
 import JobList from "../components/JobList";
 import SingleJob from "../Pages/SingleJob";
 import Profile from "../Pages/Profile";
+import Login2 from "../components/login2";
+import ProfileEmp from "../Pages/ProfileEmp";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +24,9 @@ const router = createBrowserRouter([
     ],
   },
   {path:"/profile" ,element:<Profile/>},
+  {path:"/profile-emp" ,element:<ProfileEmp/>},
   { path: "/login", element:<Login/>},
+  { path: "/login-admin", element:<Login2/>},
   {path: "/signup",element:<Signup/>},
   {path:"/jobhunt4u-admin", element:<PrivateRoute element={Manager}/>,
 children:[

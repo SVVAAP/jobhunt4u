@@ -68,7 +68,6 @@ function Profile() {
   };
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
     try {
       const user = auth.currentUser;
@@ -93,7 +92,6 @@ function Profile() {
       console.error('Error updating user details: ', error);
       setError('Failed to update user details.');
     }
-    setIsLoading(false);
   };
 
   const uploadResume = async (file) => {
