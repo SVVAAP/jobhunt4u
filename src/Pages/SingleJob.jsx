@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getDatabase, ref, update } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { FiCalendar, FiClock, FiDollarSign, FiMapPin } from "react-icons/fi";
+import { FaRupeeSign } from 'react-icons/fa';
 import { useJobs } from '../context/jobsContext';
 
 const SingleJob = () => {
@@ -40,7 +41,7 @@ const SingleJob = () => {
                 update(userRef, { appliedJobs: newAppliedJobs })
                     .then(() => {
                         applied = true;
-                        
+
                         const { userType, ...userWithoutType } = user; // Remove userType from user object
                         const newApplicants = job.applicants ? [...job.applicants, userWithoutType] : [userWithoutType];
                         const jobRef = ref(database, `jobs/${jobId}`);
@@ -62,27 +63,30 @@ const SingleJob = () => {
     const { companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description } = job;
 
     return (
-        <div className="single-job">
-            <img src={companyLogo} alt={jobTitle} className="w-16 h-16 mb-4" />
-            <div className="job-details">
-                <h4 className="text-primary mb-1">{companyName}</h4>
-                <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
-                <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
-                    <span className="flex items-center gap-2"><FiMapPin /> {jobLocation}</span>
-                    <span className="flex items-center gap-2"><FiClock /> {employmentType}</span>
-                    <span className="flex items-center gap-2"><FiDollarSign /> {minPrice}-{maxPrice}k</span>
-                    <span className="flex items-center gap-2"><FiCalendar /> {postingDate}</span>
+        <div className="single-job bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center md:items-start gap-6">
+            <img src={companyLogo} alt={jobTitle} className="w-16 h-16 mb-4 md:mb-0 md:mr-6" />
+            <div className="job-details flex-1">
+                <h4 className="text-primary mb-1 text-xl font-semibold">{companyName}</h4>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">{jobTitle}</h3>
+                <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-4">
+                    <span className="flex items-center gap-2"><FiMapPin className="text-gray-500" /> {jobLocation}</span>
+                    <span className="flex items-center gap-2"><FiClock className="text-gray-500" /> {employmentType}</span>
+                    <span className="flex items-center gap-2"><FaRupeeSign className="text-gray-500" /> {minPrice}-{maxPrice}k</span>
+                    <span className="flex items-center gap-2"><FiCalendar className="text-gray-500" /> {postingDate}</span>
                 </div>
-                <p className="text-base text-primary/70">{description}</p>
+                <p className="text-gray-700 text-base mb-4">Discription About Job</p>
+                <p className="text-base text-primary/70 mb-4" style={{ whiteSpace: 'pre-line' }}>{description}</p>
             </div>
-            <button 
-                onClick={applyJob} 
-                className={`ring-2 ${applied ? 'ring-gray-600 text-gray-600' : 'ring-green-600 text-green-600'} rounded hover:bg-green-600 hover:text-white px-3 py-1`} 
+            <button
+                onClick={applyJob}
+                className={`ring-1 ${applied ? 'ring-blue text-gray-600' : 'ring-blue-600 text-blue-600'} rounded-lg hover:bg-blue-600 hover:text-white px-4 py-2 transition-all duration-300`}
                 disabled={applied}
             >
                 {applied ? 'Applied' : 'Apply'}
             </button>
+
         </div>
+
     );
 };
 
