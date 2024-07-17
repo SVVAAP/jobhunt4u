@@ -36,9 +36,7 @@ function Profile() {
   }, [user]);
 
   // If user or jobs are not yet loaded, return a loading state or null
-  if (!user || !jobs) {
-    return <div>Loading...</div>;
-  }
+
 
   // Filtering jobs based on user applied jobs
   const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));

@@ -6,9 +6,11 @@ import { FiCalendar, FiClock, FiDollarSign, FiMapPin } from "react-icons/fi";
 import { useJobs } from '../context/jobsContext';
 
 const SingleJob = () => {
-    const { jobs, user, uid, isLoggedIn } = useJobs();
+    let { jobs, user, uid, isLoggedIn ,isLoading } = useJobs();
     const { jobId } = useParams();
-    const [isLoading, setIsLoading] = useState(false);
+    if(!user){
+        user=[];
+    }
 
     const database = getDatabase();
     const auth = getAuth();
@@ -29,7 +31,7 @@ const SingleJob = () => {
     }
 
     const applyJob = () => {
-        if (user) {
+        if (isLoggedIn) {
             if (!user.appliedJobs) {
                 user.appliedJobs = [];
             }
