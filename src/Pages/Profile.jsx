@@ -8,12 +8,11 @@ import { HiPencil } from 'react-icons/hi';
 import { useRef } from 'react';
 
 function Profile() {
-  const { user, jobs } = useJobs();
+  const { user, jobs ,isLoading } = useJobs();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  let filteredJobs= useRef([]);
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,17 +33,11 @@ function Profile() {
         yearsOfExperience: user.yearsOfExperience || '',
         companyNames: user.companyNames || '',
         resume: user.resumeUrl || '',
-      }); 
-      filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
-
+      });
+      const appliedJobs = user.appliedJobs || [];
+      setFilteredJobs(jobs.filter((job) => appliedJobs.includes(job.id)));
     }
-  }, [user,jobs]);
-
-  // If user or jobs are not yet loaded, return a loading state or null
-
-
-  // Filtering jobs based on user applied jobs
-  console.log(filteredJobs);
+  }, [user, jobs]);
 
   const handleLogout = async () => {
     try {
@@ -66,7 +59,7 @@ function Profile() {
       [name]: value,
     }));
   };
-  
+
   const handleFileChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -114,12 +107,11 @@ function Profile() {
       setError('Failed to upload resume.');
       return '';
     }
-    
   };
 
   if (isLoading) {
     return <div>Loading...</div>;
-}
+  }
 
   return (
     <div className="container mx-auto p-4">
