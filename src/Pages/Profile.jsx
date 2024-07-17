@@ -5,12 +5,15 @@ import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, ge
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import { HiPencil } from 'react-icons/hi';
+import { useRef } from 'react';
 
 function Profile() {
   const { user, jobs } = useJobs();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  let filteredJobs= useRef([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,17 +34,16 @@ function Profile() {
         yearsOfExperience: user.yearsOfExperience || '',
         companyNames: user.companyNames || '',
         resume: user.resumeUrl || '',
-      });
+      }); 
+      filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
+
     }
-  }, [user]);
+  }, [user,jobs]);
 
   // If user or jobs are not yet loaded, return a loading state or null
-  if (!user || !jobs) {
-    return <div>Loading...</div>;
-  }
+
 
   // Filtering jobs based on user applied jobs
-  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
   console.log(filteredJobs);
 
   const handleLogout = async () => {
@@ -73,20 +75,23 @@ function Profile() {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     try {
       const user = auth.currentUser;
       if (user) {
-        let resumeUrl = formData.resume ? await uploadResume(formData.resume) : formData.resume;
+        let resumeUrl = formData.resume instanceof File ? await uploadResume(formData.resume) : formData.resume;
 
-        await set(ref(database, `users/${user.uid}`), {
+        await set(ref(database, `users/${auth.currentUser.uid}`), {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           workStatus: formData.workStatus,
           yearsOfExperience: formData.yearsOfExperience,
           companyNames: formData.companyNames,
-          resume: resumeUrl, // Update resume URL if file is uploaded
+          resumeUrl: resumeUrl, // Update resume URL if file is uploaded
+          appliedJobs: user.appliedJobs,
+          userType: user.userType,
         });
 
         setIsEditing(false);
@@ -95,11 +100,12 @@ function Profile() {
       console.error('Error updating user details: ', error);
       setError('Failed to update user details.');
     }
+    setIsLoading(false);
   };
 
   const uploadResume = async (file) => {
     try {
-      const resumeRef = storageRef(storage, `resumes/${file.name}`);
+      const resumeRef = storageRef(storage, `resumes/${auth.currentUser.uid}/${file.name}`);
       await uploadBytes(resumeRef, file);
       const downloadURL = await getDownloadURL(resumeRef);
       return downloadURL;
@@ -108,7 +114,12 @@ function Profile() {
       setError('Failed to upload resume.');
       return '';
     }
+    
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+}
 
   return (
     <div className="container mx-auto p-4">
@@ -215,25 +226,31 @@ function Profile() {
               </>
             )}
 
-            <div className="formField">
+<div className="formField">
               <label className="block text-gray-700 mb-1">Resume</label>
-              <input
-                type="file"
-                name="resume"
-                onChange={handleFileChange}
-                className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
-                disabled={!isEditing}
-              />
-              {formData.resume && (
-                <a
-                  href={formData.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 mt-2 block"
-                >
-                  <b>Your Resume - click here to get resume </b>
+              {!isEditing && formData.resume && (
+                 <a
+                 href={formData.resume}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="text-blue-500 mt-2 block"
+               >
+                <b>Your Resume - click here to view</b>
                 </a>
               )}
+              {isEditing && (
+                <input
+                  type="file"
+                  name="resume"
+                  onChange={handleFileChange}
+                  className="formInput p-2 border rounded w-full"
+                />
+              )}
+              {/* {formData.resume && (
+               
+                  <b>Your Resume - click here to view</b>
+            
+              )} */}
             </div>
 
             <div className="flex justify-between">
