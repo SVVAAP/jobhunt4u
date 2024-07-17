@@ -8,6 +8,18 @@ import { useJobs } from '../context/jobsContext';
 import Navbar from '../components/Navbar';
 
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
+const formatIndianCurrency = (price) => {
+    let parts = price.toString().split('.');
+    let lastThree = parts[0].slice(-3);
+    let otherNumbers = parts[0].slice(0, -3);
+    if (otherNumbers !== '') lastThree = ',' + lastThree;
+    let formattedPrice = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+  
+    if (parts[1]) {
+        formattedPrice += '.' + parts[1];
+    }
+    return formattedPrice;
+  };
 
 const SuccessPopup = ({ message, onClose }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -107,7 +119,7 @@ const SingleJob = () => {
                         <div className="text-gray-600 text-base flex flex-col md:flex-row gap-4 mb-6">
                             <span className="flex items-center gap-2 text-lg"><FiMapPin className="text-gray-500" /> {jobLocation}</span>
                             <span className="flex items-center gap-2 text-lg"><FiClock className="text-gray-500" /> {employmentType}</span>
-                            <span className="flex items-center gap-2 text-lg"><FaRupeeSign className="text-gray-500" /> {minPrice}-{maxPrice} {salaryType}</span>
+                            <span className="flex items-center gap-2"><FaRupeeSign className="text-gray-500" /> {formatIndianCurrency(minPrice)} - {formatIndianCurrency(maxPrice)} {salaryType}</span>
                             <span className="flex items-center gap-2 text-lg"><FiCalendar className="text-gray-500" /> {postingDate}</span>
                         </div>
                         <div className="text-gray-600 text-base flex flex-col gap-2 mb-6">

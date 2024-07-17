@@ -1,10 +1,25 @@
 
 import { FiCalendar, FiClock, FiDollarSign, FiMapPin, FiSearch } from "react-icons/fi";
+import { FaRupeeSign } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
+const formatIndianCurrency = (price) => {
+  let parts = price.toString().split('.');
+  let lastThree = parts[0].slice(-3);
+  let otherNumbers = parts[0].slice(0, -3);
+  if (otherNumbers !== '') lastThree = ',' + lastThree;
+  let formattedPrice = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+
+  if (parts[1]) {
+      formattedPrice += '.' + parts[1];
+  }
+  return formattedPrice;
+};
+
 const Card = ({ data }) => {
   // console.log(data);
-  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description ,experienceLevel,Workmode} = data;
+  
+  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description ,experienceLevel,Workmode,salaryType} = data;
   return (
     <div>
       <section className="card">
@@ -17,7 +32,7 @@ const Card = ({ data }) => {
             <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
               <span className="flex items-center gap-2"><FiMapPin /> {jobLocation}</span>
               <span className="flex items-center gap-2"><FiClock /> {employmentType}</span>
-              <span className="flex items-center gap-2"><FiDollarSign /> {minPrice}-{maxPrice}k</span>
+              <span className="flex items-center gap-2"><FaRupeeSign className="text-gray-500" /> {formatIndianCurrency(minPrice)} - {formatIndianCurrency(maxPrice)} {salaryType}</span>
               <span className="flex items-center gap-2"><FiCalendar /> {postingDate}</span>
             </div>
             <div><span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}</div>
