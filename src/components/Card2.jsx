@@ -22,7 +22,7 @@ const Card = ({ data, handleApprove,handleDecline }) => {
               <span className="flex items-center gap-2"><FiCalendar/> {postingDate}</span>
             </div>
             <div className=" flex justify-center bg-sky-950 rounded-lg m-2"><h1 className="text-gray-400">Status: {status}</h1></div>
-            <p className="text-base text-primary/70 ">{description}</p>
+            <p className="text-base text-primary/70 ">{description.slice(0,33)+"...Read More"}</p>
            
           </div>
         </Link>

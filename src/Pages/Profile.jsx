@@ -5,6 +5,7 @@ import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, ge
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import { HiPencil } from 'react-icons/hi';
+import { useRef } from 'react';
 
 function Profile() {
   const { user, jobs } = useJobs();
@@ -12,6 +13,7 @@ function Profile() {
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  let filteredJobs= useRef([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,15 +34,16 @@ function Profile() {
         yearsOfExperience: user.yearsOfExperience || '',
         companyNames: user.companyNames || '',
         resume: user.resumeUrl || '',
-      });
+      }); 
+      filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
+
     }
-  }, [user]);
+  }, [user,jobs]);
 
   // If user or jobs are not yet loaded, return a loading state or null
 
 
   // Filtering jobs based on user applied jobs
-  const filteredJobs = Object.values(jobs).filter((job) => user.appliedJobs?.includes(job.id));
   console.log(filteredJobs);
 
   const handleLogout = async () => {
