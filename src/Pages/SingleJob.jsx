@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
 import { FaRupeeSign } from 'react-icons/fa';
 import { useJobs } from '../context/jobsContext';
+import Navbar from '../components/Navbar';
 
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
 
@@ -73,34 +74,74 @@ const SingleJob = () => {
         }
     };
 
-    const { companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description } = job;
+    const {
+        companyLogo,
+        jobTitle,
+        companyName,
+        jobLocation,
+        employmentType,
+        minPrice,
+        maxPrice,
+        postingDate,
+        description,
+        experienceLevel,
+        skills,
+        salaryType,
+        Workmode
+    } = job;
 
     return (
         <>
-            <div className="single-job bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center md:items-start gap-6">
-                <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 md:mb-0 md:mr-6" onError={(e) => e.target.src = placeholderLogo} />
-                <div className="job-details flex-1">
-                    <h4 className="text-primary mb-1 text-xl font-semibold">{companyName}</h4>
-                    <h3 className="text-lg font-semibold mb-2 text-gray-800">{jobTitle}</h3>
-                    <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-4">
-                        <span className="flex items-center gap-2"><FiMapPin className="text-gray-500" /> {jobLocation}</span>
-                        <span className="flex items-center gap-2"><FiClock className="text-gray-500" /> {employmentType}</span>
-                        <span className="flex items-center gap-2"><FaRupeeSign className="text-gray-500" /> {minPrice}-{maxPrice}k</span>
-                        <span className="flex items-center gap-2"><FiCalendar className="text-gray-500" /> {postingDate}</span>
+            <Navbar />
+            <div className="job-detail-container p-12 bg-gray-100 min-h-screen flex items-center justify-center">
+                <div className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 ">
+                    <img
+                        src={companyLogo || placeholderLogo}
+                        alt={jobTitle}
+                        className="w-20 h-20 mb-4 md:mb-0 md:mr-6 rounded-full border-2 border-gray-200"
+                        onError={(e) => e.target.src = placeholderLogo}
+                    />
+                    <div className="job-details flex-1">
+                        <h4 className="text-blue-600 mb-2 text-2xl font-bold">{companyName}</h4>
+                        <h3 className="text-gray-800 text-xl font-semibold mb-4">{jobTitle}</h3>
+                        <div className="text-gray-600 text-base flex flex-col md:flex-row gap-4 mb-6">
+                            <span className="flex items-center gap-2 text-lg"><FiMapPin className="text-gray-500" /> {jobLocation}</span>
+                            <span className="flex items-center gap-2 text-lg"><FiClock className="text-gray-500" /> {employmentType}</span>
+                            <span className="flex items-center gap-2 text-lg"><FaRupeeSign className="text-gray-500" /> {minPrice}-{maxPrice} {salaryType}</span>
+                            <span className="flex items-center gap-2 text-lg"><FiCalendar className="text-gray-500" /> {postingDate}</span>
+                        </div>
+                        <div className="text-gray-600 text-base flex flex-col gap-2 mb-6">
+                            <div><span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}</div>
+                            <div><span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}</div>
+                            <div>
+                                <span className="font-semibold text-gray-700">Skills:</span>
+                                <div className="mt-1 flex flex-wrap gap-4 rounded ring-1 ring-black">
+                                    {skills.map((skill, index) => (
+                                        <span key={index} className="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg">{skill}</span>
+                                    ))}
+                                </div>
+                            </div>
+
+
+                            
+                        </div>
+                        <p className="text-gray-800 text-base mb-4 font-semibold">Description About Job:</p>
+                        <p className="text-base text-gray-700 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200" style={{ whiteSpace: 'pre-line' }}>
+                            {description}
+                        </p>
                     </div>
-                    <p className="text-gray-700 text-base mb-4">Description About Job</p>
-                    <p className="text-base text-primary/70 mb-4 p-5" style={{ whiteSpace: 'pre-line' }}>{description}</p>
+                    <button
+                        onClick={applyJob}
+                        className={`ring-1 ${applied ? 'ring-green-700 text-white bg-green-600' : 'ring-blue text-white bg-blue'} rounded-lg hover:bg-green-700 hover:text-white px-5 py-3 transition-all duration-300 text-lg font-semibold`}
+                        disabled={applied}
+                    >
+                        {applied ? 'Applied' : 'Apply'}
+                    </button>
                 </div>
-                <button
-                    onClick={applyJob}
-                    className={`ring-1 ${applied ? 'ring-green-700 text-white bg-green-600' : 'ring-blue text-white bg-blue'} rounded-lg hover:bg-transparent hover:text-black px-4 py-2 transition-all duration-300`}
-                    disabled={applied}
-                >
-                    {applied ? 'Applied' : 'Apply'}
-                </button>
             </div>
+
             {showPopup && (
-                <SuccessPopup 
+                <SuccessPopup
                     message="Successfully applied for the job! Our team will contact you as soon as possible."
                     onClose={() => setShowPopup(false)}
                 />

@@ -58,7 +58,7 @@ const About = () => {
                 </div>
             </div>
 
-            <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md">
+            <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id='contact'>
                 <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">Contact Us Now</h3>
                 <div className="text-center mb-6">
                     <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
