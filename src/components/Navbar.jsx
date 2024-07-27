@@ -6,6 +6,7 @@ import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
 import profpic from '../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
+import background from '../assets/nav_bg.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,8 +56,8 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <nav className="flex justify-between items-center py-6">
+    <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white/85 shadow-2xl rounded-b-md" >
+      <nav className="flex justify-between items-center py-3" >
         <a href="/" className="flex items-center gap-2 text-2xl text-black">
           <img src={logo} className='w-32 shadow' alt="Logo" />
         </a>
