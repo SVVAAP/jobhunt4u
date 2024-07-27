@@ -6,6 +6,9 @@ import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
 import { FaRupeeSign } from 'react-icons/fa';
 import { useJobs } from '../context/jobsContext';
 import Navbar from '../components/Navbar';
+import card_image from '../assets/card_back.png'
+import background from '../assets/singlejob_background.png'
+import card_bg from '../assets/card_back2.png'
 
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
 const formatIndianCurrency = (price) => {
@@ -23,13 +26,16 @@ const formatIndianCurrency = (price) => {
 
 const SuccessPopup = ({ message, onClose }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-8 text-center">
-            <svg className="w-16 h-16 mx-auto mb-4 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="bg-white rounded-lg p-8 text-center"  style={{ backgroundImage: `url(${card_image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <svg className="w-16 h-16 mx-auto mb-4 text-sky-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 11l3 3L22 4" />
                 <path d="M22 12v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9" />
             </svg>
-            <p className="mb-4 text-gray-800">{message}</p>
-            <button onClick={onClose} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all duration-300">OK</button>
+            <p
+                className="mb-4 text-gray-800"
+                dangerouslySetInnerHTML={{ __html: message }}
+            />
+            <button onClick={onClose} className="bg-blue-600 text-blue ring-2 ring-blue rounded px-8 py-1 hover:bg-blue-700 transition-all duration-300">OK</button>
         </div>
     </div>
 );
@@ -38,7 +44,7 @@ const SingleJob = () => {
     const { jobs, user, uid, isLoggedIn } = useJobs();
     const { jobId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
+    const [showPopup, setShowPopup] = useState(true);
 
     const database = getDatabase();
     const auth = getAuth();
@@ -103,10 +109,10 @@ const SingleJob = () => {
     } = job;
 
     return (
-        <>
-            <Navbar />
-            <div className="job-detail-container p-12 bg-gray-100 min-h-screen flex items-center justify-center">
-                <div className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 ">
+        <div className='' style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }} >
+            <Navbar className="bg-white"/>
+            <div className="job-detail-container p-12 min-h-screen flex items-center justify-center" >
+                <div className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 " style={{ backgroundImage: `url(${card_bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <img
                         src={companyLogo || placeholderLogo}
                         alt={jobTitle}
@@ -154,11 +160,11 @@ const SingleJob = () => {
 
             {showPopup && (
                 <SuccessPopup
-                    message="Successfully applied for the job! Our team will contact you as soon as possible."
+                    message="Successfully applied for the job! <br> Our team will contact you as soon as possible."
                     onClose={() => setShowPopup(false)}
                 />
             )}
-        </>
+        </div>
     );
 };
 
