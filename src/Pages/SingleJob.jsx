@@ -6,11 +6,12 @@ import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
 import { FaRupeeSign } from 'react-icons/fa';
 import { useJobs } from '../context/jobsContext';
 import Navbar from '../components/Navbar';
-import card_image from '../assets/card_back.png'
-import background from '../assets/singlejob_background.png'
-import card_bg from '../assets/card_back2.png'
+import card_image from '../assets/card_back.png';
+import background from '../assets/singlejob_background.png';
+import card_bg from '../assets/card_back2.png';
 
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
+
 const formatIndianCurrency = (price) => {
     let parts = price.toString().split('.');
     let lastThree = parts[0].slice(-3);
@@ -22,11 +23,18 @@ const formatIndianCurrency = (price) => {
         formattedPrice += '.' + parts[1];
     }
     return formattedPrice;
-  };
+};
 
 const SuccessPopup = ({ message, onClose }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-8 text-center"  style={{ backgroundImage: `url(${card_image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div
+            className="bg-white rounded-lg p-8 text-center"
+            style={{
+                backgroundImage: `url(${card_image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
             <svg className="w-16 h-16 mx-auto mb-4 text-sky-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 11l3 3L22 4" />
                 <path d="M22 12v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9" />
@@ -44,7 +52,7 @@ const SingleJob = () => {
     const { jobs, user, uid, isLoggedIn } = useJobs();
     const { jobId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
-    const [showPopup, setShowPopup] = useState(true);
+    const [showPopup, setShowPopup] = useState(true); // Start with false
 
     const database = getDatabase();
     const auth = getAuth();
@@ -78,7 +86,7 @@ const SingleJob = () => {
                         const newApplicants = job.applicants ? [...job.applicants, userWithoutType] : [userWithoutType];
                         const jobRef = ref(database, `jobs/${jobId}`);
                         update(jobRef, { applicants: newApplicants })
-                            .then(() => setShowPopup(true))
+                            .then(() => setShowPopup(true)) // Set to true to show popup
                             .catch((error) => console.error("Error: ", error));
                     })
                     .catch((error) => console.log(error));
@@ -109,10 +117,27 @@ const SingleJob = () => {
     } = job;
 
     return (
-        <div className='' style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }} >
-            <Navbar className="bg-white"/>
-            <div className="job-detail-container p-12 min-h-screen flex items-center justify-center" >
-                <div className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 " style={{ backgroundImage: `url(${card_bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="relative w-full h-screen">
+            {/* Background Image Overlay */}
+            <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                    backgroundImage: `url(${background})`,
+                    opacity: 0.3, // Adjust opacity for the background image
+                    zIndex: -1, // Ensure the overlay is behind the content
+                }}
+            />
+
+            <Navbar className="bg-white" />
+            <div className="job-detail-container p-12 min-h-screen flex items-center justify-center relative z-10">
+                <div
+                    className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6"
+                    style={{
+                        backgroundImage: `url(${card_bg})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                >
                     <img
                         src={companyLogo || placeholderLogo}
                         alt={jobTitle}
@@ -139,9 +164,6 @@ const SingleJob = () => {
                                     ))}
                                 </div>
                             </div>
-
-
-                            
                         </div>
                         <p className="text-gray-800 text-base mb-4 font-semibold">Description About Job:</p>
                         <p className="text-base text-gray-700 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200" style={{ whiteSpace: 'pre-line' }}>
