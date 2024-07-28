@@ -176,11 +176,16 @@ const SingleJob = () => {
             </div>
             <p className="text-gray-800 text-base mb-4 font-semibold">Description About Job:</p>
             <p
-              className="text-base text-gray-700 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200"
-              style={{ whiteSpace: "pre-line" }}>
+              className="text-base max-w-3xl text-gray-700 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200"
+              style={{
+                whiteSpace: "pre-line",
+                overflowWrap: "break-word",
+                wordBreak: "break-word",
+              }}>
               {description}
             </p>
           </div>
+          {user.userType==="candidate" &&
           <button
             onClick={applyJob}
             className={`ring-1 ${
@@ -189,6 +194,7 @@ const SingleJob = () => {
             disabled={applied}>
             {applied ? "Applied" : "Apply"}
           </button>
+}
         </div>
       </div>
 

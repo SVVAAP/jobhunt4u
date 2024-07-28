@@ -22,7 +22,7 @@ function Employee_card({ employer, index }) {
       .catch((error) => console.error("Error declining job: ", error));
   };
 
-  const userJobs = jobs?.filter(data => data.postedBy === user.email);
+  const userJobs = jobs?.filter(data => data.postedBy === employer.email);
 
   return (
     <div>
@@ -30,7 +30,7 @@ function Employee_card({ employer, index }) {
         <h2 className="text-xl font-semibold mb-2">{employer.name}</h2>
         <p className="text-gray-600 mb-2"><strong>Email:</strong> {employer.email}</p>
         <p className="text-gray-600 mb-2"><strong>Phone:</strong> {employer.phone}</p>
-        <p className="text-gray-600 mb-2"><strong>Company:</strong> {employer.company}</p>
+        <p className="text-gray-600 mb-2"><strong>Company:</strong> {employer.companyName}</p>
         <p className="text-gray-600 mb-2"><strong>Location:</strong> {employer.location}</p>
         <p className="text-gray-600 mb-2" onClick={() => setShowJobs(!showJobs)}>
           <i className={`fa-solid fa-chevron-down transition-transform duration-700 ${showJobs ? "rotate-180" : ""}`}></i>

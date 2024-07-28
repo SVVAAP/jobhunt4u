@@ -4,7 +4,7 @@ import { useJobs } from '../context/jobsContext';
 import { signOut } from 'firebase/auth';
 import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from '../firebase';
 import { useNavigate } from 'react-router-dom';
-import Card from '../components/Card';
+import Card from '../components/Card2';
 import { HiPencil } from 'react-icons/hi';
 
 function Profile() {

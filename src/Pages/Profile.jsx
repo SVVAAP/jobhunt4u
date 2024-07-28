@@ -125,6 +125,7 @@ function Profile() {
 
   return (
     <div className="container mx-auto p-4">
+      <button className='ring-2 ring-red-700'>{"<-"}</button>
       {/* {error && <div className="text-red-500 mb-4">{error}</div>} */}
       <div className="relative bg-white shadow-md rounded-lg p-4">
         {!isEditing && (
