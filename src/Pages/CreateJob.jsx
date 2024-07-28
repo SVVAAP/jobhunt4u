@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { database, storage } from "../firebase";
 import { ref, set, push } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
+import { useJobs } from "../context/jobsContext";
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
   const navigate = useNavigate();
+  const {user}=useJobs();
 
   const {
     register,
@@ -19,6 +21,7 @@ const CreateJob = () => {
 
   const onSubmit = async (data) => {
     data.skills = selectedOption ? selectedOption.map(option => option.value) : [];
+    data.postedBy = user ? user.email : '';
     const newJobRef = push(ref(database, 'jobs'));
 
     try {
@@ -49,15 +52,23 @@ const CreateJob = () => {
         companyLogo: data.companyLogo,
         Workmode: data.workmode
       };
-
+      
       await set(newJobRef, jobData);
       console.log("Data saved successfully!");
       alert("Post Successful....");
-      navigate("/");
+      navigate("/post-job");
     } catch (error) {
       console.error("Error saving data: ", error);
     }
   };
+
+  // useEffect(() => {
+  // if(user){
+  //   register.postedBy=user.email;
+  //  }
+  // }
+  // ,[user,register]);
+
 
   const options = [
     { value: "computer knowledge", label: "Computer Knowledge" },
@@ -159,8 +170,10 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
                 type="date"
+                defaultValue={new Date().toISOString().split('T')[0]}
                 {...register("postingDate", { required: "Posting Date is required" })}
                 className="create-job-input"
+                disabled={true}
               />
               {errors.postingDate && <p className="text-red-500">{errors.postingDate.message}</p>}
             </div>
@@ -244,6 +257,7 @@ const CreateJob = () => {
             <input
               type="email"
               placeholder="your email"
+              defaultValue={user? user.email :""}
               {...register("postedBy", { required: "Posted By is required" })}
               className="create-job-input"
             />

@@ -56,7 +56,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4 bg-white/85 shadow-2xl rounded-b-md" >
+    <header className="max-w-screen-2xl m-2 container xl:px-24 px-4 bg-white/85 shadow-2xl rounded-b-lg " >
       <nav className="flex justify-between items-center py-3" >
         <a href="/" className="flex items-center gap-2 text-2xl text-black">
           <img src={logo} className='w-32 shadow' alt="Logo" />

@@ -99,6 +99,7 @@ const Signup = () => {
         console.error("Error signing up:", error);
       }
     } else {
+      alert("Verify your Email Please!!!");
       setError("Invalid OTP");
     }
   };

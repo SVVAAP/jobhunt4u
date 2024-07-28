@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useJobs } from '../context/jobsContext';
+import Cookies from 'js-cookie'; // Import the js-cookie library
 import { signOut } from 'firebase/auth';
 import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from '../firebase';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ function Profile() {
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,6 +38,14 @@ function Profile() {
       });
       const appliedJobs = user.appliedJobs || [];
       setFilteredJobs(jobs.filter((job) => appliedJobs.includes(job.id)));
+
+      const messageShown = Cookies.get('accountCreatedMessageShown');
+      if (!messageShown) {
+        setShowSuccessMessage(true);
+        // Set a cookie so the message is not shown again
+        Cookies.set('accountCreatedMessageShown', 'true', { expires: 365 }); // Cookie expires in 1 year
+      }
+      
     }
   }, [user, jobs]);
 
@@ -66,6 +76,8 @@ function Profile() {
       resume: e.target.files[0],
     }));
   };
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,17 +135,19 @@ function Profile() {
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <h1 className="text-2xl font-bold mb-4">Welcome, {formData.name}!</h1>
-          <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
-            <img
-              src="//static.naukimg.com/s/7/104/assets/images/green-tick.49de0665.svg"
-              alt="Success"
-              className="w-8 h-8 mr-2"
-            />
-            <span className="text-green-700 text-lg font-medium">
-              Your account is created successfully.
-            </span>
-            <span className="text-gray-700 ml-2">Let’s get started!</span>
-          </div>
+          {showSuccessMessage && (
+            <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
+              <img
+                src="//static.naukimg.com/s/7/104/assets/images/green-tick.49de0665.svg"
+                alt="Success"
+                className="w-8 h-8 mr-2"
+              />
+              <span className="text-green-700 text-lg font-medium">
+                Your account is created successfully.
+              </span>
+              <span className="text-gray-700 ml-2">Let’s get started!</span>
+            </div>
+          )}
           <p className="text-lg mb-4">
             Search & apply to jobs from India&apos;s No.1 Job Site
           </p>

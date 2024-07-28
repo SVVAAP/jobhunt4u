@@ -51,7 +51,7 @@ export function JobsProvider({ children }) {
             unsubscribeAuth();
         };
     }, []);
-
+ 
     return (
         <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading}}>
             {children}
