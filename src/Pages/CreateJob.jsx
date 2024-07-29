@@ -173,7 +173,7 @@ const CreateJob = () => {
                 defaultValue={new Date().toISOString().split('T')[0]}
                 {...register("postingDate", { required: "Posting Date is required" })}
                 className="create-job-input"
-                disabled={true}
+               
               />
               {errors.postingDate && <p className="text-red-500">{errors.postingDate.message}</p>}
             </div>
