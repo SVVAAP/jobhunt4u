@@ -6,12 +6,12 @@ function Applicant_card({ job, downloadExcel }) {
   const [showJobs, setShowJobs] = useState(false);
   return (
     <div>
-      <div key={job.id} className="m-2 p-2 flex justify-between flex-col rounded ring-2">
-        <div className="flex justify-between align-center">
+      <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2">
+        <div className="flex justify-between item-center">
           <div className="flex items-center">
             <img src={job.companyLogo} alt={job.jobTitle} className="w-10 h-10 rounded" />
-            <h2 className='ml-10'>
-              {job.jobTitle} at {job.companyName}
+            <h2 className='ml-10 '>
+              {job.jobTitle}  @  {job.companyName}
             </h2>
           </div>
           <div className="flex items-center">
@@ -19,7 +19,7 @@ function Applicant_card({ job, downloadExcel }) {
               onClick={() => {
                 downloadExcel(job.applicants, job.companyName);
               }}
-              className="relative right-2 top-2 bg-green-700 ring-1 m-2 ring-green-700 rounded-sm flex">
+              className="relative right-2  bg-green-700 ring-1 m-2 ring-green-700 rounded-sm flex">
               <p className="bg-white text-green-700 rounded-sm p-1">Download</p>
               <img className="h-6 m-1" src={excel} alt="excel" />
             </div>

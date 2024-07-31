@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { database } from "../firebase";
 import JobEditModal from '../components/JobEditModel';
 import { useJobs } from '../context/jobsContext';
+import { FaRubleSign, FaRupeeSign } from 'react-icons/fa';
 
 const Card = ({ data, handleApprove, handleDecline }) => {
   const {user}=useJobs();
@@ -32,7 +33,7 @@ const Card = ({ data, handleApprove, handleDecline }) => {
 
   return (
     <div>
-      <section className="card bg-slate-300 relative">
+      <section className="card bg-slate-300 relative rounded">
         <div className="absolute top-2 right-2 z-10 flex space-x-4">
           <button
             onClick={handleEdit}
@@ -55,7 +56,7 @@ const Card = ({ data, handleApprove, handleDecline }) => {
             <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
               <span className="flex items-center gap-2"><FiMapPin /> {jobLocation}</span>
               <span className="flex items-center gap-2"><FiClock /> {employmentType}</span>
-              <span className="flex items-center gap-2"><FiDollarSign /> {minPrice}-{maxPrice}k</span>
+              <span className="flex items-center gap-2"><FaRupeeSign /> {minPrice}-{maxPrice}</span>
               <span className="flex items-center gap-2"><FiCalendar /> {postingDate}</span>
             </div>
             <div className="flex justify-center bg-sky-950 rounded-lg m-2">
