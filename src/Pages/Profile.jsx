@@ -9,7 +9,7 @@ import { HiPencil } from 'react-icons/hi';
 import { useRef } from 'react';
 
 function Profile() {
-  const { user, jobs ,isLoading } = useJobs();
+  const { user, jobs, isLoading } = useJobs();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -45,7 +45,7 @@ function Profile() {
         // Set a cookie so the message is not shown again
         Cookies.set('accountCreatedMessageShown', 'true', { expires: 365 }); // Cookie expires in 1 year
       }
-      
+
     }
   }, [user, jobs]);
 
@@ -77,7 +77,7 @@ function Profile() {
     }));
   };
 
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,14 +124,29 @@ function Profile() {
   }
 
   return (
+
     <div className="container mx-auto p-4">
-     <button 
-      className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
-      onClick={() => URL("/")}
-    >
-      <span className="mr-2">{"<"}</span>
-      Back
-    </button>
+      <div className='d-flex flex justify-between'>
+        <button
+          className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
+          onClick={() => URL("/")}
+        >
+          <span className="mr-2">{"<"}</span>
+          Back
+        </button>
+        {/* Logout Button */}
+        {
+          !isEditing && (
+            <button
+              onClick={handleLogout}
+              className="mt-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Logout
+            </button>
+          )
+        }
+
+      </div>
       {/* {error && <div className="text-red-500 mb-4">{error}</div>} */}
       <div className="relative bg-white shadow-md rounded-lg p-4">
         {!isEditing && (
@@ -237,16 +252,16 @@ function Profile() {
               </>
             )}
 
-<div className="formField">
+            <div className="formField">
               <label className="block text-gray-700 mb-1">Resume</label>
               {!isEditing && formData.resume && (
-                 <a
-                 href={formData.resume}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="text-blue-500 mt-2 block"
-               >
-                <b>Your Resume - click here to view</b>
+                <a
+                  href={formData.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 mt-2 block"
+                >
+                  <b>Your Resume - click here to view Resume.</b>
                 </a>
               )}
               {isEditing && (
@@ -277,15 +292,7 @@ function Profile() {
           </div>
         </form>
 
-        {/* Logout Button */}
-        {!isEditing && (
-          <button
-            onClick={handleLogout}
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
-            Logout
-          </button>
-        )}
+
       </div>
 
       {/* Applied Jobs Section */}
