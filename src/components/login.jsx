@@ -39,8 +39,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-4xl transform transition duration-500 hover:scale-105 flex">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue to-blue-500">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-4xl transform transition duration-500 hover:scale-105 flex items-center">
         <div className="w-full md:w-1/2">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Login</h2>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -74,7 +74,7 @@ const Login = () => {
           </form>
         </div>
         <div className="hidden md:block w-1/2">
-          <img src="your-image-url-here.jpg" alt="Login Illustration" className="h-full w-full object-cover rounded-r-md" />
+          <img src="https://static.vecteezy.com/system/resources/previews/010/872/229/original/3d-job-applicant-illustration-png.png" alt="Login Illustration" className="h-full w-full object-cover rounded-r-md" />
         </div>
       </div>
     </div>
