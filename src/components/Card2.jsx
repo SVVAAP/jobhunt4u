@@ -64,7 +64,7 @@ const Card = ({ data, handleApprove, handleDecline }) => {
             <p className="text-base text-primary/70 ">{description.slice(0, 33) + "...Read More"}</p>
           </div>
         </Link>
-        {user.userType==="admin" &&
+        {user && user.userType==="admin" &&
         <div className="flex justify-around">
           <button
             className="bg-sky-600 hover:bg-sky-900 px-3 py-1 rounded text-white"
