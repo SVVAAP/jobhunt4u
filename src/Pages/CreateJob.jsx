@@ -10,6 +10,7 @@ import { useJobs } from "../context/jobsContext";
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
   const { user } = useJobs();
 
@@ -34,6 +35,7 @@ const CreateJob = () => {
     // Set default values for optional fields
     data.minPrice = data.minPrice || "--";
     data.maxPrice = data.maxPrice || "--";
+    data.status = "review";
 
     try {
       // Upload logo if provided
@@ -61,22 +63,46 @@ const CreateJob = () => {
         description: data.description,
         postedBy: data.postedBy,
         companyLogo: data.companyLogo,
-        workmode: data.workmode
+        workmode: data.workmode,
+        status: data.status
       };
-      
+
       await set(newJobRef, jobData);
       console.log("Data saved successfully!");
-      alert("Post Successful....");
-      navigate("/post-job");
+      setShowPopup(true);
     } catch (error) {
       console.error("Error saving data: ", error);
     }
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    navigate("/");
+  };
+
   const options = [
     { value: "computer knowledge", label: "Computer Knowledge" },
     { value: "communication skills", label: "Communication Skills" },
-    // ... other options
+    { value: "teamwork", label: "Teamwork" },
+    { value: "problem-solving", label: "Problem-Solving" },
+    { value: "time management", label: "Time Management" },
+    { value: "adaptability", label: "Adaptability" },
+    { value: "critical thinking", label: "Critical Thinking" },
+    { value: "customer service", label: "Customer Service" },
+    { value: "project management", label: "Project Management" },
+    { value: "data analysis", label: "Data Analysis" },
+    { value: "interpersonal skills", label: "Interpersonal Skills" },
+    { value: "leadership", label: "Leadership" },
+    { value: "organizational skills", label: "Organizational Skills" },
+    { value: "attention to detail", label: "Attention to Detail" },
+    { value: "creativity", label: "Creativity" },
+    { value: "multitasking", label: "Multitasking" },
+    { value: "technical skills", label: "Technical Skills" },
+    { value: "emotional intelligence", label: "Emotional Intelligence" },
+    { value: "negotiation skills", label: "Negotiation Skills" },
+    { value: "decision making", label: "Decision Making" },
+    { value: "financial literacy", label: "Financial Literacy" },
+    { value: "writing skills", label: "Writing Skills" },
   ];
 
   return (
@@ -107,20 +133,20 @@ const CreateJob = () => {
           </div>
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Minimum Salary</label>
+              <label className="block mb-2 text-lg">Minimum Salary <span className=" text-sm">[optional]</span></label>
               <input
                 type="text"
-                placeholder="--"
+                placeholder="₹..."
                 {...register("minPrice")}
                 className="create-job-input"
               />
               {errors.minPrice && <p className="text-red-500">{errors.minPrice.message}</p>}
             </div>
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Maximum Salary</label>
+              <label className="block mb-2 text-lg">Maximum Salary <span className=" text-sm">[optional]</span></label>
               <input
                 type="text"
-                placeholder="--"
+                placeholder="₹..."
                 {...register("maxPrice")}
                 className="create-job-input"
               />
@@ -203,13 +229,25 @@ const CreateJob = () => {
                 {...register("employmentType", { required: "This field is required. Please choose an employment type." })}
                 className="create-job-input"
               >
-                <option value="">Choose your employment type</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
+                <option value="">Choose employment type</option>
+                <option value="FullTime">Full Time</option>
+                <option value="PartTime">Part Time</option>
+                <option value="Contract">Contract</option>
                 <option value="Internship">Internship</option>
+                <option value="Remote">Remote</option>
               </select>
               {errors.employmentType && <p className="text-red-500">{errors.employmentType.message}</p>}
             </div>
+          </div>
+          <div>
+            <label className="block mb-2 text-lg">Job Description</label>
+            <textarea
+              rows="4"
+              {...register("description", { required: "This field is required. Please enter the job description." })}
+              className="create-job-input"
+              placeholder="Job Description..."
+            ></textarea>
+            {errors.description && <p className="text-red-500">{errors.description.message}</p>}
           </div>
           <div>
             <label className="block mb-2 text-lg">Work Mode</label>
@@ -217,32 +255,44 @@ const CreateJob = () => {
               {...register("workmode", { required: "This field is required. Please choose a work mode." })}
               className="create-job-input"
             >
-              <option value="">Choose your work mode</option>
-              <option value="On-site">On-site</option>
-              <option value="Remote">Remote</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="">Choose work mode</option>
+              <option value="onsite">On-Site</option>
+              <option value="remote">Remote</option>
+              <option value="hybrid">Hybrid</option>
             </select>
             {errors.workmode && <p className="text-red-500">{errors.workmode.message}</p>}
           </div>
           <div>
-            <label className="block mb-2 text-lg">Description</label>
-            <textarea
-              placeholder="Details about job..."
-              {...register("description", { required: "This field is required. Please enter the job description." })}
-              className="create-job-input h-40"
+            <label className="block mb-2 text-lg">Posted By</label>
+            <input
+              type="text"
+              {...register("postedBy")}
+              className="create-job-input"
+              defaultValue={user ? user.email : ""}
+              readOnly
             />
-            {errors.description && <p className="text-red-500">{errors.description.message}</p>}
           </div>
-          <input
-            type="hidden"
-            {...register("postedBy")}
-          />
           <div>
-            <button type="submit" className="job-details-btn py-4">
-              Post a Job
-            </button>
+            <button type="submit" className="create-job-btn bg-blue text-white px-4 py-2 rounded hover:bg-black">Create Job</button>
           </div>
         </form>
+        {showPopup && (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+      <h2 className="text-xl font-semibold mb-4">Job Created Successfully!</h2>
+      <p className="mb-4">Your job has been posted. Our team will review it, and it will be updated on the portal within 24 hours.</p>
+      <div className="flex justify-end">
+        <button
+          onClick={handleClosePopup}
+          className="bg-blue text-white px-4 py-2 rounded hover:bg-blue"
+        >
+          Continue Hunting
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );

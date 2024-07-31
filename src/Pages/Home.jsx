@@ -22,9 +22,9 @@ const Home = () => {
       const jobsData = snapshot.val();
       const loadedJobs = [];
       for (const id in jobsData) {
-      //  if (jobsData[id].status === "approved") {
+        if (jobsData[id].status === "approved") {
           loadedJobs.push({ id, ...jobsData[id] });
-       // }
+        }
       }
       setJobs(loadedJobs);
       setIsLoading(false);
@@ -102,60 +102,59 @@ const Home = () => {
 
   return (
     <>
-    <div>
-      <Banner query={query} handleInputChange={handleInputChange} />
-      <div className="bg-[#FAFAFA] md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
-        <div className="bg-white p-4 rounded">
-          <Sidebar handleChange={handleChange} handleClick={handleClick} />
-        </div>
+      <div>
+        <Banner query={query} handleInputChange={handleInputChange} />
+        <div className="bg-[#FAFAFA] md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
+          <div className="bg-white p-4 rounded">
+            <Sidebar handleChange={handleChange} handleClick={handleClick} />
+          </div>
 
-        <div className="col-span-2 bg-white from-sky-400 p-4 rounded">
-          {isLoading ? (
-            <p className="font-medium">Loading...</p>
-          ) : result.length > 0 ? (
-            <Jobs result={result} />
-          ) : (
-            <>
-              <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
-              <p>No data found</p>
-            </>
-          )}
-          {result.length > 0 && (
-            <div className="flex justify-center mt-4 space-x-8">
-              <button
-                onClick={prevPage}
-                disabled={currentPage === 1}
-                className="hover:underline"
-              >
-                Previous
-              </button>
-              <span className="mx-2">
-                Page {currentPage} of{" "}
-                {Math.ceil(filteredItems.length / itemsPerPage)}
-              </span>
-              <button
-                onClick={nextPage}
-                disabled={
-                  currentPage === Math.ceil(filteredItems.length / itemsPerPage)
-                }
-                className="hover:underline"
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <div className="col-span-2 bg-white from-sky-400 p-4 rounded">
+            {isLoading ? (
+              <p className="font-medium">Loading...</p>
+            ) : result.length > 0 ? (
+              <Jobs result={result} />
+            ) : (
+              <>
+                <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
+                <p>No data found</p>
+              </>
+            )}
+            {result.length > 0 && (
+              <div className="flex justify-center mt-4 space-x-8">
+                <button
+                  onClick={prevPage}
+                  disabled={currentPage === 1}
+                  className="hover:underline"
+                >
+                  Previous
+                </button>
+                <span className="mx-2">
+                  Page {currentPage} of{" "}
+                  {Math.ceil(filteredItems.length / itemsPerPage)}
+                </span>
+                <button
+                  onClick={nextPage}
+                  disabled={
+                    currentPage === Math.ceil(filteredItems.length / itemsPerPage)
+                  }
+                  className="hover:underline"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-
       </div>
-    </div>
-    <div>
-          <About/>
-    </div>
-    <div>
-          <FootSection/>
-    </div>
+      <div>
+        <About />
+      </div>
+      <div>
+        <FootSection />
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default Home;

@@ -16,7 +16,7 @@ const Salary = ({ handleChange, handleClick }) => {
         <Button onClickHandler={handleClick} value="yearly" title="Yearly" />
       </div>
 
-      {isMobile ? (
+      {/* {isMobile ? (
         <select onChange={handleChange} name="test2" className="form-select">
           <option value="">Any</option>
           <option value={30}>&lt; 30000k</option>
@@ -59,7 +59,7 @@ const Salary = ({ handleChange, handleClick }) => {
             name="test2"
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
