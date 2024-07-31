@@ -158,7 +158,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Job Location</label>
               <input
                 type="text"
-                placeholder="Ex: India"
+                placeholder="Ex: Mumbai,Banglore,...."
                 {...register("jobLocation", { required: "Job Location is required" })}
                 className="create-job-input"
               />
