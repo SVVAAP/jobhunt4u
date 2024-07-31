@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDatabase, ref, update } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
@@ -17,6 +17,7 @@ const formatIndianCurrency = (price) => {
   let otherNumbers = parts[0].slice(0, -3);
   if (otherNumbers !== "") lastThree = "," + lastThree;
   let formattedPrice = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+  
 
   if (parts[1]) {
     formattedPrice += "." + parts[1];
@@ -56,7 +57,7 @@ const SingleJob = () => {
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState();
-
+  let navigate=new useNavigate();
   const database = getDatabase();
   const auth = getAuth();
 
@@ -126,8 +127,15 @@ const SingleJob = () => {
   return (
     <div
    className="absolute inset-0 bg-cover bg-center bg-blend-lighten" style={{ backgroundImage: `url(${background})` }}>
+     
       {/* style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }} */}
       <Navbar className="bg-white" />
+      <button
+          className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
+          onClick={() => navigate(-1)}>
+          <span className="mr-2">{"<"}</span>
+          Back
+        </button>
       <div className="job-detail-container p-12 min-h-screen flex items-center justify-center ">
         <div
           className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-110 "
@@ -185,7 +193,7 @@ const SingleJob = () => {
               {description}
             </p>
           </div>
-          {user.userType==="candidate" &&
+          {user && user.userType ==="candidate" &&
           <button
             onClick={applyJob}
             className={`ring-1 ${
