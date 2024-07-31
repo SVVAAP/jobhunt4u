@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useJobs } from "../context/jobsContext";
 
 const Location = ({ handleChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredLocations, setFilteredLocations] = useState([]);
-  const locations = ["London", "Seattle", "Madrid", "Boston"];
+  const { jobs } = useJobs();
+  const [locations, setLocations] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleSearch = () => {
+  useEffect(() => {
+    if (jobs) {
+      const uniqueLocations = [...new Set(jobs.map(job => job.jobLocation))];
+      setLocations(uniqueLocations);
+      setFilteredLocations(uniqueLocations); // Set initially to show all locations
+    }
+  }, [jobs]);
+
+  useEffect(() => {
     const filtered = locations.filter(location =>
       location.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredLocations(filtered);
+  }, [searchTerm, locations]);
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
   return (
@@ -25,25 +40,29 @@ const Location = ({ handleChange }) => {
           type="text"
           placeholder="Search location"
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          className="form-input mt-2 mb-2 border-gray-300 "
+          onChange={handleInputChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="form-input mt-2 mb-2 border-gray-300"
         />
         
-        <button onClick={handleSearch} className="btn btn-primary mb-2">Search</button>
-        
-        {filteredLocations.map(location => (
-          <div key={location}>
-            <label className="sidebar-label-container">
-              <input
-                onChange={handleChange}
-                type="radio"
-                value={location.toLowerCase()}
-                name="location"
-              />
-              <span className="checkmark"></span>{location}
-            </label>
+        {isFocused && (
+          <div className="mt-2 max-h-60 overflow-y-auto  rounded">
+            {filteredLocations.map(location => (
+              <div key={location}>
+                <label className="sidebar-label-container">
+                  <input
+                    onChange={handleChange}
+                    type="radio"
+                    value={location.toLowerCase()}
+                    name="location"
+                  />
+                  <span className="checkmark"></span>{location}
+                </label>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
