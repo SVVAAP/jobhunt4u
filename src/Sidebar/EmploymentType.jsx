@@ -6,7 +6,7 @@ const EmploymentType = ({ handleChange }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   return (
-    <div>
+    <div className="bg-white rounded-lg">
       <h4 className="text-lg font-medium mb-2">Type of employment</h4>
       {isMobile ? (
         <select onChange={handleChange} name="test" className="form-select">

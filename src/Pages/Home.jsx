@@ -109,7 +109,7 @@ const Home = () => {
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
 
-        <div className="col-span-2 bg-white p-4 rounded">
+        <div className="col-span-2 bg-gradient-to-br to-emerald-600 from-sky-400 p-4 rounded">
           {isLoading ? (
             <p className="font-medium">Loading...</p>
           ) : result.length > 0 ? (

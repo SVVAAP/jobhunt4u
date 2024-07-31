@@ -7,7 +7,7 @@ import EmploymentType from './EmploymentType'
 
 const Sidebar = ({ handleChange, handleClick }) => {
   return (
-    <div className='p-4 md:p-6 lg:p-8'>
+    <div className='p-4 md:p-6 lg:p-8  bg-gradient-to-br to-emerald-600 from-sky-400'>
         <h3 className='text-lg font-bold mb-2'>Filters</h3>
         <div className='space-y-5'>
           <Location handleChange={handleChange}/>

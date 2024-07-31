@@ -22,7 +22,7 @@ const Card = ({ data }) => {
   const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description ,experienceLevel,Workmode,salaryType} = data;
   return (
     <div>
-      <section className="card">
+      <section className="card bg-white">
         <Link to={`/singlejob/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
           <div className="card-details">

@@ -28,7 +28,7 @@ const Location = ({ handleChange }) => {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded-lg">
       <h4 className="text-lg font-medium mb-2">Location</h4>
       <div>
         <label className="sidebar-label-container">
@@ -45,7 +45,6 @@ const Location = ({ handleChange }) => {
           onBlur={() => setIsFocused(false)}
           className="form-input mt-2 mb-2 border-gray-300"
         />
-        
         
           <div className="mt-2 max-h-60 overflow-y-auto  rounded">
             {filteredLocations.map(location => (
