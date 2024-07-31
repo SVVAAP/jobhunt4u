@@ -92,7 +92,7 @@ const About = () => {
             </div>
 
 
-            <div className="mt-10">
+            {/* <div className="mt-10">
                 <h3 className="text-2xl font-bold text-gray-900 text-center">Our Clients</h3>
                 <div className="flex flex-wrap justify-center mt-4">
                     {clients.map((client, index) => (
@@ -101,7 +101,7 @@ const About = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             <div className="mt-10 mb-10">
                 <h3 className="text-2xl font-bold text-gray-900 text-center">Are you an HR recruiter looking to post a job on our job portal?</h3>
