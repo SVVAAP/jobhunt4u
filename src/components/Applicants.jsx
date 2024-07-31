@@ -36,11 +36,12 @@ const Applicants = () => {
   }
 
   return (
-    <div>
-      <h1>Applicants for All Jobs</h1>
-      {jobs.map((job,index) => (
-       <Applicant_card key={index} job={job} downloadExcel={downloadExcel}/>
+    <div className="p-5">
+      <h1 className="font-bold">Applicants for All Jobs</h1>
+      {jobs.map((job, index) => (
+        <Applicant_card key={index} job={job} downloadExcel={downloadExcel} />
       ))}
+
     </div>
   );
 };
