@@ -46,7 +46,7 @@ const Location = ({ handleChange }) => {
           className="form-input mt-2 mb-2 border-gray-300"
         />
         
-        {isFocused && (
+        
           <div className="mt-2 max-h-60 overflow-y-auto  rounded">
             {filteredLocations.map(location => (
               <div key={location}>
@@ -62,7 +62,6 @@ const Location = ({ handleChange }) => {
               </div>
             ))}
           </div>
-        )}
       </div>
     </div>
   );
