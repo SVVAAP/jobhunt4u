@@ -125,7 +125,13 @@ function Profile() {
 
   return (
     <div className="container mx-auto p-4">
-      <button className='ring-2 ring-red-700'>{"<-"}</button>
+     <button 
+      className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
+      onClick={() => URL("/")}
+    >
+      <span className="mr-2">{"<"}</span>
+      Back
+    </button>
       {/* {error && <div className="text-red-500 mb-4">{error}</div>} */}
       <div className="relative bg-white shadow-md rounded-lg p-4">
         {!isEditing && (

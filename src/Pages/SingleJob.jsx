@@ -125,8 +125,8 @@ const SingleJob = () => {
 
   return (
     <div
-      className=""
-      style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+   className="absolute inset-0 bg-cover bg-center bg-blend-lighten" style={{ backgroundImage: `url(${background})` }}>
+      {/* style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }} */}
       <Navbar className="bg-white" />
       <div className="job-detail-container p-12 min-h-screen flex items-center justify-center ">
         <div
