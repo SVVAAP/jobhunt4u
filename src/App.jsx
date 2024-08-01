@@ -4,12 +4,14 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import CustomCursor from './components/CustomCursor'; // Adjust the path as necessary
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <CustomCursor/>
      <Navbar/>    
      <Outlet/>
     </>

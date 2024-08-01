@@ -78,9 +78,9 @@ const About = () => {
 
             <div className="mt-10">
                 <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
-                <div className="flex flex-wrap justify-center mt-4">
+                <div className="flex flex-wrap justify-center mt-4 ">
                     {jobCategories.map((category, index) => (
-                        <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center">
+                        <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center shadow">
                             <div className="mb-2">
                                 {category.icon}
                             </div>
@@ -110,7 +110,7 @@ const About = () => {
                 </div>
 
                 <h3 className="text-2xl font-bold text-gray-900 text-center">How It Works</h3>
-                <div className="flex items-center justify-center mt-8  p-6 rounded-lg shadow-md">
+                <div className="flex items-center justify-center mt-8  p-6 rounded-lg shadow-md bg-white">
                     {/* Step 1 */}
                     <div className="flex flex-col items-center w-1/4">
                         <div className="relative mb-4">

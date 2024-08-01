@@ -8,11 +8,41 @@ html,body{
   padding: 0;
   overflow-x: hidden;
   background: linear-gradient(
-    rgba(0, 128, 255, 0.1), /* Light blue with 10% opacity */
-    rgba(0, 255, 128, 0.1)  /* Light green with 10% opacity */
+    rgba(255, 255, 255, 0.3),
+    rgba(0, 128, 255, 0.3), /* Light blue with 10% opacity */
+    rgba(0, 255, 128, 0.3)  /* Light green with 10% opacity */
   );
   background-color: #f0f0f0; /* Fallback color */
+  
 }
+/* cursor */
+/* Custom cursor effect */
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 128, 255, 0.8);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease;
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 128, 255, 0.5);
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+/* cursor end */
+
+
+
+
 
 .active{
   color: #3575E2;
