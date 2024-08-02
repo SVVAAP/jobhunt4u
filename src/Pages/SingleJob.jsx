@@ -17,7 +17,7 @@ const formatIndianCurrency = (price) => {
   let otherNumbers = parts[0].slice(0, -3);
   if (otherNumbers !== "") lastThree = "," + lastThree;
   let formattedPrice = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-
+  
 
   if (parts[1]) {
     formattedPrice += "." + parts[1];
@@ -57,7 +57,7 @@ const SingleJob = () => {
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState();
-  let navigate = new useNavigate();
+  let navigate=new useNavigate();
   const database = getDatabase();
   const auth = getAuth();
 
@@ -125,27 +125,24 @@ const SingleJob = () => {
   } = job;
 
   return (
-    <div className="relative min-h-screen">
+    <div
+   className="bg-cover bg-center bg-blend-lighten" 
+       style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }} >
       <Navbar className="bg-white" />
-      <div className="absolute inset-0 bg-cover bg-center bg-blend-lighten" style={{ backgroundImage: `url(${background})`, opacity: 0.1 }}>
-        <div className="absolute inset-0 bg-black opacity-4"></div>
-      </div>
-      {/* style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }} */}
-      
       <button
-        className=" font-bold flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
-        onClick={() => navigate(-1)}>
-        <span className="mr-2">{"<"}</span>
-        Back
-      </button>
-      <div className="job-detail-container p-7 min-h-screen flex items-center justify-center ">
+          className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
+          onClick={() => navigate(-1)}>
+          <span className="mr-2">{"<"}</span>
+          Back
+        </button>
+      <div className="job-detail-container p-12 min-h-screen flex items-center justify-center ">
         <div
           className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-110 "
           style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
           <img
             src={companyLogo || placeholderLogo}
             alt={jobTitle}
-            className="w-20 h-20 mb-4 md:mb-0 md:mr-6 rounded border-2 border-gray-200"
+            className="w-20 h-20 mb-4 md:mb-0 md:mr-6 rounded-full border-2 border-gray-200"
             onError={(e) => (e.target.src = placeholderLogo)}
           />
           <div className="job-details flex-1">
@@ -195,15 +192,16 @@ const SingleJob = () => {
               {description}
             </p>
           </div>
-          {user && user.userType === "candidate" &&
-            <button
-              onClick={applyJob}
-              className={`ring-1 ${applied ? "ring-green-700 text-white bg-green-600" : "ring-blue text-white bg-blue"
-                } rounded-lg hover:bg-green-700 hover:text-white px-5 py-3 transition-all duration-300 text-lg font-semibold`}
-              disabled={applied}>
-              {applied ? "Applied" : "Apply"}
-            </button>
-          }
+          {user && user.userType ==="candidate" &&
+          <button
+            onClick={applyJob}
+            className={`ring-1 ${
+              applied ? "ring-green-700 text-white bg-green-600" : "ring-blue text-white bg-blue"
+            } rounded-lg hover:bg-green-700 hover:text-white px-5 py-3 transition-all duration-300 text-lg font-semibold`}
+            disabled={applied}>
+            {applied ? "Applied" : "Apply"}
+          </button>
+}
         </div>
       </div>
 

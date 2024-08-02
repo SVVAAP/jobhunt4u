@@ -2,6 +2,10 @@
 import { FiCalendar, FiClock, FiDollarSign, FiMapPin, FiSearch } from "react-icons/fi";
 import { FaRupeeSign } from 'react-icons/fa';
 import { Link } from "react-router-dom";
+import bg from '../assets/main_cardbg.png'
+
+
+
 const placeholderLogo = 'https://cdn-icons-png.flaticon.com/128/4168/4168507.png'; // Placeholder image URL
 const formatIndianCurrency = (price) => {
   let parts = price.toString().split('.');
@@ -21,8 +25,8 @@ const Card = ({ data }) => {
   
   const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description ,experienceLevel,Workmode,salaryType} = data;
   return (
-    <div>
-      <section className="card bg-white">
+    <div className="ring-sky-700 ring-2 rounded-sm bg-white" style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}  >
+      <section className="card">
         <Link to={`/singlejob/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
           <div className="card-details">

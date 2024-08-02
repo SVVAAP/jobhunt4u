@@ -109,19 +109,19 @@ const Home = () => {
             <Sidebar handleChange={handleChange} handleClick={handleClick} />
           </div>
 
-          <div className="col-span-2 bg-white from-sky-400 p-4 rounded">
+          <div className="col-span-2 bg-sky-800 p-4 rounded">
             {isLoading ? (
-              <p className="font-medium">Loading...</p>
+              <p className="font-medium text-white">Loading...</p>
             ) : result.length > 0 ? (
               <Jobs result={result} />
             ) : (
               <>
-                <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
+                <h3 className="text-lg font-bold mb-2 text-white">{result.length} Jobs</h3>
                 <p>No data found</p>
               </>
             )}
             {result.length > 0 && (
-              <div className="flex justify-center mt-4 space-x-8">
+              <div className="flex justify-center mt-4 space-x-8 text-white">
                 <button
                   onClick={prevPage}
                   disabled={currentPage === 1}

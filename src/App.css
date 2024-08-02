@@ -1,22 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100;9..40,200;9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900;9..40,1000&display=swap');
 
-html,body{
+html, body {
   font-family: 'DM Sans', sans-serif;
   min-height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.3),
-    rgba(0, 128, 255, 0.3), /* Light blue with 10% opacity */
-    rgba(0, 255, 128, 0.3)  /* Light green with 10% opacity */
-  );
-  background-color: #f0f0f0; /* Fallback color */
-  
+  z-index: 1;
+  position: relative;
 }
-/* cursor */
-/* Custom cursor effect */
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('./assets/body_bg.png');
+  background-position: top;
+  opacity: 0.7;
+  z-index: -1; /* Ensure it is behind other content */
+}
+
+/* Optional: Adding a background color as a fallback */
+/* body {
+  background-color: #f0f0f0; Fallback color */
+/* } */
+
+  /* background: linear-gradient(
+    rgba(255, 255, 255, 0.3),
+    rgba(0, 128, 255, 0.3),  Light blue with 10% opacity 
+    rgba(0, 255, 128, 0.3)   Light green with 10% opacity 
+  );
+  background-color: #f0f0f0;  Fallback color  */
+  
+ /* } */
+/* // cursor 
+// Custom cursor effect  */
 .cursor {
   width: 20px;
   height: 20px;
@@ -36,7 +58,7 @@ html,body{
   background: rgba(0, 128, 255, 0.5);
   pointer-events: none;
   mix-blend-mode: difference;
-}
+} 
 
 /* cursor end */
 
@@ -73,7 +95,7 @@ li {
 
 .card {
   margin: 20px;
-  border: 2px solid #ededed;
+  /* border: 2px solid #ededed; */
   padding: 20px;
   cursor: pointer;
 }

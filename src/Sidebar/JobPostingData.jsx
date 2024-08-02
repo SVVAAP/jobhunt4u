@@ -15,7 +15,7 @@ const JobPostingData = ({ handleChange }) => {
   const ThirtyDaysAgoDate = ThirtyDaysAgo.toISOString().slice(0, 10);
 
   return (
-    <div className="bg-white rounded-lg">
+    <div className="bg-white rounded-lg p-2">
       <h4 className="text-lg font-medium mb-2">Date of posting</h4>
       {isMobile ? (
         <select onChange={handleChange} name="test" className="form-select">

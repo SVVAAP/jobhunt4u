@@ -28,7 +28,7 @@ const Location = ({ handleChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg">
+    <div className="bg-white rounded-lg p-3">
       <h4 className="text-lg font-medium mb-2">Location</h4>
       <div>
         <label className="sidebar-label-container">
