@@ -84,7 +84,7 @@ const Home = () => {
           postingDate,
           employmentType,
         }) =>
-          jobLocation.toLowerCase() === selected.toLowerCase() ||
+          jobLocation.toLowerCase() === selected.toLowerCase() &&
           postingDate >= selected ||
           parseInt(maxPrice) <= parseInt(selected) ||
           salaryType.toLowerCase() === selected.toLowerCase() ||
@@ -113,7 +113,7 @@ const Home = () => {
       <div>
         <Banner query={query} handleInputChange={handleInputChange} />
         <div className=" md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
-          <div className="bg-white p-4 rounded">
+          <div className="rounded">
             <Sidebar handleChange={handleChange} handleClick={handleClick} />
           </div>
 
