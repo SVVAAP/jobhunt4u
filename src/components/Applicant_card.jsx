@@ -5,9 +5,9 @@ function Applicant_card({ job, downloadExcel }) {
 
   const [showJobs, setShowJobs] = useState(false);
   return (
-    <div>
-      <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2">
-        <div className="flex justify-between item-center">
+    <div className=''>
+      <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2 bg-slate-300">
+        <div className="flex justify-between item-center rounded-lg p-3 bg-white">
           <div className="flex items-center">
             <img src={job.companyLogo} alt={job.jobTitle} className="w-10 h-10 rounded" />
             <h2 className='ml-10 '>
@@ -30,11 +30,11 @@ function Applicant_card({ job, downloadExcel }) {
             </p>
           </div>
         </div>
-        <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700`}>
+        <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 `}>
           {job.applicants && job.applicants.length > 0 ? (
             <div>
               {job.applicants.map((applicant, index) => (
-                <div key={index} className='flex justify-between ring-2 rounded my-2 items-center'>
+                <div key={index} className='flex justify-between ring-2 rounded my-2 items-center bg-white'>
                   <div className="flex justify-start p-2  ">
                     <p className='mx-4'>{index + 1}</p>
                     <div className=' w-0.5 rounded-xl bg-green-700'></div>

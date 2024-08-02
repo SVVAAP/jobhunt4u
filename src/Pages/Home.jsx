@@ -14,6 +14,7 @@ const Home = () => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [totalJobs,setTotalJobs]=useState(0)
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -84,22 +85,29 @@ const Home = () => {
           employmentType,
         }) =>
           jobLocation.toLowerCase() === selected.toLowerCase() ||
-          postingDate === selected ||
+          postingDate >= selected ||
           parseInt(maxPrice) <= parseInt(selected) ||
           salaryType.toLowerCase() === selected.toLowerCase() ||
           experienceLevel.toLowerCase() === selected.toLowerCase() ||
           employmentType.toLowerCase() === selected.toLowerCase()
       );
     }
+    const totalFilteredJobs = filteredJobs.length;
 
     const { startIndex, endIndex } = calculatePageRange();
     filteredJobs = filteredJobs.slice(startIndex, endIndex);
-
-    return filteredJobs.map((data, i) => <Card key={i} data={data} />);
+  
+    return {
+      result: filteredJobs.map((data, i) => <Card key={i} data={data} />),
+      totalLength: totalFilteredJobs,
+    };
   };
-
-  const result = filteredData(jobs, selectedCategory, query);
-
+  
+  const { result, totalLength } = filteredData(jobs, selectedCategory, query, calculatePageRange);
+  
+  useEffect(() => {
+    setTotalJobs(totalLength);
+  }, [totalLength]);
   return (
     <>
       <div>
@@ -113,14 +121,14 @@ const Home = () => {
             {isLoading ? (
               <p className="font-medium text-white">Loading...</p>
             ) : result.length > 0 ? (
-              <Jobs result={result} />
+              <Jobs result={result} totalJobs={totalJobs} />
             ) : (
               <>
                 <h3 className="text-lg font-bold mb-2 text-white">{result.length} Jobs</h3>
                 <p>No data found</p>
               </>
             )}
-            {result.length > 0 && (
+            {result.length > 5 && (
               <div className="flex justify-center mt-4 space-x-8 text-white">
                 <button
                   onClick={prevPage}

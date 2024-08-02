@@ -29,7 +29,7 @@ const Card = ({ data }) => {
       <section className="card">
         <Link to={`/singlejob/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
-          <div className="card-details">
+          <div className="card-details ">
             <h4 className="text-primary mb-1 font-semibold">Company Name : {companyName}</h4>
             <h3 className="text-lg font-semibold mb-2">Job Role : {jobTitle}</h3>
 

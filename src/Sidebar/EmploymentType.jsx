@@ -9,7 +9,7 @@ const EmploymentType = ({ handleChange }) => {
     <div className="bg-white rounded-lg p-2">
       <h4 className="text-lg font-medium mb-2">Type of employment</h4>
       {isMobile ? (
-        <select onChange={handleChange} name="test" className="form-select">
+        <select onChange={handleChange} name="employmentType" className="form-select">
           <option value="">Any</option>
           <option value="full-time">Full-time</option>
           <option value="temporary">Temporary</option>
@@ -18,26 +18,26 @@ const EmploymentType = ({ handleChange }) => {
       ) : (
         <div>
           <label className="sidebar-label-container">
-            <input onChange={handleChange} type="radio" value="" name="test" />
+            <input onChange={handleChange} type="radio" value="" name="employmentType" />
             <span className="checkmark"></span>Any
           </label>
           <InputField
             handleChange={handleChange}
             value="full-time"
             title="Full-time"
-            name="test"
+            name="employmentType"
           />
           <InputField
             handleChange={handleChange}
             value="temporary"
             title="Temporary"
-            name="test"
+            name="employmentType"
           />
           <InputField
             handleChange={handleChange}
             value="part-time"
             title="Part-time"
-            name="test"
+            name="employmentType"
           />
         </div>
       )}
