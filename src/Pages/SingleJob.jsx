@@ -130,14 +130,14 @@ const SingleJob = () => {
        style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }} >
       <Navbar className="bg-white" />
       <button
-          className="flex items-center px-4 py-2 text-black rounded-lg hover:font-extrabold focus:outline-none focus:ring-3 focus:ring-black"
+          className="flex items-center px-2 py-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-2 ring-red-600 rounded-lg font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
           onClick={() => navigate(-1)}>
-          <span className="mr-2">{"<"}</span>
+          <i className="fa-solid fa-arrow-left-long  mr-2"></i>
           Back
         </button>
       <div className="job-detail-container p-12 min-h-screen flex items-center justify-center ">
         <div
-          className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-110 "
+          className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-105 "
           style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
           <img
             src={companyLogo || placeholderLogo}
