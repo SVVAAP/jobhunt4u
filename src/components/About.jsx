@@ -40,7 +40,7 @@ const About = () => {
         <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8" id='about'>
             <div className="max-w-7xl mx-auto text-center">
                 <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    About Us
+                   <span className='animated-gradient-header'> About</span> Us
                 </h2>
                 <p className="mt-4 text-lg text-gray-500">
                     Welcome to JobHunt4U! Discover your dream job with us – the top destination for reliable job listings and career opportunities in India.
@@ -51,7 +51,7 @@ const About = () => {
                 <div className="flex flex-wrap justify-around text-center">
                     {stats.map((stat, index) => (
                         <div key={index} className="p-4">
-                            <p className="text-4xl font-bold text-gray-900">{stat.value}</p>
+                            <p className="text-4xl font-bold animated-gradient ">{stat.value}</p>
                             <p className="text-lg text-gray-500">{stat.label}</p>
                         </div>
                     ))}

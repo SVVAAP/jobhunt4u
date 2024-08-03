@@ -203,6 +203,35 @@ li {
   border-color: #f7f7f7;
 }
 
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(45deg, darkblue, blue, green, darkgreen);
+  background-size: 400% 400%;
+  animation: gradient-flow 5s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.animated-gradient-header {
+  background: linear-gradient(45deg, #073cce, #4f99ee,green); /* Extracted colors from Tailwind */
+  background-size: 400% 400%;
+  animation: gradient-flow 5s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+
 
 
 /* create a job page */

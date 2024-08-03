@@ -23,7 +23,7 @@ const Banner = ({ handleInputChange, query }) => {
       
     </div>
     <div className="flex flex-wrap justify-center">
-    <h1 id="search" className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-black md:text-5xl lg:text-6xl "><span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Featured</span> Jobs.</h1>
+    <h1 id="search" className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-black md:text-5xl lg:text-6xl "><span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 animated-gradient-header">Featured</span> Jobs.</h1>
   </div>
   </>
   );
