@@ -58,8 +58,8 @@ const About = () => {
                 </div>
             </div>
 
-            <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id='contact'>
-                <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">Contact Us Now</h3>
+            <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id='conatct'>
+                <h3 className="text-2xl font-bold text-gray-900 text-center mb-4"><span className='animated-gradient-header'>Contact Us</span> Now</h3>
                 <div className="text-center mb-6">
                     <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
                     <a href='tel:9035331774'><p className="text-xl font-semibold text-gray-900">9035331774</p></a>
@@ -77,7 +77,7 @@ const About = () => {
 
 
             <div className="mt-10">
-                <h3 className="text-2xl font-bold text-gray-900 text-center">Popular Job Categories</h3>
+                <h3 className="text-2xl font-bold text-gray-900 text-center"><span className='animated-gradient-header'>Popular Job</span> Categories</h3>
                 <div className="flex flex-wrap justify-center mt-4 ">
                     {jobCategories.map((category, index) => (
                         <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center shadow">
@@ -104,13 +104,13 @@ const About = () => {
             </div> */}
 
             <div className="mt-10 mb-10">
-                <h3 className="text-2xl font-bold text-gray-900 text-center">Are you an HR recruiter looking to post a job on our job portal?</h3>
+                <h3 className="text-2xl font-bold text-gray-900 text-center">Are you an <span className='animated-gradient-header'> HR recruiter</span> looking to post a job on our job portal?</h3>
                 <div className="mt-4 text-center">
                     <p className="text-lg text-gray-500 mb-4">Look no further! By registering on our platform, you can easily post job listings and reach a wide pool of qualified candidates.</p>
                 </div>
 
-                <h3 className="text-2xl font-bold text-gray-900 text-center">How It Works</h3>
-                <div className="flex items-center justify-center mt-8  p-6 rounded-lg shadow-md bg-white">
+                <h3 className="text-2xl font-bold text-gray-900 text-center"><span className='animated-gradient-header'>How It</span> Works</h3>
+                <div className="flex items-center justify-center mt-8  p-6 rounded-lg shadow-md bg-white font-extrabold">
                     {/* Step 1 */}
                     <div className="flex flex-col items-center w-1/4">
                         <div className="relative mb-4">
