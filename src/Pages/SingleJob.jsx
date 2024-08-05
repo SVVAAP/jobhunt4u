@@ -192,7 +192,7 @@ const SingleJob = () => {
               {description}
             </p>
           </div>
-          {user && user.userType ==="candidate" &&
+          {user? (user.userType ==="candidate" &&
           <button
             onClick={applyJob}
             className={`ring-1 ${
@@ -200,7 +200,15 @@ const SingleJob = () => {
             } rounded-lg hover:bg-green-700 hover:text-white px-5 py-3 transition-all duration-300 text-lg font-semibold`}
             disabled={applied}>
             {applied ? "Applied" : "Apply"}
-          </button>
+          </button>):
+          (  <button
+            onClick={applyJob}
+            className={`ring-1 ${
+              applied ? "ring-green-700 text-white bg-green-600" : "ring-blue text-white bg-blue"
+            } rounded-lg hover:bg-green-700 hover:text-white px-5 py-3 transition-all duration-300 text-lg font-semibold`}
+            disabled={applied}>
+            {applied ? "Applied" : "Apply"}
+          </button>)
 }
         </div>
       </div>

@@ -10,7 +10,7 @@ const EmploymentType = ({ handleChange }) => {
       <h4 className="text-lg font-medium mb-2">Type of employment</h4>
       {isMobile ? (
         <select onChange={handleChange} name="employmentType" className="form-select">
-          <option value="">Any</option>
+          <option value="" >Any</option>
           <option value="full-time">Full-time</option>
           <option value="temporary">Temporary</option>
           <option value="part-time">Part-time</option>

@@ -56,7 +56,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="max-w-screen-2xl m-2 container xl:px-24 px-4 bg-white/85 shadow-2xl rounded-b-lg" >
+    <header className="max-w-screen-2xl  container xl:px-12 px-4 bg-white/85 shadow-md rounded-b-lg" >
       <nav className="flex justify-between items-center py-3" >
         <Link to="/" className="flex items-center gap-2 text-2xl text-black">
           <img src={logo} className='w-32 ' alt="Logo" />
@@ -83,14 +83,14 @@ const Navbar = () => {
               </button> */}
             </div>
           ) : (
-            <>
+            <div className='flex justify-normal space-x-1'>
               <Link to="/login" className="py-2 px-5 border rounded flex items-center gap-2">
               <i className="fa-solid fa-right-to-bracket"></i> Log in
               </Link>
               <Link to="/signup" className="bg-blue py-2 px-5 text-white rounded flex items-center gap-2">
               <i className="fa-solid fa-user-plus"></i> Sign up
               </Link>
-            </>
+            </div>
           )}
         </div>
         <div className="md:hidden block">

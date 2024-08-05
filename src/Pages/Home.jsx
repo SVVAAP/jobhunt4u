@@ -15,7 +15,14 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [totalJobs,setTotalJobs]=useState(0)
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
+  // const [filters, setFilters] = useState({
+  //   location: "",
+  //   employmentType: "",
+  //   postingDate: "",
+  //   salaryType: "",
+  //   experience: "",
+  // });
 
   useEffect(() => {
     const jobRef = ref(database, "jobs");
@@ -32,15 +39,24 @@ const Home = () => {
     });
   }, []);
 
-  const [query, setQuery] = useState("");
+const [query, setQuery] = useState("");
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
 
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  // };
+
+  // const handleClick = (event) => {
+  //   const { name, value } = event.target;
+  //   setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  // };
+
   const filteredItems = jobs.filter(
     (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
   );
-
   const handleChange = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -48,7 +64,6 @@ const Home = () => {
   const handleClick = (event) => {
     setSelectedCategory(event.target.value);
   };
-
   const calculatePageRange = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -92,6 +107,31 @@ const Home = () => {
           employmentType.toLowerCase() === selected.toLowerCase()
       );
     }
+
+    // if (filters.location) {
+    //   filteredJobs = filteredJobs.filter((job) => job.jobLocation.toLowerCase().includes(filters.location.toLowerCase()));
+    // }
+
+    // if (filters.employmentType) {
+    //   filteredJobs = filteredJobs.filter((job) => job.employmentType === filters.employmentType);
+    // }
+
+    // if (filters.postingDate) {
+    //   filteredJobs = filteredJobs.filter((job) => new Date(job.postingDate) >= new Date(filters.postingDate));
+    // }
+
+    // if (filters.salaryType) {
+    //   filteredJobs = filteredJobs.filter((job) => job.salaryType === filters.salaryType);
+    // }
+
+    // if (filters.experience) {
+    //   filteredJobs = filteredJobs.filter((job) => job.experience === filters.experience);
+    // }
+
+    // if (query) {
+    //   filteredJobs = filteredJobs.filter((job) => job.jobTitle.toLowerCase().includes(query.toLowerCase()));
+    // }
+
     const totalFilteredJobs = filteredJobs.length;
 
     const { startIndex, endIndex } = calculatePageRange();
@@ -112,12 +152,12 @@ const Home = () => {
     <>
       <div>
         <Banner query={query} handleInputChange={handleInputChange} />
-        <div className=" md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
+        <div className=" md:grid grid-cols-3 gap-8 lg:px-12 px-4 py-6">
           <div className="rounded">
             <Sidebar handleChange={handleChange} handleClick={handleClick} />
           </div>
 
-          <div className="col-span-2 bg-sky-800 p-4 rounded">
+          <div className="col-span-2 bg-sky-800 p-4 rounded-2xl">
             {isLoading ? (
               <p className="font-medium text-white">Loading...</p>
             ) : result.length > 0 ? (
