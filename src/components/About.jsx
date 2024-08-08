@@ -70,7 +70,7 @@ const About = () => {
                 </div>
                 <div className="text-center">
                     <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
-                    <p className="text-xl font-semibold text-gray-900">Near Alphonso Matrimony, Leo Brother's Shopping Complex</p>
+                    <p className="text-xl font-semibold text-gray-900">Near Alphonso Matrimony, Leo Brother&apos;s Shopping Complex</p>
                     <a href='#map'><p className="text-lg font-semibold text-gray-900">Mukamar, Udupi Dist. 574 111</p></a>
                 </div>
             </div>
@@ -80,7 +80,7 @@ const About = () => {
                 <h3 className="text-2xl font-bold text-gray-900 text-center"><span className='animated-gradient-header'>Popular Job</span> Categories</h3>
                 <div className="flex flex-wrap justify-center mt-4 ">
                     {jobCategories.map((category, index) => (
-                        <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center shadow">
+                        <div key={index} className="p-4 text-center shadow m-2 bg-sky-200 rounded-lg flex flex-col items-center">
                             <div className="mb-2">
                                 {category.icon}
                             </div>
@@ -90,7 +90,6 @@ const About = () => {
                     ))}
                 </div>
             </div>
-
 
             {/* <div className="mt-10">
                 <h3 className="text-2xl font-bold text-gray-900 text-center">Our Clients</h3>
