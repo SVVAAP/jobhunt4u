@@ -9,8 +9,8 @@ const WorkExperience = ({ handleChange }) => {
     <div className="bg-white rounded-lg p-2">
       <h4 className="text-lg font-medium mb-2">Work experience</h4>
       {isMobile ? (
-        <select onChange={handleChange} name="test" className="form-select">
-          <option value="">Any experience</option>
+        <select onChange={handleChange} name="experienceLevel" className="form-select">
+          <option value="" >Any experience</option>
           <option value="NoExperience">No Experience / Fresher</option>
           <option value="Internship">Internship</option>
           <option value="1-2 years">1-2 years</option>
@@ -20,38 +20,38 @@ const WorkExperience = ({ handleChange }) => {
       ) : (
         <div>
           <label className="sidebar-label-container">
-            <input onChange={handleChange} type="radio" value="" name="test" />
+            <input onChange={handleChange} type="radio" value="" name="experienceLevel" />
             <span className="checkmark"></span>Any experience
           </label>
           <InputField
             handleChange={handleChange}
             value="NoExperience"
             title="No Experience / Fresher"
-            name="test"
+            name="experienceLevel"
           />
           <InputField
             handleChange={handleChange}
             value="Internship"
             title="Internship"
-            name="test"
+            name="experienceLevel"
           />
           <InputField
             handleChange={handleChange}
             value="1-2 years"
             title="1-2 years"
-            name="test"
+            name="experienceLevel"
           />
           <InputField
             handleChange={handleChange}
             value="3-5 years"
             title="3-5 years"
-            name="test"
+            name="experienceLevel"
           />
           <InputField
             handleChange={handleChange}
             value="MoreThan5Years"
             title="More Than 5 years"
-            name="test"
+            name="experienceLevel"
           />
         </div>
       )}
