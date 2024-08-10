@@ -13,7 +13,7 @@ const Navbar = () => {
   let isEmployer = false;
   const auth = getAuth();
   const navigate = useNavigate();
-  console.log(isLoggedIn);
+// console.log(isLoggedIn);
 
   if (isLoggedIn) {
     if (user && (user.userType === "employer" || user.userType === "admin")) {

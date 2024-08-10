@@ -10,19 +10,13 @@ import { ref, onValue } from "firebase/database";
 import { database } from "../firebase";
 
 const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState({});
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const [totalJobs,setTotalJobs]=useState(0)
+  const [totalJobs, setTotalJobs] = useState(0);
   const [isLoading, setIsLoading] = useState(true); 
-  // const [filters, setFilters] = useState({
-  //   location: "",
-  //   employmentType: "",
-  //   postingDate: "",
-  //   salaryType: "",
-  //   experience: "",
-  // });
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const jobRef = ref(database, "jobs");
@@ -39,31 +33,26 @@ const Home = () => {
     });
   }, []);
 
-const [query, setQuery] = useState("");
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
 
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  // };
-
-  // const handleClick = (event) => {
-  //   const { name, value } = event.target;
-  //   setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  // };
-
-  const filteredItems = jobs.filter(
-    (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
-  );
   const handleChange = (event) => {
-    setSelectedCategory(event.target.value);
+    const { name, value } = event.target;
+    setSelectedCategory((prevSelected) => ({
+      ...prevSelected,
+      [name]: value,
+    }));
   };
 
   const handleClick = (event) => {
-    setSelectedCategory(event.target.value);
+    const { name, value } = event.target;
+    setSelectedCategory((prevSelected) => ({
+      ...prevSelected,
+      [name]: value,
+    }));
   };
+
   const calculatePageRange = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -81,12 +70,18 @@ const [query, setQuery] = useState("");
       setCurrentPage(currentPage - 1);
     }
   };
+  
+  const filteredItems = jobs.filter(
+    (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
+  );
 
   const filteredData = (jobs, selected, query) => {
     let filteredJobs = jobs;
 
     if (query) {
-      filteredJobs = filteredItems;
+      filteredJobs = filteredJobs.filter(
+        (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
     }
 
     if (selected) {
@@ -98,39 +93,32 @@ const [query, setQuery] = useState("");
           maxPrice,
           postingDate,
           employmentType,
-        }) =>
-          jobLocation.toLowerCase() === selected.toLowerCase() ||
-          postingDate >= selected ||
-          parseInt(maxPrice) <= parseInt(selected) ||
-          salaryType.toLowerCase() === selected.toLowerCase() ||
-          experienceLevel.toLowerCase() === selected.toLowerCase() ||
-          employmentType.toLowerCase() === selected.toLowerCase()
+        }) => {
+          let match = true;
+    
+          if (selected.location) {
+            match = match && jobLocation.toLowerCase() === selected.location.toLowerCase();
+          }
+          if (selected.postingDate) {
+            match = match && postingDate >= selected.postingDate;
+          }
+          if (selected.maxPrice) {
+            match = match && parseInt(maxPrice) <= parseInt(selected.maxPrice);
+          }
+          if (selected.salaryType) {
+            match = match && salaryType.toLowerCase() === selected.salaryType.toLowerCase();
+          }
+          if (selected.experienceLevel) {
+            match = match && experienceLevel.toLowerCase() === selected.experienceLevel.toLowerCase();
+          }
+          if (selected.employmentType) {
+            match = match && employmentType.toLowerCase() === selected.employmentType.toLowerCase();
+          }
+    
+          return match;
+        }
       );
     }
-
-    // if (filters.location) {
-    //   filteredJobs = filteredJobs.filter((job) => job.jobLocation.toLowerCase().includes(filters.location.toLowerCase()));
-    // }
-
-    // if (filters.employmentType) {
-    //   filteredJobs = filteredJobs.filter((job) => job.employmentType === filters.employmentType);
-    // }
-
-    // if (filters.postingDate) {
-    //   filteredJobs = filteredJobs.filter((job) => new Date(job.postingDate) >= new Date(filters.postingDate));
-    // }
-
-    // if (filters.salaryType) {
-    //   filteredJobs = filteredJobs.filter((job) => job.salaryType === filters.salaryType);
-    // }
-
-    // if (filters.experience) {
-    //   filteredJobs = filteredJobs.filter((job) => job.experience === filters.experience);
-    // }
-
-    // if (query) {
-    //   filteredJobs = filteredJobs.filter((job) => job.jobTitle.toLowerCase().includes(query.toLowerCase()));
-    // }
 
     const totalFilteredJobs = filteredJobs.length;
 
@@ -143,11 +131,12 @@ const [query, setQuery] = useState("");
     };
   };
   
-  const { result, totalLength } = filteredData(jobs, selectedCategory, query, calculatePageRange);
+  const { result, totalLength } = filteredData(jobs, selectedCategory, query);
   
   useEffect(() => {
     setTotalJobs(totalLength);
   }, [totalLength]);
+
   return (
     <>
       <div>
