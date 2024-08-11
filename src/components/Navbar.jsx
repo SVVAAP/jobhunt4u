@@ -5,7 +5,6 @@ import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
 import profpic from '../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
-import background from '../assets/nav_bg.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +12,6 @@ const Navbar = () => {
   let isEmployer = false;
   const auth = getAuth();
   const navigate = useNavigate();
-// console.log(isLoggedIn);
 
   if (isLoggedIn) {
     if (user && (user.userType === "employer" || user.userType === "admin")) {
@@ -56,10 +54,10 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="max-w-screen-2xl  container xl:px-12 px-4 bg-white/85 shadow-md rounded-b-lg" >
-      <nav className="flex justify-between items-center py-3" >
+    <header className="max-w-screen-2xl container xl:px-12 px-4 bg-white/85 shadow-md rounded-b-lg">
+      <nav className="flex justify-between items-center py-3">
         <Link to="/" className="flex items-center gap-2 text-2xl text-black">
-          <img src={logo} className='w-32 ' alt="Logo" />
+          <img src={logo} className='w-32' alt="Logo" />
         </Link>
         <ul className="hidden md:flex gap-8">
           {navItems.map(({ link, title, icon }) => (
@@ -77,18 +75,17 @@ const Navbar = () => {
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {isLoggedIn ? (
             <div className='flex items-center gap-3'>
-              <Link to={isEmployer ? "/profile-emp" : "/profile"}><img className='h-8 w-8 rounded-full' src={profpic} alt='Profile' /></Link>
-              {/* <button onClick={handleLogout} className="flex items-center gap-2">
-              <i className="fa-solid fa-right-from-bracket"></i> Log out
-              </button> */}
+              <Link to={isEmployer ? "/profile-emp" : "/profile"}>
+                <img className='h-8 w-8 rounded-full' src={profpic} alt='Profile' />
+              </Link>
             </div>
           ) : (
             <div className='flex justify-normal space-x-1'>
               <Link to="/login" className="py-2 px-5 border rounded flex items-center gap-2">
-              <i className="fa-solid fa-right-to-bracket"></i> Log in
+                <i className="fa-solid fa-right-to-bracket"></i> Log in
               </Link>
               <Link to="/signup" className="bg-blue py-2 px-5 text-white rounded flex items-center gap-2">
-              <i className="fa-solid fa-user-plus"></i> Sign up
+                <i className="fa-solid fa-user-plus"></i> Sign up
               </Link>
             </div>
           )}
@@ -96,9 +93,9 @@ const Navbar = () => {
         <div className="md:hidden block">
           <button onClick={handleMenuToggler}>
             {isMenuOpen ? (
-              <i className="fa-solid fa-xmark w-5 h-5 text-primary/75" ></i> 
+              <i className="fa-solid fa-xmark w-5 h-5 text-primary/75"></i>
             ) : (
-              <i className="fa-solid fa-bars-staggered w-5 h-5 text-primary/75" ></i>
+              <i className="fa-solid fa-bars-staggered w-5 h-5 text-primary/75"></i>
             )}
           </button>
         </div>
@@ -117,21 +114,28 @@ const Navbar = () => {
             </li>
           ))}
           {isLoggedIn ? (
-            <li className="text-white py-2 flex items-center gap-2">
-              <button onClick={handleLogout} className="flex items-center gap-2">
-              <i className="fa-solid fa-right-from-bracket"></i> Log out
-              </button>
-            </li>
+            <>
+              <li className="text-white py-2 flex justify-normal items-center gap-2">
+                <Link to={isEmployer ? "/profile-emp" : "/profile"}>
+                <i className="fa-solid fa-user"></i> <span>Profile</span>
+                </Link>
+              </li>
+              <li className="text-white py-2 flex items-center gap-2">
+                <button onClick={handleLogout} className="flex items-center gap-2">
+                  <i className="fa-solid fa-right-from-bracket"></i> Log out
+                </button>
+              </li>
+            </>
           ) : (
             <>
               <li className="text-white py-2 flex items-center gap-2">
                 <Link to="/login" onClick={handleMenuToggler} className="flex items-center gap-2">
-                <i className="fa-solid fa-right-to-bracket"></i> Log in
+                  <i className="fa-solid fa-right-to-bracket"></i> Log in
                 </Link>
               </li>
               <li className="text-white py-2 flex items-center gap-2">
                 <Link to="/signup" onClick={handleMenuToggler} className="flex items-center gap-2">
-                <i className="fa-solid fa-user-plus"></i> Sign up
+                  <i className="fa-solid fa-user-plus"></i> Sign up
                 </Link>
               </li>
             </>

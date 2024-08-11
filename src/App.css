@@ -20,7 +20,7 @@ body::before {
   bottom: 0;
   background-image: url('./assets/body_bg.png');
   background-position: top;
-  opacity: 0.7;
+  opacity: 0.3;
   z-index: -1; /* Ensure it is behind other content */
 }
 
