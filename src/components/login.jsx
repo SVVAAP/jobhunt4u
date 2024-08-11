@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import background from "../assets/signin_bg.png"
+import card_bg from "../assets/login_card2.png"
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -39,8 +41,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue to-blue-500">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-4xl transform transition duration-500 hover:scale-105 flex items-center">
+    <div className="min-h-screen flex items-center justify-center "  style={{ backgroundImage: `url(${background})` }}>
+      <div className="bg-white p-8 rounded shadow-md m-5 w-full max-w-4xl transform transition duration-500 hover:scale-105 flex items-center"  style={{ backgroundImage: `url(${card_bg})`, backgroundPosition: "center" , backgroundSize: "cover"}}>
         <div className="w-full md:w-1/2">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Login</h2>
           <form onSubmit={handleLogin} className="space-y-4">

@@ -137,7 +137,7 @@ const Home = () => {
       <div>
         <Banner query={query} handleInputChange={handleInputChange} />
         <div className=" md:grid grid-cols-3 gap-8 lg:px-12 px-4 py-6">
-          <div className="rounded">
+          <div className="rounded mb-6">
             <Sidebar
               key={refreshSidebar}
               handleChange={handleChange}
