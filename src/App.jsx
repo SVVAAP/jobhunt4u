@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-    <CustomCursor/>
+    
      <Navbar/>    
      <Outlet/>
     </>
