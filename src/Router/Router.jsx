@@ -13,13 +13,16 @@ import SingleJob from "../Pages/SingleJob";
 import Profile from "../Pages/Profile";
 import Login2 from "../components/login2";
 import ProfileEmp from "../Pages/ProfileEmp";
+import { useJobs } from "../context/jobsContext";
+import Home_toggle from "../components/home_toggle";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element: <Home_toggle/> },
       { path: "/post-job", element: <CreateJob /> },
     ],
   },

@@ -1,15 +1,25 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth';
 import JobList from '../components/JobList'
 
 function Manager() {
+  const navigate=useNavigate();
+  const auth=getAuth();
     const handleLogout = async () => {
         try {
           // eslint-disable-next-line no-restricted-globals
           var conf = confirm("Are you sure you want to log out?");
           if (conf === true) {
-            await logout();
-            navigate('/a2z-admin');
+            signOut(auth)
+            .then(() => {
+              console.log('User signed out');
+             navigate('/');
+            })
+            .catch((error) => {
+              console.error('Error signing out: ', error);
+            });
+            
           }
         } catch (error) {
           console.error('Failed to log out', error);
