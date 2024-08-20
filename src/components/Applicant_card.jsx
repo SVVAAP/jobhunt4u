@@ -17,7 +17,7 @@ function Applicant_card({ job, downloadExcel }) {
     const jobRef = ref(database, `jobs/${job.id}`);
     update(jobRef, { applicants: updatedApplicants })
       .then(() => {
-        alert(`Application ${status === 'approved' ? 'Approved' : 'Declined'} Successfully!`);
+        alert(`Application ${status === 'withEmployer' ? 'Approved' : 'Declined'} Successfully!`);
       })
       .catch((error) => {
         console.error("Error updating status: ", error);
@@ -68,7 +68,7 @@ function Applicant_card({ job, downloadExcel }) {
                   <div className='flex justify-around'>
                    {applicant.applicationStatus==="pending"? (<div> <button 
                       className='bg-green-600 rounded-lg text-white p-2'
-                      onClick={() => updateApplicationStatus(index, 'approved')}
+                      onClick={() => updateApplicationStatus(index, 'withEmployer')}
                     >
                       Approve
                     </button>

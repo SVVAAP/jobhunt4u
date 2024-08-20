@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import background from "../assets/signin_bg.png"
 import card_bg from "../assets/login_card2.png"
 
@@ -72,6 +72,7 @@ const Login = () => {
               <button type="submit" className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200">Login</button>
               <button type="button" onClick={handleForgotPassword} className="text-sm text-blue-500 hover:underline focus:outline-none">Forgot Password?</button>
             </div>
+            <p className='text-lg bg-white/60 rounded-full relative w-fit '>Create a New Account? <Link to="/signup" className='text-sky-600 underline'>Signin</Link></p>
             {error && <p className="text-red-500 mt-2">{error}</p>}
           </form>
         </div>
