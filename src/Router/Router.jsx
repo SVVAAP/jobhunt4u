@@ -15,6 +15,7 @@ import Login2 from "../components/login2";
 import ProfileEmp from "../Pages/ProfileEmp";
 import { useJobs } from "../context/jobsContext";
 import Home_toggle from "../components/home_toggle";
+import EmpApplicants from "../Pages/EmpApplicants";
 
 
 const router = createBrowserRouter([
@@ -38,5 +39,6 @@ children:[
    {path:"/jobhunt4u-admin/employer", element:<EmployeerDetails/>},
    {path:"/jobhunt4u-admin/addjob",element:<CreateJob/>},
 ]},{ path: "/singlejob/:jobId", element: <SingleJob /> },
+{path:"/applicants/:jobId",element:<EmpApplicants/>},
 ]);
 export default router;

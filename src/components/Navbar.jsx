@@ -75,6 +75,7 @@ const Navbar = () => {
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {isLoggedIn ? (
             <div className='flex items-center gap-3'>
+              <i className="text-2xl text-primary fa-solid fa-envelope me-5"></i>
               <Link to={isEmployer ? "/profile-emp" : "/profile"}>
                 <img className='h-8 w-8 rounded-full' src={profpic} alt='Profile' />
               </Link>

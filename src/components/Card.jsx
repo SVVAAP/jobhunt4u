@@ -3,6 +3,8 @@ import { FiCalendar, FiClock, FiDollarSign, FiMapPin, FiSearch } from "react-ico
 import { FaRupeeSign } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import bg from '../assets/main_cardbg.png'
+import { RWebShare } from "react-web-share";
+import { useJobs } from "../context/jobsContext";
 
 
 
@@ -22,12 +24,27 @@ const formatIndianCurrency = (price) => {
 
 const Card = ({ data }) => {
   // console.log(data);
-  
+  const {user}=useJobs
   const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description ,experienceLevel,Workmode,salaryType} = data;
   return (
     <div className="ring-sky-700 ring-2 rounded-lg  bg-white" style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}  >
+      <div className="absolute top-0.1 right-16  z-auto" data-aos="fade-down" data-aos-delay="400">
+        <h1>Applicants : {}</h1>
+        <RWebShare
+          data={{
+            text: `Check out this Job on JobHunt4u \n Title: ${jobTitle}\n Description: ${description}\n`,
+            url: `https://jobhunt4u.in/singlejob/${id}`,
+            title: jobTitle,
+          }}
+          onClick={() => console.log("shared successfully!")}>
+          <button className="text-sky-700 text-xl p-2 font-medium rounded-bl-lg rounded-tr-lg">
+          <i className="fa-solid fa-share-from-square"></i>
+            {/* <img className="h-4 transition-transform  duration-300 hover:scale-110" src={share} alt="share" /> */}
+          </button>
+        </RWebShare>
+      </div>
       <section className="card">
-        <Link to={`/singlejob/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
+        <Link to={user && user.userType==="candidate" ? `/singlejob/${id}` : `/applicants/${id}`} className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
           <div className="card-details ">
             <h4 className="text-primary mb-1 font-semibold">Company Name : {companyName}</h4>

@@ -75,20 +75,24 @@ const SingleJob = () => {
 
   const applyJob = () => {
     if (user) {
-      if (user.resume != "") {
+      if (user.resume !== "") {
         if (!user.appliedJobs) {
           user.appliedJobs = [];
         }
-
+  
         if (!user.appliedJobs.includes(jobId)) {
           const newAppliedJobs = [...user.appliedJobs, jobId];
           const userRef = ref(database, `users/${uid}`);
           update(userRef, { appliedJobs: newAppliedJobs })
             .then(() => {
               setApplied(true);
-
+  
               const { userType, ...userWithoutType } = user; // Remove userType from user object
-              const newApplicants = job.applicants ? [...job.applicants, userWithoutType] : [userWithoutType];
+              const applicantWithStatus = {
+                ...userWithoutType,
+                applicationStatus: "pending", // Add application status as pending
+              };
+              const newApplicants = job.applicants ? [...job.applicants, applicantWithStatus] : [applicantWithStatus];
               const jobRef = ref(database, `jobs/${jobId}`);
               update(jobRef, { applicants: newApplicants })
                 .then(() => setShowPopup(true))
@@ -99,7 +103,7 @@ const SingleJob = () => {
           alert("You have already applied for this job.");
         }
       } else {
-        alert("Please Uploade Your Resume.");
+        alert("Please Upload Your Resume.");
       }
     } else {
       if (confirm("Please login to apply for the job!")) {
@@ -107,6 +111,7 @@ const SingleJob = () => {
       }
     }
   };
+  
 
   const {
     companyLogo,
