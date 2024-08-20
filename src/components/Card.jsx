@@ -43,7 +43,7 @@ const Card = ({ data }) => {
     <div
       className="ring-sky-700 ring-2 rounded-lg  bg-white"
       style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-      <div className="absolute top-0.1 flex items-center right-16  z-auto" data-aos="fade-down" data-aos-delay="400">
+      <div className="absolute top-0.1 flex items-center right-16  z-10" data-aos="fade-down" data-aos-delay="400">
        {candidate && <h1 className="font-bold me-10">
           Applicants:
           {applicants ? (<span className="text-white ms-2 bg-red-700 rounded-full py-1 px-2">{applicants.length}</span>) :(" none")}

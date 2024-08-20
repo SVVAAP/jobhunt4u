@@ -1,3 +1,4 @@
+// Navbar.js
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
@@ -5,6 +6,7 @@ import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
 import profpic from '../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
+import Inbox from './inbox'; // Import the Inbox component
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,7 +77,7 @@ const Navbar = () => {
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
           {isLoggedIn ? (
             <div className='flex items-center gap-3'>
-              <i className="text-2xl text-primary fa-solid fa-envelope me-5"></i>
+              <Inbox /> {/* Add the Inbox component here */}
               <Link to={isEmployer ? "/profile-emp" : "/profile"}>
                 <img className='h-8 w-8 rounded-full' src={profpic} alt='Profile' />
               </Link>
