@@ -130,7 +130,7 @@ function Profile() {
           Back
         </button>
         <button onClick={handleLogout} className=" bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
-          Logout
+        <i className="fa-solid fa-right-from-bracket"></i> Logout
         </button>
       </div>
       <div className="relative bg-white shadow-md rounded-lg p-4">
@@ -138,7 +138,7 @@ function Profile() {
           <HiPencil onClick={handleEditClick} className="absolute top-4 right-4 text-blue-500 cursor-pointer text-xl" />
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h1 className="text-2xl font-bold mb-4">Welcome, {formData.name}!</h1>
+          <h1 className="text-2xl font-bold mb-4">Welcome,<span className="animated-gradient">{formData.name}</span> !</h1>
           {showSuccessMessage && (
             <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
               <img

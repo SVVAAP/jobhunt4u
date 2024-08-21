@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDatabase, ref, update } from 'firebase/database'; // Import Firebase functions
+import { getDatabase, push, ref, update } from 'firebase/database'; // Import Firebase functions
 import excel from "../assets/excel.png";
 
 function Applicant_card({ job, downloadExcel }) {
@@ -18,13 +18,34 @@ function Applicant_card({ job, downloadExcel }) {
     update(jobRef, { applicants: updatedApplicants })
       .then(() => {
         alert(`Application ${status === 'withEmployer' ? 'Approved' : 'Declined'} Successfully!`);
+
+        // Send a message to the applicant's inbox
+        const applicant = updatedApplicants[applicantIndex];
+        const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`); // Reference to the user's inbox
+        const newMessageRef = push(applicantInboxRef); // Create a new push reference
+
+        // Create a message based on the status
+        const message = {
+          title: `Your application status has been updated to ${status}`,
+          message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been ${status === 'withEmployer' ? 'approved and sent to the employer' : 'declined'}.`,
+          timestamp: Date.now()
+        };
+
+        // Save the message to the applicant's inbox
+        update(newMessageRef, message)
+          .then(() => {
+            console.log('Message sent to applicant inbox');
+          })
+          .catch((error) => {
+            console.error('Error sending message: ', error);
+          });
       })
       .catch((error) => {
         console.error("Error updating status: ", error);
       });
   };
 
-  return (
+  return(
     <div className=''>
       <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2 bg-slate-300">
         <div className="flex justify-between item-center rounded-lg p-3 bg-white">

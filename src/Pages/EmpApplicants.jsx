@@ -1,6 +1,8 @@
 import React from 'react';
 import { useJobs } from '../context/jobsContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import { push, ref, update } from 'firebase/database';
+import { database } from '../firebase';
 
 function EmpApplicants() {
   const { jobs } = useJobs();
@@ -16,19 +18,45 @@ function EmpApplicants() {
       return applicant;
     });
 
-    // Optionally, update the state or persist the changes.
-    // Example:
-    // updateJob(jobId, { ...job, applicants: updatedApplicants });
+    const jobRef = ref(database, `jobs/${job.id}`);
+    update(jobRef, { applicants: updatedApplicants })
+      .then(() => {
+        alert(`Application ${status} Successfully!`);
+
+        // Send a message to the applicant's inbox
+        const applicant = updatedApplicants[applicantIndex];
+        const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
+        const newMessageRef = push(applicantInboxRef);
+
+        // Create a message based on the status
+        const message = {
+          title: `Your application status has been updated to ${status}`,
+          message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been ${status} by the Recruiter.`,
+          timestamp: Date.now()
+        };
+
+        // Save the message to the applicant's inbox
+        update(newMessageRef, message)
+          .then(() => {
+            console.log('Message sent to applicant inbox');
+          })
+          .catch((error) => {
+            console.error('Error sending message: ', error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error updating status: ", error);
+      });
   };
 
   return (
     <div>
-      <h1>Emp Applicants</h1>
+      <h1>Applicants for {job?.jobTitle}</h1>
       <div className="transition-transform duration-700">
         {job && job.applicants && job.applicants.length > 0 ? (
           <div>
             {job.applicants.map((applicant, index) => (
-              applicant.applicationStatus === "withEmployer" && (
+              applicant.applicationStatus !== "pending" && (
                 <div
                   key={index}
                   className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 items-center bg-white p-2"

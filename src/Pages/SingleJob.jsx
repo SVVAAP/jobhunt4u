@@ -111,6 +111,7 @@ const SingleJob = () => {
   
               const applicantWithStatus = {
                 ...userWithoutTypeAndAppliedJobs,
+                uid: uid,  // Add uid here
                 applicationStatus: "pending",
               };
   

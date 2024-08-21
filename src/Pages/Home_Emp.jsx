@@ -62,68 +62,70 @@ const Home_Emp = () => {
 
   useEffect(() => {
     const applyFilters = () => {
-      let filtered = userJobs;
+        let filtered = userJobs;
 
-      if (query) {
-        filtered = filtered.filter((job) =>
-          job.jobTitle.toLowerCase().includes(query.toLowerCase())
-        );
-      }
+        if (query) {
+            filtered = filtered.filter((job) =>
+                job.jobTitle.toLowerCase().includes(query.toLowerCase())
+            );
+        }
 
-      if (selectedCategory) {
-        filtered = filtered.filter(
-          ({
-            jobLocation,
-            salaryType,
-            experienceLevel,
-            maxPrice,
-            postingDate,
-            employmentType,
-          }) => {
-            let match = true;
+        if (selectedCategory) {
+            filtered = filtered.filter(
+                ({
+                    jobLocation,
+                    salaryType,
+                    experienceLevel,
+                    maxPrice,
+                    postingDate,
+                    employmentType,
+                }) => {
+                    let match = true;
 
-            if (selectedCategory.location) {
-              match =
-                match &&
-                jobLocation.toLowerCase() === selectedCategory.location.toLowerCase();
-            }
-            if (selectedCategory.postingDate) {
-              match = match && postingDate >= selectedCategory.postingDate;
-            }
-            if (selectedCategory.maxPrice) {
-              match =
-                match && parseInt(maxPrice) <= parseInt(selectedCategory.maxPrice);
-            }
-            if (selectedCategory.salaryType) {
-              match =
-                match &&
-                salaryType.toLowerCase() === selectedCategory.salaryType.toLowerCase();
-            }
-            if (selectedCategory.experienceLevel) {
-              match =
-                match &&
-                experienceLevel.toLowerCase() ===
-                  selectedCategory.experienceLevel.toLowerCase();
-            }
-            if (selectedCategory.employmentType) {
-              match =
-                match &&
-                employmentType.toLowerCase() ===
-                  selectedCategory.employmentType.toLowerCase();
-            }
+                    if (selectedCategory.location) {
+                        match =
+                            match &&
+                            jobLocation.toLowerCase() === selectedCategory.location.toLowerCase();
+                    }
+                    if (selectedCategory.postingDate) {
+                        match = match && postingDate >= selectedCategory.postingDate;
+                    }
+                    if (selectedCategory.maxPrice) {
+                        match =
+                            match && parseInt(maxPrice) <= parseInt(selectedCategory.maxPrice);
+                    }
+                    if (selectedCategory.salaryType) {
+                        match =
+                            match &&
+                            salaryType.toLowerCase() === selectedCategory.salaryType.toLowerCase();
+                    }
+                    if (selectedCategory.experienceLevel) {
+                        match =
+                            match &&
+                            experienceLevel.toLowerCase() ===
+                                selectedCategory.experienceLevel.toLowerCase();
+                    }
+                    if (selectedCategory.employmentType) {
+                        match =
+                            match &&
+                            employmentType.toLowerCase() ===
+                                selectedCategory.employmentType.toLowerCase();
+                    }
 
-            return match;
-          }
-        );
-      }
+                    return match;
+                }
+            );
+        }
 
-      setFilteredJobs(filtered);
-      setTotalJobs(filtered.length); // Update totalJobs based on filtered data
-      setCurrentPage(1); // Reset to the first page
+        setFilteredJobs(filtered);
+        setTotalJobs(filtered.length); // Update totalJobs based on filtered data
+        setCurrentPage(1); // Reset to the first page
     };
 
-    applyFilters();
-  }, [userJobs, selectedCategory, query]);
+    if (userJobs && user) {
+        applyFilters();
+    }
+}, [userJobs, selectedCategory, query, user]);
 
   const { startIndex, endIndex } = calculatePageRange();
   const paginatedJobs = filteredJobs.slice(startIndex, endIndex);

@@ -22,7 +22,7 @@ const formatIndianCurrency = (price) => {
 const Card = ({ data }) => {
   // console.log(data);
   const { user } = useJobs;
-  const candidate = user && user && user.userType === "candidate";
+  const candidate = user && user.userType === "candidate";
   const {
     id,
     companyLogo,
@@ -64,7 +64,7 @@ const Card = ({ data }) => {
       </div>
       <section className="card">
         <Link
-          to={!candidate ? `/singlejob/${id}` : `/applicants/${id}`}
+          to={candidate ? `/singlejob/${id}` : `/applicants/${id}`}
           className="flex gap-4 flex-col sm:flex-row items-start">
           <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
           <div className="card-details ">

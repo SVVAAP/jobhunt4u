@@ -44,6 +44,7 @@ export function JobsProvider({ children }) {
             }
             setIsLoading(false);
         });
+        
 
         // Cleanup for job and auth listeners
         return () => {
@@ -51,6 +52,8 @@ export function JobsProvider({ children }) {
             unsubscribeAuth();
         };
     }, []);
+
+    
  
     return (
         <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading}}>
