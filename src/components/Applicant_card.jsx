@@ -86,7 +86,7 @@ function Applicant_card({ job, downloadExcel }) {
                   <div className='w-full h-full bg-green-700 rounded-xl'></div>
                   <p>Resume: <a href={applicant.resumeUrl} target="_blank"
                     rel="noopener noreferrer" className=' underline text-sky-700'>View</a></p>
-                  <div className='flex justify-around'>
+                  <div className='flex space-x-3 justify-around'>
                    {applicant.applicationStatus==="pending"? (<div> <button 
                       className='bg-green-600 rounded-lg text-white p-2'
                       onClick={() => updateApplicationStatus(index, 'withEmployer')}
@@ -94,7 +94,7 @@ function Applicant_card({ job, downloadExcel }) {
                       Approve
                     </button>
                     <button 
-                      className='bg-red-600 rounded-lg text-white p-2'
+                      className='bg-red-600 rounded-lg ms-5 text-white p-2'
                       onClick={() => updateApplicationStatus(index, 'declined')}
                     >
                       Decline

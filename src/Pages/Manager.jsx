@@ -35,6 +35,7 @@ function Manager() {
             <Link to="/jobhunt4u-admin/applicants">Applicants</Link>
             <Link to="/jobhunt4u-admin/employer">Employeer Details</Link>
             <Link to="/jobhunt4u-admin/addjob">Add JObs</Link>
+            <Link to="/jobhunt4u-admin/site-content">Site Content</Link>
 
             <div className="absolute right-8">
             <img
