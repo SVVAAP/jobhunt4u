@@ -223,6 +223,14 @@ li {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.animated-gradient-white{
+  background: linear-gradient(45deg, white,lightYellow,white,skyblue);
+  background-size: 400% 400%;
+  animation: gradient-flow 5s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .animated-gradient-bg {
   background: linear-gradient(45deg, darkblue, blue, green, darkgreen,red,darkred);
   background-size: 400% 400%;

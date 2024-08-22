@@ -10,7 +10,7 @@ import Inbox from './inbox';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, user } = useJobs();
+  const { isLoggedIn, user ,mark } = useJobs();
   let isEmployer = false;
   const auth = getAuth();
   const navigate = useNavigate();

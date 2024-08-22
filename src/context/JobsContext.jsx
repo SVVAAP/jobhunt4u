@@ -62,9 +62,18 @@ export function JobsProvider({ children }) {
     }, []);
 
     
+  // Convert inbox object to array
+  const inboxMessages = user?.inbox
+  ? Object.keys(user.inbox).map((key) => ({
+      id: key,
+      ...user.inbox[key],
+    }))
+  : [];
+    
+  const mark = inboxMessages.some((message) => !message.seen);
  
     return (
-        <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading ,userType}}>
+        <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading ,userType ,inboxMessages ,mark}}>
             {children}
         </JobContext.Provider>
     );

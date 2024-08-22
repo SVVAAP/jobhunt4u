@@ -53,32 +53,32 @@ function EmpApplicants() {
   const nonPendingApplicants = job?.applicants?.filter(applicant => applicant.applicationStatus !== "pending");
 
   return (
-    <div>
-      <h1>Applicants for {job?.jobTitle}</h1>
+    <div className='flex-col bg-sky-900 text-white m-2 rounded-lg p-1 min-h-svh items-center  '>
+      <h1 className='font-roboto font-bold text-2xl m-5'>Applicants for <span className='animated-gradient-white'>{job?.jobTitle}</span> </h1>
       <div className="transition-transform duration-700">
         {job && job.applicants && job.applicants.length > 0 ? (
           nonPendingApplicants.length > 0 ? (
-            <div className='bg-sky-900 p-2 m-5 mx-10 rounded-lg'>
+            <div className='bg-sky-700 p-2 m-5 mx-10 rounded-lg '>
               {nonPendingApplicants.map((applicant, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 mx-2 items-center bg-white p-2"
+                  className="grid grid-cols-[40px_3px_1fr_3px_2fr_3px_1fr_3px_1fr_1fr] gap-2 ring-2 rounded my-2 mx-2 items-center bg-white/15 p-2"
                 >
                   <p className="text-center">{index + 1}</p>
-                  <div className="w-full h-full bg-green-700 rounded-xl"></div>
+                  <div className="w-full h-full bg-green-900 rounded-xl"></div>
                   <p>Name: {applicant?.name || "N/A"}</p>
-                  <div className="w-full h-full bg-green-700 rounded-xl"></div>
+                  <div className="w-full h-full bg-green-900 rounded-xl"></div>
                   <p>Email: {applicant?.email || "N/A"}</p>
-                  <div className="w-full h-full bg-green-700 rounded-xl"></div>
+                  <div className="w-full h-full bg-green-900 rounded-xl"></div>
                   <p>Phone: {applicant?.phone || "N/A"}</p>
-                  <div className="w-full h-full bg-green-700 rounded-xl"></div>
+                  <div className="w-full h-full bg-green-900 rounded-xl"></div>
                   <p>
                     Resume:{" "}
                     <a
                       href={applicant.resumeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline text-sky-700"
+                      className="underline text-sky-200"
                     >
                       View
                     </a>
@@ -109,10 +109,14 @@ function EmpApplicants() {
               ))}
             </div>
           ) : (
-            <p>No approved applicants yet.</p>
+            <div className='flex justify-center bg-sky-700 m-2 p-2 rounded-lg items-center my-24 text-3xl font-roboto animate-pulse'>
+            <p className='mt-25'>Applicants are currently being reviewed by Admin!</p>
+            </div>
           )
         ) : (
-          <p>No applicants for this job.</p>
+          <div className='flex justify-center bg-sky-700 m-2 p-2 rounded-lg items-center my-24 text-3xl font-roboto animate-pulse'>
+           <p>No applicants for this job currently!!!.</p>
+          </div>
         )}
       </div>
     </div>

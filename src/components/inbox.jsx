@@ -5,7 +5,7 @@ import MessageCard from "./MessageCard";
 
 const Inbox = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const { user, uid } = useJobs();
+  const {  uid ,inboxMessages ,mark } = useJobs();
   const inboxRef = useRef(null);
 
   const toggleInbox = () => {
@@ -46,17 +46,17 @@ const Inbox = () => {
     };
   }, [isVisible]);
 
-  // Convert inbox object to array
-  const inboxMessages = user?.inbox
-    ? Object.keys(user.inbox).map((key) => ({
-        id: key,
-        ...user.inbox[key],
-      }))
-    : [];
 
   return (
     <>
-      <i className="text-2xl text-primary mr-5 fa-solid fa-envelope" onClick={toggleInbox}></i>
+    <div className="relative inline-block">
+  <i
+    className="text-2xl text-primary mr-5 fa-solid fa-envelope"
+    onClick={toggleInbox}
+  ></i>
+  {mark && 
+  <div className="absolute top-0 right-0 transform -translate-x-4 translate-y-0.5 w-3 h-3 bg-red-600 rounded-full"></div>
+}</div>
 
       <div
         ref={inboxRef}
