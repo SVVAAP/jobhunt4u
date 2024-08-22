@@ -166,6 +166,13 @@ console.log(applicationStatus);
     Workmode,
   } = job;
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
+  };
   return (
     <div
       className="bg-cover bg-center bg-blend-lighten"
@@ -173,7 +180,7 @@ console.log(applicationStatus);
       <Navbar className="bg-white" />
       <button
         className="flex items-center px-2 py-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-2 ring-red-600 rounded-lg font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
-        onClick={() => navigate(-1)}>
+        onClick={() =>handleBack()}>
         <i className="fa-solid fa-arrow-left-long  mr-2"></i>
         Back
       </button>
