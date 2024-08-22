@@ -71,10 +71,10 @@ const SingleJob = () => {
       const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
       const applicant = Object.values(foundJob.applicants).find(app => app.email === currentUserEmail);
 
-      console.log(applicant);
+      
       if (applicant) {
         setApplicationStatus(applicant.applicationStatus || '');
-        console.log(applicant.applicationStatus);
+       
       }
     }
   }, [jobId, jobs, auth.currentUser]);
@@ -139,15 +139,15 @@ const SingleJob = () => {
   const progressPercentage = {
     pending: 10,
     withEmployer: 66,
-    accepted: 100,
-    rejected: 100,
+    approved: 100,
+    declined: 100,
   }[applicationStatus] || 0;
-
+console.log(applicationStatus);
   const progressText ={
     pending: 'Your Application ia currently under review ',
     withEmployer: 'Your Application is being reviewed by Recruters',
-    accepted: "Your Application was Accepted",
-    rejected:"Your Application for this Job role was Rejected",
+    approved: "Your Application was Accepted",
+    declined:"Your Application for this Job role was Rejected",
   }[applicationStatus] || 0;
 
   const {
@@ -230,13 +230,15 @@ const SingleJob = () => {
             {applied && (
               <div className="mt-6">
                 <h4 className="text-lg font-semibold mb-2">Application Progress:</h4>
+                {applicationStatus!=="declined" &&
+                
                 <div className="w-full bg-gray-200 rounded-full h-4">
                   <div
                     className={`h-full text-center animated-gradient-bg text-xs font-medium text-white bg-blue-600 rounded-full`}
                     style={{ width: `${progressPercentage}%` }}>
                     {progressPercentage}%
                   </div>
-                </div>
+                </div>}
                 <div className="font-bold">
                   {progressText}
                   </div>

@@ -13,6 +13,7 @@ export function JobsProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [uid, setUid] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [userType,setUserType]=useState("");
 
     useEffect(() => {
         setIsLoading(true);
@@ -24,7 +25,9 @@ export function JobsProvider({ children }) {
             for (const id in jobsData) {
                 loadedJobs.push({ id, ...jobsData[id] });
             }
-            setJobs(loadedJobs);
+            const reversedJobs = loadedJobs.reverse();
+      setJobs(reversedJobs);
+      setIsLoading(false);
         });
 
         const auth = getAuth();
@@ -36,12 +39,17 @@ export function JobsProvider({ children }) {
                 onValue(userRef, (snapshot) => {
                     const userData = snapshot.val();
                     setUser(userData);
+                    console.log((userData.userType));
+                   setUserType(userData.userType);
                 });
+               
             } else {
                 setIsLoggedIn(false);
                 setUid(null);
                 setUser(null);
+                
             }
+
             setIsLoading(false);
         });
         
@@ -56,7 +64,7 @@ export function JobsProvider({ children }) {
     
  
     return (
-        <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading}}>
+        <JobContext.Provider value={{ jobs, user, uid, isLoggedIn ,isLoading ,userType}}>
             {children}
         </JobContext.Provider>
     );

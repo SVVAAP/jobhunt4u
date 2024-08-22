@@ -7,33 +7,37 @@ import About from "../components/About";
 import Sidebar from "../Sidebar/Sidebar";
 import { ref, onValue } from "firebase/database";
 import { database } from "../firebase";
+import { useJobs } from "../context/jobsContext";
 
 const Home = () => {
+  const {jobs,isLoading}=useJobs;
   const [selectedCategory, setSelectedCategory] = useState({});
-  const [jobs, setJobs] = useState([]);
+  // const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [totalJobs, setTotalJobs] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [refreshSidebar, setRefreshSidebar] = useState(false);
 
-  useEffect(() => {
-    const jobRef = ref(database, "jobs");
-    onValue(jobRef, (snapshot) => {
-      const jobsData = snapshot.val();
-      const loadedJobs = [];
-      for (const id in jobsData) {
-        if (jobsData[id].status === "approved") {
-          loadedJobs.push({ id, ...jobsData[id] });
-        }
-      }
-      setJobs(loadedJobs);
-      setFilteredJobs(loadedJobs); // Initially set filteredJobs to all jobs
-      setIsLoading(false);
-    });
-  }, []);
+  // useEffect(() => {
+  //   const jobRef = ref(database, "jobs");
+  //   onValue(jobRef, (snapshot) => {
+  //     const jobsData = snapshot.val();
+  //     const loadedJobs = [];
+  //     for (const id in jobsData) {
+  //       if (jobsData[id].status === "approved") {
+  //         loadedJobs.push({ id, ...jobsData[id] });
+  //       }
+  //     }
+  //     // Reverse the jobs array to display the latest job first
+  //     const reversedJobs = loadedJobs.reverse();
+  //     setJobs(reversedJobs);
+  //     setFilteredJobs(reversedJobs); // Initially set filteredJobs to all jobs
+  //     setIsLoading(false);
+  //   });
+  // }, []);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);

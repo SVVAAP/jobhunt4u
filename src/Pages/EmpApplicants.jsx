@@ -49,17 +49,20 @@ function EmpApplicants() {
       });
   };
 
+  // Filter applicants based on status
+  const nonPendingApplicants = job?.applicants?.filter(applicant => applicant.applicationStatus !== "pending");
+
   return (
     <div>
       <h1>Applicants for {job?.jobTitle}</h1>
       <div className="transition-transform duration-700">
         {job && job.applicants && job.applicants.length > 0 ? (
-          <div>
-            {job.applicants.map((applicant, index) => (
-              applicant.applicationStatus !== "pending" && (
+          nonPendingApplicants.length > 0 ? (
+            <div className='bg-sky-900 p-2 m-5 mx-10 rounded-lg'>
+              {nonPendingApplicants.map((applicant, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 items-center bg-white p-2"
+                  className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 mx-2 items-center bg-white p-2"
                 >
                   <p className="text-center">{index + 1}</p>
                   <div className="w-full h-full bg-green-700 rounded-xl"></div>
@@ -98,16 +101,18 @@ function EmpApplicants() {
                       </div>
                     ) : (
                       <div className="text-center font-bold text-2xl">
-                        {applicant.applicationStatus}
+                        {(applicant.applicationStatus)}
                       </div>
                     )}
                   </div>
                 </div>
-              )
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p>No approved applicants yet.</p>
+          )
         ) : (
-          <p>No applicants for this job</p>
+          <p>No applicants for this job.</p>
         )}
       </div>
     </div>

@@ -6,7 +6,7 @@ import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
 import profpic from '../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
-import Inbox from './inbox'; // Import the Inbox component
+import Inbox from './inbox';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

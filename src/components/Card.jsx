@@ -6,6 +6,7 @@ import { RWebShare } from "react-web-share";
 import { useJobs } from "../context/jobsContext";
 
 const placeholderLogo = "https://cdn-icons-png.flaticon.com/128/4168/4168507.png"; // Placeholder image URL
+
 const formatIndianCurrency = (price) => {
   let parts = price.toString().split(".");
   let lastThree = parts[0].slice(-3);
@@ -20,9 +21,9 @@ const formatIndianCurrency = (price) => {
 };
 
 const Card = ({ data }) => {
-  // console.log(data);
-  const { user } = useJobs;
-  const candidate = user && user.userType === "candidate";
+  const { user, userType } = useJobs(); // Fix the useJobs destructuring
+  const candidate = user && userType === "candidate";
+
   const {
     id,
     companyLogo,
@@ -39,37 +40,51 @@ const Card = ({ data }) => {
     salaryType,
     applicants,
   } = data;
+
   return (
     <div
-      className="ring-sky-700 ring-2 rounded-lg  bg-white"
-      style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-      <div className="absolute top-0.1 flex items-center right-16  z-10" data-aos="fade-down" data-aos-delay="400">
-       {candidate && <h1 className="font-bold me-10">
-          Applicants:
-          {applicants ? (<span className="text-white ms-2 bg-red-700 rounded-full py-1 px-2">{applicants.length}</span>) :(" none")}
-        </h1>
-}
+      className="ring-sky-700 ring-2 rounded-lg bg-white"
+      style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}
+    >
+      <div className="absolute top-0.1 flex items-center right-16 z-10" data-aos="fade-down" data-aos-delay="400">
+        {user && !candidate && (
+          <h1 className="font-bold me-10">
+            Applicants:{" "}
+            {applicants ? (
+              <span className="text-white ms-2 bg-red-700 rounded-full py-1 px-2">
+                {applicants.length}
+              </span>
+            ) : (
+              " none"
+            )}
+          </h1>
+        )}
         <RWebShare
           data={{
             text: `Check out this Job on JobHunt4u \n Title: ${jobTitle}\n Description: ${description}\n`,
             url: `https://jobhunt4u.in/singlejob/${id}`,
             title: jobTitle,
           }}
-          onClick={() => console.log("shared successfully!")}>
-          <button className="text-sky-700 text-xl p-2 font-medium rounded-bl-lg rounded-tr-lg">
+          onClick={() => console.log("shared successfully!")}
+        >
+          <button className="text-sky-700 text-xl p-2 font-medium rounded-bl-lg rounded-tr-lg transition-transform duration-200 ease hover:scale-125">
             <i className="fa-solid fa-share-from-square"></i>
-            {/* <img className="h-4 transition-transform  duration-300 hover:scale-110" src={share} alt="share" /> */}
           </button>
         </RWebShare>
       </div>
       <section className="card">
         <Link
-          to={candidate ? `/singlejob/${id}` : `/applicants/${id}`}
-          className="flex gap-4 flex-col sm:flex-row items-start">
-          <img src={companyLogo || placeholderLogo} alt={jobTitle} className="w-16 h-16 mb-4 rounded" />
-          <div className="card-details ">
-            <h4 className="text-primary mb-1 font-semibold">Company Name : {companyName}</h4>
-            <h3 className="text-lg font-semibold mb-2">Job Role : {jobTitle}</h3>
+          to={user? (candidate ? `/singlejob/${id}` : `/applicants/${id}`):(`/singlejob/${id}`)}
+          className="flex gap-4 flex-col sm:flex-row items-start"
+        >
+          <img
+            src={companyLogo || placeholderLogo}
+            alt={jobTitle}
+            className="w-16 h-16 mb-4 rounded"
+          />
+          <div className="card-details">
+            <h4 className="text-primary mb-1 font-semibold">Company Name: {companyName}</h4>
+            <h3 className="text-lg font-semibold mb-2">Job Role: {jobTitle}</h3>
 
             <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
               <span className="flex items-center gap-2">
@@ -79,21 +94,25 @@ const Card = ({ data }) => {
                 <FiClock /> {employmentType}
               </span>
               <span className="flex items-center gap-2">
-                <FaRupeeSign className="text-gray-500" /> {formatIndianCurrency(minPrice)} -{" "}
-                {formatIndianCurrency(maxPrice)} {salaryType}
+                <FaRupeeSign className="text-gray-500" />{" "}
+                {formatIndianCurrency(minPrice)} - {formatIndianCurrency(maxPrice)}{" "}
+                {salaryType}
               </span>
               <span className="flex items-center gap-2">
                 <FiCalendar /> {postingDate}
               </span>
             </div>
             <div>
-              <span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}
+              <span className="font-semibold text-gray-700">Experience Level:</span>{" "}
+              {experienceLevel}
             </div>
             <div>
-              <span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}
+              <span className="font-semibold text-gray-700">Work Mode:</span>{" "}
+              {Workmode}
             </div>
-            <p className="text-base text-primary/70 ">
-              {description.slice(0, 55)}...<span className="text-emerald-700">Read More</span>
+            <p className="text-base text-primary/70">
+              {description.slice(0, 55)}...
+              <span className="text-emerald-700">Read More</span>
             </p>
           </div>
         </Link>

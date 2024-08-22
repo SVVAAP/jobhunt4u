@@ -43,7 +43,7 @@ const Location = ({ handleChange }) => {
           onChange={handleInputChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="form-input mt-2 mb-2 border-gray-300"
+          className="form-input mt-2 mb-2 border-gray-300 p-2" 
         />
         
           <div className="mt-2 max-h-40 overflow-y-auto  rounded">
