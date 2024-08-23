@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { auth, database, getDownloadURL, storage, ref as storageRef, uploadBytes } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
 import card_bg from "../assets/sign_card.png";
@@ -120,7 +120,7 @@ const Signup = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-400">
       <div className="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-10" style={{ backgroundImage: `url(${background})` }} />
-      <div className="relative bg-sky-50 shadow-2xl p-8 rounded-3xl ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10" style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="relative bg-sky-50 shadow-2xl p-8 rounded ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10 m-5" style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Signup</h2>
         <form onSubmit={handleSignup} className="space-y-4 text-center">
           <div className="flex justify-between items-center">
@@ -261,6 +261,14 @@ const Signup = () => {
             className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200">
             Signup
           </button>
+          <div className="flex flex-col justify-center items-center text-center">
+            <p className="text-lg bg-white/60 rounded-full px-4 py-2 relative w-fit">
+              Already have an Account?
+              <Link to="/login" className="text-sky-600 underline ml-1">Login</Link>
+            </p>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+          </div>
+
         </form>
       </div>
     </div>
