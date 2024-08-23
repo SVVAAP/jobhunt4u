@@ -185,9 +185,9 @@ const Home_Emp = () => {
         </h1>
       </div>
 
-      <div className="flex space-x-5 p-5">
+      <div className="md:grid grid-cols-3 gap-8 lg:px-12 px-4 py-6">
         {/* Sidebar */}
-        <div className="">
+        <div className="mb-6">
           <Sidebar
             key={refreshSidebar}
             handleChange={handleChange}
@@ -197,7 +197,7 @@ const Home_Emp = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 bg-sky-800 p-4 rounded-2xl">
+        <div className="col-span-2 bg-sky-800 p-4 rounded-2xl">
           {isLoading ? (
             <p className="font-medium text-white">Loading...</p>
           ) : paginatedJobs.length > 0 ? (
