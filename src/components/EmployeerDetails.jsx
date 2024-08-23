@@ -12,7 +12,7 @@ function EmployeerDetails() {
     onValue(userRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const employersList = Object.values(data).filter(user => user.userType === "employer"||"admin");
+        const employersList = Object.values(data).filter(user => user.userType !== "candidate");
         setEmployers(employersList);
       } else {
         setEmployers([]);
