@@ -53,7 +53,7 @@ const SuccessPopup = ({ message, onClose }) => (
 );
 
 const SingleJob = () => {
-  const { jobs, user, uid, isLoggedIn } = useJobs();
+  const { jobs, user, uid, isLoggedIn , userType  } = useJobs();
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -136,6 +136,7 @@ const SingleJob = () => {
     }
   };
 
+  const candidate = user && userType === "candidate";
   const progressPercentage = {
     pending: 10,
     withEmployer: 66,
@@ -237,14 +238,14 @@ const SingleJob = () => {
           <h4 className="text-lg font-semibold mb-2">Job Description:</h4>
           <p className="text-sm whitespace-pre-wrap">{description}</p>
         </div>
-
+{ candidate &&
         <button
           className="px-4 py-2 mt-4 bg-sky-600 text-white font-semibold rounded hover:bg-blue-700 transition-all duration-300"
           onClick={applyJob}
           disabled={applied}>
           {applied ? "Applied" : "Apply Now"}
         </button>
-
+}
         {applied && (
           <div className="mt-6">
             <h4 className="text-lg font-semibold mb-2">Application Progress:</h4>
