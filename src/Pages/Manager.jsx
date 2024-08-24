@@ -33,7 +33,8 @@ function Manager() {
         <div className='flex justify-center  m-5 space-x-10'>
             <Link to="/jobhunt4u-admin/" >All Jobs</Link>
             <Link to="/jobhunt4u-admin/applicants">Applicants</Link>
-            <Link to="/jobhunt4u-admin/employer">Employeer Details</Link>
+            <Link to="/jobhunt4u-admin/employer">Employer Details</Link>
+            <Link to="/jobhunt4u-admin/candidate">Candidate Details</Link>
             <Link to="/jobhunt4u-admin/addjob">Add JObs</Link>
             <Link to="/jobhunt4u-admin/site-content">Site Content</Link>
 
