@@ -43,7 +43,7 @@ const Card = ({ data }) => {
 
   return (
     <div
-      className="ring-sky-700 ring-2 rounded-lg bg-white"
+      className="relative ring-sky-700 ring-2 rounded-lg bg-white"
       style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}
     >
       <div className="absolute top-0.1 flex items-center right-8 md:right-16 z-10" data-aos="fade-down" data-aos-delay="400">

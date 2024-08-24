@@ -46,8 +46,8 @@ function Manager() {
   ];
 
   return (
-    <div>
-      <div className="bg-sky-900 p-2 rounded-xl m-2">
+    <div className="sticky top-0">
+      <div className=" bg-sky-900 p-2 rounded-xl m-2 ">
         <div className="flex justify-center bg-sky-900 p-2">
           <h1 className="text-white text-xl bg-white/25 m-0.5 w-fit p-0.5 rounded-xl px-6 ">Admin Console</h1>
         </div>
