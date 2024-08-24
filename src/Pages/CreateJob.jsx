@@ -106,8 +106,8 @@ const CreateJob = () => {
   ];
 
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16">
+    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4" id="profbg">
+      <div className="bg-sky-900/80 rounded-xl text-white py-10 px-4 lg:px-16">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
@@ -116,7 +116,7 @@ const CreateJob = () => {
                 type="text"
                 placeholder="Ex: web developer..."
                 {...register("jobTitle", { required: "This field is required. Please enter the job title." })}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
               {errors.jobTitle && <p className="text-red-500">{errors.jobTitle.message}</p>}
             </div>
@@ -126,7 +126,7 @@ const CreateJob = () => {
                 type="text"
                 placeholder="Ex: Microsoft"
                 {...register("companyName", { required: "This field is required. Please enter the company name." })}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
               {errors.companyName && <p className="text-red-500">{errors.companyName.message}</p>}
             </div>
@@ -138,7 +138,7 @@ const CreateJob = () => {
                 type="text"
                 placeholder="₹..."
                 {...register("minPrice")}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
               {errors.minPrice && <p className="text-red-500">{errors.minPrice.message}</p>}
             </div>
@@ -148,7 +148,7 @@ const CreateJob = () => {
                 type="text"
                 placeholder="₹..."
                 {...register("maxPrice")}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
               {errors.maxPrice && <p className="text-red-500">{errors.maxPrice.message}</p>}
             </div>
@@ -156,7 +156,7 @@ const CreateJob = () => {
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary Type</label>
-              <select {...register("salaryType", { required: "This field is required. Please choose a salary type." })} className="create-job-input">
+              <select {...register("salaryType", { required: "This field is required. Please choose a salary type." })} className="create-job-input rounded-md">
                 <option value="">Choose your salary</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
@@ -170,7 +170,7 @@ const CreateJob = () => {
                 type="text"
                 placeholder="Ex: Mumbai,Bangalore,...."
                 {...register("jobLocation", { required: "This field is required. Please enter the job location." })}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
               {errors.jobLocation && <p className="text-red-500">{errors.jobLocation.message}</p>}
             </div>
@@ -182,7 +182,7 @@ const CreateJob = () => {
                 type="date"
                 defaultValue={new Date().toISOString().split('T')[0]}
                 {...register("postingDate")}
-                className="create-job-input"
+                className="create-job-input rounded-md"
                 readOnly
               />
               {errors.postingDate && <p className="text-red-500">{errors.postingDate.message}</p>}
@@ -191,7 +191,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Experience Level</label>
               <select
                 {...register("experienceLevel", { required: "This field is required. Please choose an experience level." })}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               >
                 <option value="">Choose your experience</option>
                 <option value="NoExperience">No Experience / Fresher</option>
@@ -206,7 +206,7 @@ const CreateJob = () => {
           <div>
             <label className="block mb-2 text-lg">Required Skills Set</label>
             <CreatableSelect
-              className="create-job-input py-4"
+              className="create-job-input rounded-md py-4"
               defaultValue={selectedOption}
               onChange={setSelectedOption}
               options={options}
@@ -220,14 +220,14 @@ const CreateJob = () => {
                 type="file"
                 accept="image/*"
                 onChange={(e) => setLogoFile(e.target.files[0])}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               />
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Employment Type</label>
               <select
                 {...register("employmentType", { required: "This field is required. Please choose an employment type." })}
-                className="create-job-input"
+                className="create-job-input rounded-md"
               >
                 <option value="">Choose employment type</option>
                 <option value="FullTime">Full Time</option>
@@ -244,7 +244,7 @@ const CreateJob = () => {
             <textarea
               rows="4"
               {...register("description", { required: "This field is required. Please enter the job description." })}
-              className="create-job-input"
+              className="create-job-input rounded-md"
               placeholder="Job Description..."
             ></textarea>
             {errors.description && <p className="text-red-500">{errors.description.message}</p>}
@@ -253,7 +253,7 @@ const CreateJob = () => {
             <label className="block mb-2 text-lg">Work Mode</label>
             <select
               {...register("workmode", { required: "This field is required. Please choose a work mode." })}
-              className="create-job-input"
+              className="create-job-input rounded-md"
             >
               <option value="">Choose work mode</option>
               <option value="onsite">On-Site</option>
@@ -267,7 +267,7 @@ const CreateJob = () => {
             <input
               type="text"
               {...register("postedBy")}
-              className="create-job-input"
+              className="create-job-input rounded-md"
               defaultValue={user ? user.email : ""}
               readOnly
             />
