@@ -47,7 +47,7 @@ function Manager() {
 
   return (
     <div>
-      <div className="bg-sky-900 p-2">
+      <div className="bg-sky-900 p-2 rounded-xl m-2">
         <div className="flex justify-center bg-sky-900 p-2">
           <h1 className="text-white text-xl bg-white/25 m-0.5 w-fit p-0.5 rounded-xl px-6 ">Admin Console</h1>
         </div>
@@ -65,12 +65,10 @@ function Manager() {
           ))}
 
           <div className="absolute right-8">
-            <img
-              src="https://cdn2.iconfinder.com/data/icons/interface-essentials-1-2/24/logout--logout-frame-leave-exit-arrow-right-circle-512.png"
-              alt="logout"
-              className="float-right h-7 cursor-pointer"
+            <button
+              className="float-right h-7 cursor-pointer "
               onClick={handleLogout}
-            />
+            ><i className="fa-solid fa-arrow-right-from-bracket text-white text-xl hover:bg-white/25 p-1 px-2 rounded-lg"></i></button>
           </div>
         </div>
       </div>
