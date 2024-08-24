@@ -13,7 +13,7 @@ function EmployeerDetails() {
       const data = snapshot.val();
       if (data) {
         const employersList = Object.values(data).filter(user => user.userType !== "candidate");
-        setEmployers(employersList);
+        setEmployers(employersList.reverse());
       } else {
         setEmployers([]);
       }

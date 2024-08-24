@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useJobs } from '../context/jobsContext';
-import Card from './Card2';
+import Card from './Card';
+import Card2 from "../components/Card2";
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 
-function Employee_card({ employer, index }) {
+function Employee_card({ employer, index , Candidate}) {
   const [showJobs, setShowJobs] = useState(false);
   const { jobs, user } = useJobs();
 
+  const applied = employer?.appliedJobs && Array.isArray(employer.appliedJobs)
+  ? jobs.filter((job) => employer.appliedJobs.includes(job.id))
+  : [];
   const handleApprove = (id) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "approved" })
@@ -54,19 +58,34 @@ function Employee_card({ employer, index }) {
           ></i>
         </div>
       </div>
-
+{!Candidate ?(
       <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
         <h3 className="text-lg font-semibold mb-2">Uploaded Jobs</h3>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
           {userJobs && userJobs.length > 0 ? (
             userJobs.map((data, i) => (
-              <Card key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
+              <Card2 key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
             ))
           ) : (
             <p>No Jobs Uploaded....</p>
           )}
         </div>
-      </div>
+      </div> ):(
+        <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
+           <h3 className="text-lg font-semibold mb-2">Applied Jobs</h3>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          {applied && applied.length > 0 ? (
+            applied.map((data, i) => (
+              <Card key={i} data={data}  />
+            ))
+          ) : (
+            <p>No Jobs Uploaded....</p>
+          )}
+          </div>
+        </div>
+      )
+      }
+
     </div>
   );
 }

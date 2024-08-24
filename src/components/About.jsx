@@ -61,7 +61,10 @@ const About = () => {
         <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
           <span className="animated-gradient-header"> About</span> Us
         </h2>
-        <p className="mt-4 text-lg text-gray-500">{aboutContent}</p>
+        <p
+          className="mt-4 text-xl text-gray-500 text-justify"
+          dangerouslySetInnerHTML={{ __html: aboutContent.replace(/\n/g, "<br/>") }}
+        ></p>
       </div>
 
       <div className="mt-10">
