@@ -121,8 +121,8 @@ function Profile() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-    <div className="flex justify-between content-center text-center m-2 p-8">
+    <div className=" p-4" id="profbg">
+    <div className="container mx-auto flex justify-between content-center text-center m-auto p-8">
        <button
           className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-2 ring-red-600 rounded-lg font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
           onClick={() => navigate(-1)}>

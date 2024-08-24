@@ -24,6 +24,40 @@ body::before {
   z-index: -1; /* Ensure it is behind other content */
 }
 
+#profbg {
+  position: relative; /* Ensure the element is positioned */
+}
+
+#profbg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("./assets/logo.png");
+ 
+  background-repeat: repeat;
+  background-size: 100px 100px; /* Adjust the size as needed */
+  opacity: 0.3; /* Adjust the opacity */
+  z-index: -1; 
+  animation: moveBackground 10s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100px -100px; /* Adjust the values to control the speed and direction */
+  }
+}
+
+#profbg > * {
+  position: relative;
+  z-index: 1; /* Ensure the content is above the pseudo-element */
+}
+
 /* Optional: Adding a background color as a fallback */
 /* body {
   background-color: #f0f0f0; Fallback color */
