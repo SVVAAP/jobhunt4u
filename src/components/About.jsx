@@ -62,7 +62,7 @@ const About = () => {
           <span className="animated-gradient-header"> About</span> Us
         </h2>
         <p
-          className="mt-4 text-xl text-gray-500 text-justify"
+          className="mt-4 text-xl text-gray-500 text-justify p-4"
           dangerouslySetInnerHTML={{ __html: aboutContent.replace(/\n/g, "<br/>") }}
         ></p>
       </div>
@@ -100,7 +100,7 @@ const About = () => {
             Near Alphonso Matrimony, Leo Brother&apos;s Shopping Complex
           </p>
           <a href="#map">
-            <p className="text-lg font-semibold text-gray-900">Mukamar, Udupi Dist. 574 111</p>
+            <p className="text-lg font-semibold text-gray-900">Mukamar, Udupi Dist. 574111</p>
           </a>
         </div>
       </div>
