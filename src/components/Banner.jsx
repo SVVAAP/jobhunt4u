@@ -15,7 +15,7 @@ const Banner = ({ handleInputChange, query }) => {
 
 
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Get back to growth with <span className=" text-blue dark:text-blue-500 animated-gradient">the world&apos;s #1</span> JobHunt</h1>
-      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Jobhunt4U Agency in Karnataka: Empowering careers, transforming lives, and shaping futures with dedication and excellence.</p>
+      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Jobhunt4U Agency in India: Empowering careers, transforming lives, and shaping futures with dedication and excellence.</p>
       <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
         <a href="#search" className="rounded-md bg-blue px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get started</a>
         <a href="#about" className="text-sm font-semibold leading-6 text-black">Learn more <span aria-hidden="true">→</span></a>
