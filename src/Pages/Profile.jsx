@@ -48,9 +48,9 @@ function Profile() {
 
   const handleLogout = async () => {
     try {
-      if(confirm("Are you Sure You want to logout?")){
-      await signOut(auth);
-      navigate("/");
+      if (confirm("Are you Sure You want to logout?")) {
+        await signOut(auth);
+        navigate("/");
       }
     } catch (error) {
       console.error("Error signing out: ", error);
@@ -92,7 +92,7 @@ function Profile() {
           companyNames: formData.companyNames,
           resumeUrl: resumeUrl,
           appliedJobs: currentUser.appliedJobs ?? [],
-          userType: currentUser.userType?currentUser.userType:'candidate' ,
+          userType: currentUser.userType ? currentUser.userType : 'candidate',
         });
 
         setIsEditing(false);
@@ -122,18 +122,18 @@ function Profile() {
 
   return (
     <div className=" p-4" id="profbg">
-    <div className="container mx-auto flex justify-between content-center text-center m-auto p-8">
-       <button
-          className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-2 ring-red-600 rounded-lg font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
+      <div className="container mx-auto flex justify-between content-center text-center m-auto p-8">
+        <button
+          className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
           onClick={() => navigate(-1)}>
           <i className="fa-solid fa-arrow-left-long  mr-2"></i>
           Back
         </button>
         <button onClick={handleLogout} className=" bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
-        <i className="fa-solid fa-right-from-bracket"></i> Logout
+          <i className="fa-solid fa-right-from-bracket"></i> Logout
         </button>
       </div>
-      <div className="relative bg-white shadow-md rounded-lg p-4">
+      <div className="relative bg-white shadow-md rounded-lg m-8 p-8">
         {!isEditing && (
           <HiPencil onClick={handleEditClick} className="absolute top-4 right-4 text-blue-500 cursor-pointer text-xl" />
         )}
@@ -210,9 +210,8 @@ function Profile() {
                     name="yearsOfExperience"
                     value={formData.yearsOfExperience}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${
-                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
-                    }`}
+                    className={`formInput p-2 border rounded w-full ${!isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                      }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -224,9 +223,8 @@ function Profile() {
                     name="companyNames"
                     value={formData.companyNames}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${
-                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
-                    }`}
+                    className={`formInput p-2 border rounded w-full ${!isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                      }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -235,7 +233,8 @@ function Profile() {
 
             <div className="formField">
               <label className="block text-gray-700 mb-1">Resume</label>
-              {!isEditing && formData.resume && (
+
+              {!isEditing && formData.resume ? (
                 <a
                   href={formData.resume}
                   target="_blank"
@@ -243,7 +242,14 @@ function Profile() {
                   className="text-blue-500 mt-2 block">
                   <b>Your Resume - click here to view</b>
                 </a>
+              ) : (
+                !formData.resume && (
+                  <p className="text-red-500 font-semibold mt-2">
+                    Please upload your resume
+                  </p>
+                )
               )}
+
               {isEditing && (
                 <input
                   type="file"
@@ -253,6 +259,7 @@ function Profile() {
                 />
               )}
             </div>
+
 
             <div className="flex justify-between">
               {isEditing && (
@@ -265,7 +272,7 @@ function Profile() {
         </form>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 p-4">
         <h2 className="text-xl font-semibold">Applied Jobs</h2>
         {filteredJobs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
