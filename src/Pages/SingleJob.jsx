@@ -190,7 +190,7 @@ const SingleJob = () => {
 
          {/* Close button */}
     <button
-      className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-50"
+      className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-10"
       onClick={() => handleBack()}>
       <i className="fa-solid fa-xmark text-2xl"></i>
     </button>
