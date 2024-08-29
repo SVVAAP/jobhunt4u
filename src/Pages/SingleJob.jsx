@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import card_image from "../assets/card_back.png";
 import background from "../assets/singlejob_background.png";
 import card_bg from "../assets/card_back2.png";
+import TermsAndConditions from "../components/TermsAndConditions";
 
 const placeholderLogo = "https://cdn-icons-png.flaticon.com/128/4168/4168507.png";
 
@@ -57,6 +58,7 @@ const SingleJob = () => {
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showConditions,setShowConditions]=useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
@@ -92,6 +94,7 @@ const SingleJob = () => {
   }
 
   const applyJob = () => {
+    setShowConditions(false)
     if (user) {
       if (user.resume !== "") {
         if (!user.appliedJobs) {
@@ -145,10 +148,10 @@ const SingleJob = () => {
   }[applicationStatus] || 0;
   console.log(applicationStatus);
   const progressText = {
-    pending: 'Your Application ia currently under review ',
-    withEmployer: 'Your Application is being reviewed by Recruters',
+    pending: 'Your Application is currently under review ',
+    withEmployer: 'Your Application is being reviewed by Recruiter',
     approved: "Your Application was Accepted",
-    declined: "Your Application for this Job role was Rejected",
+    declined: "Your Application for this Job role was Rejected, Better Luck Next Time !!!!",
   }[applicationStatus] || 0;
 
   const {
@@ -237,8 +240,8 @@ const SingleJob = () => {
         </div>
 { candidate &&
         <button
-          className={`px-3 py-1.5 mt-2 ${applied? "animated-gradient-header ring-2 ring-blue  ":"apply-bt"} font-bold rounded-lg hover:bg-blue-700 transition-all duration-300`}
-          onClick={applyJob}
+          className={`px-3 py-1.5 mt-2 ${applied? "animated-gradient-header ring-2 ring-blue  ":"apply-bt"} font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
+          onClick={()=>{setShowConditions(true)}}
           disabled={applied}>
           {applied ? "Applied" : "Apply Now"}
         </button>
@@ -268,6 +271,27 @@ const SingleJob = () => {
       onClose={() => setShowPopup(false)}
     />
   )}
+  {showConditions &&(
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
+          <TermsAndConditions />
+          <div className="mt-4 flex justify-between">
+            <button
+              className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
+              onClick={() => setShowConditions(false)}
+            >
+              Close
+            </button>
+            <button
+              className="px-3 py-1.5 font-bold rounded-lg bg-green-500 text-white hover:bg-green-700 transition-all duration-300"
+              onClick={applyJob}
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
 </div>
 
   );

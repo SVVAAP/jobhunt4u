@@ -280,15 +280,30 @@ li {
 }
 
 .apply-bt {
- background: linear-gradient(45deg, midnightblue, darkslateblue, darkcyan, forestgreen, darkolivegreen, darkmagenta, darkred);
- background-clip: text;
+  background: linear-gradient(45deg, midnightblue, darkslateblue, darkcyan, forestgreen, darkolivegreen, darkmagenta, darkred);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   border: 2px solid;
-  border-image: linear-gradient(45deg, midnightblue, darkslateblue, darkcyan, forestgreen, darkolivegreen, darkmagenta, darkred) 1;
+  border-left-color: darkcyan;
+  border-right-color: darkred;
+  border-top-color: darkolivegreen;
+  border-bottom-color: darkolivegreen;
   background-size: 200% 200%;
-  animation: gradient-flow 10s ease infinite;
-  border-radius: 12px; /* Curved border */
+   animation: gradient-flow 10s ease infinite;
+  transition: color 0.3s ease, background 0.3s ease; /* Smooth transition */
+}
+
+.apply-bt:hover {
+  border-left-color: white;
+  border-right-color: white;
+  border-top-color: white;
+  border-bottom-color: white;
+  background: linear-gradient(45deg, midnightblue, darkslateblue, darkcyan, forestgreen, darkolivegreen, darkmagenta, darkred);
+  background-size: 400% 400%;
+  animation: gradient-flow 10s ease infinite; /* Continuous gradient animation on hover */
+  -webkit-text-fill-color: white; /* Set text to white on hover */
+  color: white; /* Text color for other browsers */
 }
 /* create a job page */
 
