@@ -187,7 +187,7 @@ const SingleJob = () => {
 
          {/* Close button */}
     <button
-      className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-50"
+      className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-10"
       onClick={() => handleBack()}>
       <i className="fa-solid fa-xmark text-2xl"></i>
     </button>
@@ -237,7 +237,7 @@ const SingleJob = () => {
         </div>
 { candidate &&
         <button
-          className="px-4 py-2 mt-4 bg-sky-600 text-white font-semibold rounded hover:bg-blue-700 transition-all duration-300"
+          className={`px-3 py-1.5 mt-2 ${applied? "animated-gradient-header ring-2 ring-blue  ":"apply-bt"} font-bold rounded-lg hover:bg-blue-700 transition-all duration-300`}
           onClick={applyJob}
           disabled={applied}>
           {applied ? "Applied" : "Apply Now"}

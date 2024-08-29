@@ -79,7 +79,7 @@ function Employee_card({ employer, index , Candidate}) {
               <Card key={i} data={data}  />
             ))
           ) : (
-            <p>No Jobs Uploaded....</p>
+            <p>No Jobs Applied....</p>
           )}
           </div>
         </div>

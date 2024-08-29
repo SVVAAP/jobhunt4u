@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, database, getDownloadURL, storage, ref as storageRef, uploadBytes } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -21,7 +21,20 @@ const Signup = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [verified, setVerified] = useState(false);
   const [location, setLocation] = useState("");
+  const [timer, setTimer] = useState(0); // State to keep track of timer
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
 
   const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
@@ -31,10 +44,10 @@ const Signup = () => {
     const templateParams = {
       to_name: name,
       otp: otp_code,
-      to_email: email
+      to_email: email,
     };
 
-    emailjs.send("service_6iar33a", "template_be150gv", templateParams, "nq0XIkYT4cuoYUKQI").then(
+    emailjs.send("service_w9shb6j", "template_9b9fk37", templateParams, "MZ-qy3k1Y1ct2suVP").then(
       (result) => {
         console.log("OTP sent:", result.text);
       },
@@ -52,6 +65,7 @@ const Signup = () => {
       sendOtpEmail(generatedOtp);
       setShowOtp(true);
       setError(null);
+      setTimer(180); // Set timer for 3 minutes (180 seconds)
       alert("OTP Sent Successfully");
     } catch (error) {
       setError(error.message);
@@ -119,8 +133,13 @@ const Signup = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-400">
-      <div className="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-10" style={{ backgroundImage: `url(${background})` }} />
-      <div className="relative bg-sky-50 shadow-2xl p-8 rounded ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10 m-5" style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div
+        className="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-25"
+        style={{ backgroundImage: `url(${background})` }}
+      />
+      <div
+        className="relative bg-sky-50 shadow-2xl p-8 rounded-lg ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10 m-5"
+        style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Signup</h2>
         <form onSubmit={handleSignup} className="space-y-4 text-center">
           <div className="flex justify-between items-center">
@@ -144,12 +163,12 @@ const Signup = () => {
               className="mt-1 block w-3/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               required
             />
-            <button
-              className="bg-blue-600 ring-2 ring-blue text-sky-950 p-2 rounded-md hover:bg-sky-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
+           <button
+              className="bg-blue-600 ring-2 bg-white/85 ring-blue text-sky-950 p-2 rounded-md hover:bg-sky-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
               onClick={openOtp}
               type="button"
-              disabled={verified}>
-              {verified ? "Verified" : "Verify"}
+              disabled={verified || timer > 0}>
+              {verified ? "Verified" : timer > 0 ? `Resend in ${timer}s` : "Verify"}
             </button>
           </div>
           {showOtp && (
@@ -264,11 +283,12 @@ const Signup = () => {
           <div className="flex flex-col justify-center items-center text-center">
             <p className="text-lg bg-white/60 rounded-full px-4 py-2 relative w-fit">
               Already have an Account?
-              <Link to="/login" className="text-sky-600 underline ml-1">Login</Link>
+              <Link to="/login" className="text-sky-600 underline ml-1">
+                Login
+              </Link>
             </p>
             {error && <p className="text-red-500 mt-2">{error}</p>}
           </div>
-
         </form>
       </div>
     </div>

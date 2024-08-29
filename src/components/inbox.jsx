@@ -5,7 +5,7 @@ import MessageCard from "./MessageCard";
 
 const Inbox = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const {  uid ,inboxMessages ,mark } = useJobs();
+  const { uid, inboxMessages, mark } = useJobs();
   const inboxRef = useRef(null);
 
   const toggleInbox = () => {
@@ -46,24 +46,25 @@ const Inbox = () => {
     };
   }, [isVisible]);
 
-
   return (
     <>
-    <div className="relative inline-block">
-  <i
-    className="text-2xl text-primary mr-5 fa-solid fa-envelope"
-    onClick={toggleInbox}
-  ></i>
-  {mark && 
-  <div className="absolute top-0 right-0 transform -translate-x-4 translate-y-0.5 w-3 h-3 bg-red-600 rounded-full"></div>
-}</div>
+      <div className="relative inline-block">
+        <i
+          className="text-2xl text-primary mr-5 fa-solid fa-envelope"
+          onClick={toggleInbox}
+        ></i>
+        {mark && (
+          <div className="absolute top-0 right-0 transform -translate-x-4 translate-y-0.5 w-3 h-3 bg-red-600 rounded-full"></div>
+        )}
+      </div>
 
       <div
         ref={inboxRef}
         className={`fixed top-0 right-0 z-20 h-full bg-gray-800 text-white shadow-lg transition-transform transform duration-500 ${
           isVisible ? "translate-x-0" : "translate-x-full"
         }`}
-        style={{ width: "25%" }}>
+        style={{ width: "25%", overflowY: "hidden" }}
+      >
         <div className="p-4 relative">
           <button className="absolute top-4 right-12 text-white text-xl" onClick={deleteAllMessages}>
             <i className="fa-solid fa-trash"></i>
@@ -72,9 +73,11 @@ const Inbox = () => {
             <i className="fa-solid fa-xmark"></i>
           </button>
           <h2 className="text-lg font-bold">Inbox</h2>
-          <div className="mt-4">
+          <div className="mt-4 max-h-[calc(100vh-100px)] overflow-y-auto pr-2 hide-scrollbar">
             {inboxMessages.length > 0 ? (
-              inboxMessages.map((message) => <MessageCard key={message.id} message={message} markAsSeen={markAsSeen} />)
+              inboxMessages.map((message) => (
+                <MessageCard key={message.id} message={message} markAsSeen={markAsSeen} />
+              ))
             ) : (
               <p>No messages in your inbox.</p>
             )}
