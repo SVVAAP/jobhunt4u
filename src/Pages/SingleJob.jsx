@@ -91,7 +91,7 @@ const SingleJob = () => {
 
   const applyJob = () => {
     setShowConditions(false);
-    if (user) {
+   
       if (user.resume !== "") {
         if (!user.appliedJobs) {
           user.appliedJobs = [];
@@ -128,11 +128,7 @@ const SingleJob = () => {
       } else {
         alert("Please Upload Your Resume.");
       }
-    } else {
-      if (confirm("Please login to apply for the job!")) {
-        window.location.href = "/login";
-      }
-    }
+   
   };
 
   const candidate = user && userType === "candidate";
@@ -254,7 +250,9 @@ const SingleJob = () => {
                   applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
                 } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
                 onClick={() => {
-                  setShowConditions(true);
+                  if (confirm("Please login to apply for the job!")) {
+                    window.location.href = "/login";
+                  }
                 }}
                 disabled={applied}>
                 {applied ? "Applied" : "Apply Now"}
