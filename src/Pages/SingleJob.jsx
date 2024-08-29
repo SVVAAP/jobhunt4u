@@ -54,11 +54,11 @@ const SuccessPopup = ({ message, onClose }) => (
 );
 
 const SingleJob = () => {
-  const { jobs, user, uid, isLoggedIn , userType  } = useJobs();
+  const { jobs, user, uid, isLoggedIn, userType } = useJobs();
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showConditions,setShowConditions]=useState(false);
+  const [showConditions, setShowConditions] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
@@ -66,24 +66,20 @@ const SingleJob = () => {
   const auth = getAuth();
 
   useEffect(() => {
-    const foundJob = jobs.find(job => job.id === jobId);
+    const foundJob = jobs.find((job) => job.id === jobId);
     setJob(foundJob);
 
     if (foundJob && foundJob.applicants) {
       const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
-      const applicant = Object.values(foundJob.applicants).find(app => app.email === currentUserEmail);
-
+      const applicant = Object.values(foundJob.applicants).find((app) => app.email === currentUserEmail);
 
       if (applicant) {
-        setApplicationStatus(applicant.applicationStatus || '');
-
+        setApplicationStatus(applicant.applicationStatus || "");
       }
     }
   }, [jobId, jobs, auth.currentUser]);
 
-  const [applied, setApplied] = useState(
-    isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId)
-  );
+  const [applied, setApplied] = useState(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId));
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -94,7 +90,7 @@ const SingleJob = () => {
   }
 
   const applyJob = () => {
-    setShowConditions(false)
+    setShowConditions(false);
     if (user) {
       if (user.resume !== "") {
         if (!user.appliedJobs) {
@@ -114,7 +110,7 @@ const SingleJob = () => {
 
               const applicantWithStatus = {
                 ...userWithoutTypeAndAppliedJobs,
-                uid: uid,  // Add uid here
+                uid: uid, // Add uid here
                 applicationStatus: "pending",
               };
 
@@ -140,19 +136,21 @@ const SingleJob = () => {
   };
 
   const candidate = user && userType === "candidate";
-  const progressPercentage = {
-    pending: 10,
-    withEmployer: 66,
-    approved: 100,
-    declined: 100,
-  }[applicationStatus] || 0;
+  const progressPercentage =
+    {
+      pending: 10,
+      withEmployer: 66,
+      approved: 100,
+      declined: 100,
+    }[applicationStatus] || 0;
   console.log(applicationStatus);
-  const progressText = {
-    pending: 'Your Application is currently under review ',
-    withEmployer: 'Your Application is being reviewed by Recruiter',
-    approved: "Your Application was Accepted",
-    declined: "Your Application for this Job role was Rejected, Better Luck Next Time !!!!",
-  }[applicationStatus] || 0;
+  const progressText =
+    {
+      pending: "Your Application is currently under review ",
+      withEmployer: "Your Application is being reviewed by Recruiter",
+      approved: "Your Application was Accepted",
+      declined: "Your Application for this Job role was Rejected, Better Luck Next Time !!!!",
+    }[applicationStatus] || 0;
 
   const {
     companyLogo,
@@ -179,121 +177,133 @@ const SingleJob = () => {
   };
   return (
     <div
-  className="bg-cover bg-center bg-blend-lighten"
-  style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-  <Navbar className="bg-white" />
+      className="bg-cover bg-center bg-blend-lighten"
+      style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <Navbar className="bg-white" />
 
-  <div className="job-detail-container p-5 min-h-screen flex items-center justify-center relative">
-    <div
-      className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-105 relative"
-      style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="job-detail-container p-5 min-h-screen flex items-center justify-center relative">
+        <div
+          className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-105 relative"
+          style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+          {/* Close button */}
+          <button
+            className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-10"
+            onClick={() => handleBack()}>
+            <i className="fa-solid fa-xmark text-2xl"></i>
+          </button>
 
-         {/* Close button */}
-    <button
-      className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-10"
-      onClick={() => handleBack()}>
-      <i className="fa-solid fa-xmark text-2xl"></i>
-    </button>
+          <img
+            src={companyLogo || placeholderLogo}
+            alt={jobTitle}
+            className="w-20 h-20 mb-4 md:mb-0 md:mr-6 rounded-full border-2 border-gray-200"
+            onError={(e) => (e.target.src = placeholderLogo)}
+          />
 
-      <img
-        src={companyLogo || placeholderLogo}
-        alt={jobTitle}
-        className="w-20 h-20 mb-4 md:mb-0 md:mr-6 rounded-full border-2 border-gray-200"
-        onError={(e) => (e.target.src = placeholderLogo)}
-      />
+          <div className="job-details flex-1">
+            <h4 className="text-blue-600 mb-2 text-2xl font-bold">{companyName}</h4>
+            <h3 className="text-gray-800 text-xl font-semibold mb-4">{jobTitle}</h3>
 
-      <div className="job-details flex-1">
-        <h4 className="text-blue-600 mb-2 text-2xl font-bold">{companyName}</h4>
-        <h3 className="text-gray-800 text-xl font-semibold mb-4">{jobTitle}</h3>
+            <div className="text-gray-600 text-base flex flex-col md:flex-row gap-4 mb-6">
+              <span className="flex items-center gap-2 text-lg">
+                <FiMapPin className="text-gray-500" /> {jobLocation}
+              </span>
+              <span className="flex items-center gap-2 text-lg">
+                <FiClock className="text-gray-500" /> {employmentType}
+              </span>
+              <span className="flex items-center gap-2">
+                <FaRupeeSign className="text-gray-500" /> {formatIndianCurrency(minPrice)} -{" "}
+                {formatIndianCurrency(maxPrice)} {salaryType}
+              </span>
+              <span className="flex items-center gap-2 text-lg">
+                <FiCalendar className="text-gray-500" /> {postingDate}
+              </span>
+            </div>
 
-        <div className="text-gray-600 text-base flex flex-col md:flex-row gap-4 mb-6">
-          <span className="flex items-center gap-2 text-lg">
-            <FiMapPin className="text-gray-500" /> {jobLocation}
-          </span>
-          <span className="flex items-center gap-2 text-lg">
-            <FiClock className="text-gray-500" /> {employmentType}
-          </span>
-          <span className="flex items-center gap-2">
-            <FaRupeeSign className="text-gray-500" /> {formatIndianCurrency(minPrice)} -{" "}
-            {formatIndianCurrency(maxPrice)} {salaryType}
-          </span>
-          <span className="flex items-center gap-2 text-lg">
-            <FiCalendar className="text-gray-500" /> {postingDate}
-          </span>
-        </div>
+            <div className="text-gray-600 text-base flex flex-col gap-2 mb-6">
+              <div>
+                <span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}
+              </div>
+              <div>
+                <span className="font-semibold text-gray-700">Skills Required:</span> {skills.join(", ")}
+              </div>
+              <div>
+                <span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}
+              </div>
+            </div>
 
-        <div className="text-gray-600 text-base flex flex-col gap-2 mb-6">
-          <div>
-            <span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}
+            <div className="text-gray-800 mb-6">
+              <h4 className="text-lg font-semibold mb-2">Job Description:</h4>
+              <p className="text-sm whitespace-pre-wrap">{description}</p>
+            </div>
+            {user ? (
+              candidate && (
+                <button
+                  className={`px-3 py-1.5 mt-2 ${
+                    applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
+                  } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
+                  onClick={() => {
+                    setShowConditions(true);
+                  }}
+                  disabled={applied}>
+                  {applied ? "Applied" : "Apply Now"}
+                </button>
+              )
+            ) : (
+              <button
+                className={`px-3 py-1.5 mt-2 ${
+                  applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
+                } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
+                onClick={() => {
+                  setShowConditions(true);
+                }}
+                disabled={applied}>
+                {applied ? "Applied" : "Apply Now"}
+              </button>
+            )}
+            {applied && (
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold mb-2">Application Progress:</h4>
+                {applicationStatus !== "declined" && (
+                  <div className="w-full bg-gray-200 rounded-full h-4">
+                    <div
+                      className={`h-full text-center animated-gradient-bg text-xs font-medium text-white bg-blue-600 rounded-full`}
+                      style={{ width: `${progressPercentage}%` }}>
+                      {progressPercentage}%
+                    </div>
+                  </div>
+                )}
+                <div className="font-bold">{progressText}</div>
+              </div>
+            )}
           </div>
-          <div>
-            <span className="font-semibold text-gray-700">Skills Required:</span> {skills.join(", ")}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}
-          </div>
         </div>
-
-        <div className="text-gray-800 mb-6">
-          <h4 className="text-lg font-semibold mb-2">Job Description:</h4>
-          <p className="text-sm whitespace-pre-wrap">{description}</p>
-        </div>
-{ candidate &&
-        <button
-          className={`px-3 py-1.5 mt-2 ${applied? "animated-gradient-header ring-2 ring-blue  ":"apply-bt"} font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
-          onClick={()=>{setShowConditions(true)}}
-          disabled={applied}>
-          {applied ? "Applied" : "Apply Now"}
-        </button>
-}
-        {applied && (
-          <div className="mt-6">
-            <h4 className="text-lg font-semibold mb-2">Application Progress:</h4>
-            {applicationStatus !== "declined" &&
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className={`h-full text-center animated-gradient-bg text-xs font-medium text-white bg-blue-600 rounded-full`}
-                  style={{ width: `${progressPercentage}%` }}>
-                  {progressPercentage}%
-                </div>
-              </div>}
-            <div className="font-bold">
-              {progressText}
+      </div>
+      {showPopup && (
+        <SuccessPopup
+          message="You have successfully applied for the job. <br /> Please keep track of your application status."
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+      {showConditions && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
+            <TermsAndConditions />
+            <div className="mt-4 flex justify-between">
+              <button
+                className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
+                onClick={() => setShowConditions(false)}>
+                Close
+              </button>
+              <button
+                className="px-3 py-1.5 font-bold rounded-lg bg-green-500 text-white hover:bg-green-700 transition-all duration-300"
+                onClick={applyJob}>
+                Accept
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </div>
-  </div>
-  {showPopup && (
-    <SuccessPopup
-      message="You have successfully applied for the job. <br /> Please keep track of your application status."
-      onClose={() => setShowPopup(false)}
-    />
-  )}
-  {showConditions &&(
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
-          <TermsAndConditions />
-          <div className="mt-4 flex justify-between">
-            <button
-              className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
-              onClick={() => setShowConditions(false)}
-            >
-              Close
-            </button>
-            <button
-              className="px-3 py-1.5 font-bold rounded-lg bg-green-500 text-white hover:bg-green-700 transition-all duration-300"
-              onClick={applyJob}
-            >
-              Accept
-            </button>
-          </div>
         </div>
-      </div>
-    )}
-</div>
-
+      )}
+    </div>
   );
 };
 

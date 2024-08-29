@@ -46,7 +46,7 @@ const Card = ({ data }) => {
       className="relative ring-sky-700 ring-2 rounded-lg bg-white"
       style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}
     >
-      <div className="absolute top-0.1 flex items-center right-8 md:right-16 z-10" data-aos="fade-down" data-aos-delay="400">
+      <div className="absolute top-0.1 flex items-center right-4 md:right-4 z-10" data-aos="fade-down" data-aos-delay="400">
         {user && !candidate && (
           <h1 className="font-bold me-5">
             Applicants:{" "}
@@ -65,7 +65,7 @@ const Card = ({ data }) => {
             url: `https://jobhunt4u.in/singlejob/${id}`,
             title: jobTitle,
           }}
-          onClick={() => console.log("shared successfully!")}
+         // onClick={() => console.log("shared successfully!")}
         >
           <button className="text-sky-700 text-xl p-2 font-medium rounded-bl-lg rounded-tr-lg transition-transform duration-200 ease hover:scale-125">
             <i className="fa-solid fa-share-from-square"></i>
