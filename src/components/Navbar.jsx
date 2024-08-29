@@ -123,11 +123,11 @@ const Navbar = () => {
                 <i className="fa-solid fa-user"></i> <span>Profile</span>
                 </Link>
               </li>
-              <li className="text-white py-2 flex items-center gap-2">
+              {/* <li className="text-white py-2 flex items-center gap-2">
                 <button onClick={handleLogout} className="flex items-center gap-2">
                   <i className="fa-solid fa-right-from-bracket"></i> Log out
                 </button>
-              </li>
+              </li> */}
             </>
           ) : (
             <>

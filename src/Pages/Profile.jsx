@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import { HiPencil } from "react-icons/hi";
 
+
 function Profile() {
   const { user, jobs, isLoading } = useJobs();
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [fileError, setFileError] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -70,10 +72,30 @@ function Profile() {
   };
 
   const handleFileChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      resume: e.target.files[0],
-    }));
+    const file = e.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        setFileError("Invalid file type. Only JPG, PNG, and PDF files are allowed.");
+        e.target.value = null; // Clear the input field
+        return;
+      }
+
+      if (file.size > maxSize) {
+        setFileError("File size exceeds 2MB. Please upload a smaller file.");
+        e.target.value = null; // Clear the input field
+        return;
+      }
+
+      // If valid, clear any existing error messages and update formData
+      setFileError(null);
+      setFormData((prev) => ({
+        ...prev,
+        resume: file,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -133,7 +155,7 @@ function Profile() {
           <i className="fa-solid fa-right-from-bracket"></i> Logout
         </button>
       </div>
-      <div className="relative bg-white shadow-md rounded-lg m-8 p-8">
+      <div className="relative bg-white shadow-md rounded-lg md:m-8 p-8">
         {!isEditing && (
           <HiPencil onClick={handleEditClick} className="absolute top-4 right-4 text-blue-500 cursor-pointer text-xl" />
         )}
@@ -240,7 +262,7 @@ function Profile() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 mt-2 block">
-                  <b>Your Resume - click here to view</b>
+                  <b>Your Resume - [click here to view]</b>
                 </a>
               ) : (
                 !formData.resume && (
@@ -251,14 +273,37 @@ function Profile() {
               )}
 
               {isEditing && (
-                <input
-                  type="file"
-                  name="resume"
-                  onChange={handleFileChange}
-                  className="formInput p-2 border rounded w-full"
-                />
+                <>
+                  {formData.resume && !(formData.resume instanceof File) && (
+                    <p className="mb-2">
+                      <b>Your Resume - </b>
+                      <a
+                        href={formData.resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500">
+                        {formData.resume.split('/').pop()} [click here to view]
+                      </a>
+                    </p>
+                  )}
+
+                  <p className="text-sm p-2 ">Only JPG, PNG, and PDF files are allowed.</p>
+
+                  <input
+                    type="file"
+                    name="resume"
+                    onChange={handleFileChange}
+                    className="formInput p-2 border rounded w-full"
+                  />
+                  {fileError && (
+                    <p className="text-red-500 font-semibold mt-2">
+                      {fileError}
+                    </p>
+                  )}
+                </>
               )}
             </div>
+
 
 
             <div className="flex justify-between">
@@ -273,7 +318,7 @@ function Profile() {
       </div>
 
       <div className="mt-8 p-4">
-        <h2 className="text-xl font-semibold">Applied Jobs</h2>
+        <h2 className="text-xl font-semibold">Applied Jobs</h2><br></br>
         {filteredJobs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {filteredJobs.map((data, i) => (
