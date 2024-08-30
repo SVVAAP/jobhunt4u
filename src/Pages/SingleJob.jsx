@@ -238,7 +238,7 @@ const SingleJob = () => {
                     applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
                   } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
                   onClick={() => {
-                    setShowConditions(true);
+                   applyJob();
                   }}
                   disabled={applied}>
                   {applied ? "Applied" : "Apply Now"}
@@ -282,25 +282,7 @@ const SingleJob = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
-      {showConditions && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
-            <TermsAndConditions />
-            <div className="mt-4 flex justify-between">
-              <button
-                className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
-                onClick={() => setShowConditions(false)}>
-                Close
-              </button>
-              <button
-                className="px-3 py-1.5 font-bold rounded-lg bg-green-500 text-white hover:bg-green-700 transition-all duration-300"
-                onClick={applyJob}>
-                Accept
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+     
     </div>
   );
 };

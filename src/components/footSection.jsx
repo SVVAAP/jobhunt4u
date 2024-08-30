@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FiMapPin, FiSearch } from "react-icons/fi";
 import logo from "../assets/svvaap_logo.png"
 import { useJobs } from "../context/jobsContext";
+import { Link } from "react-router-dom";
 
 const FootSection = () => {
     const {user} =useJobs();
@@ -26,10 +27,11 @@ const FootSection = () => {
         </li>
         {user ?
         <li>
-            <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
+            <Link to="/profile" className="hover:underline me-4 md:me-6">Profile</Link>
+           
         </li> :
         <li>
-        <Link to="/login " className="hover:underline me-4 md:me-6">Licensing</Link>
+         <Link href="/login" className="hover:underline me-4 md:me-6">Login</Link>
     </li>
 
          }

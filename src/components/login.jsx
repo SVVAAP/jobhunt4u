@@ -16,11 +16,11 @@ const Login = () => {
     setError(null);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log("User logged in:", user);
+      // const user = userCredential.user;
+      // console.log("User logged in:", user);
       navigate("/");
     } catch (error) {
-      setError(error.message);
+      setError("Invalid Email or Password");
       console.error("Error logging in:", error);
     }
   };

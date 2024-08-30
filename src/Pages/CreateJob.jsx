@@ -64,6 +64,8 @@ const CreateJob = () => {
         postedBy: data.postedBy,
         companyLogo: data.companyLogo,
         workmode: data.workmode,
+        jobCategory: data.jobCategory,   // Added jobCategory field
+        jobType: data.jobType,           // Added jobType field
         status: data.status
       };
 
@@ -238,6 +240,38 @@ const CreateJob = () => {
               </select>
               {errors.employmentType && <p className="text-red-500">{errors.employmentType.message}</p>}
             </div>
+          </div>
+          <div className="flex space-x-5">
+           {/* New Job Category Field */}
+           <div className="lg:w-full w-full">
+            <label className="block mb-2 text-lg">Job Category</label>
+            <select
+              {...register("jobCategory", { required: "This field is required. Please select a job category." })}
+              className="create-job-input rounded-md"
+            >
+              <option value="">Choose job category</option>
+              <option value="Accounting/Finance">Accounting/Finance</option>
+              <option value="IT/Software">IT/Software</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Sales">Sales</option>
+            </select>
+            {errors.jobCategory && <p className="text-red-500">{errors.jobCategory.message}</p>}
+          </div>
+          {/* New Job Type Field */}
+          <div className="lg:w-full w-full">
+            <label className="block mb-2 text-lg">Job Type</label>
+            <select
+              {...register("jobType", { required: "This field is required. Please select a job type." })}
+              className="create-job-input rounded-md"
+            >
+              <option value="">Choose job type</option>
+              <option value="National">National</option>
+              <option value="International">International</option>
+            </select>
+            {errors.jobType && <p className="text-red-500">{errors.jobType.message}</p>}
+          </div>
           </div>
           <div>
             <label className="block mb-2 text-lg">Job Description</label>

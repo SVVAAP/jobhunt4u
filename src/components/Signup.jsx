@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
 import card_bg from "../assets/sign_card.png";
+import TermsAndConditions from "./TermsAndConditions";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +22,10 @@ const Signup = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [verified, setVerified] = useState(false);
   const [location, setLocation] = useState("");
+  const [showConditions, setShowConditions] = useState(false); 
+  const [termsAccepted, setTermsAccepted] = useState(false); // State to check Terms acceptance
   const [timer, setTimer] = useState(0); // State to keep track of timer
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,6 +90,12 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    if (!termsAccepted) {
+      setError("You must accept the Terms and Conditions.");
+      return;
+    }
+
     if (verified) {
       try {
         // Create the user
@@ -114,7 +124,7 @@ const Signup = () => {
       }
     } else {
       alert("Verify your Email Please!!!");
-      setError("Invalid OTP");
+      setError("Email Not Verified");
     }
   };
 
@@ -274,7 +284,23 @@ const Signup = () => {
               />
             </div>
           )}
-          {error && <p className="text-red-600">{error}</p>}
+           <div className="flex justify-start space-x-3 items-center">
+            <input
+              type="checkbox"
+              name="termsAndConditions"
+              checked={termsAccepted}
+              onChange={() => setTermsAccepted(!termsAccepted)}
+            />
+            <label className="block text-gray-700">
+              I accept all the{" "}
+              <span
+                className="font-bold underline italic cursor-pointer"
+                onClick={() => setShowConditions(true)}
+              >
+                Terms & Conditions
+              </span>
+            </label>
+          </div>
           <button
             type="submit"
             className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200">
@@ -291,6 +317,20 @@ const Signup = () => {
           </div>
         </form>
       </div>
+      {showConditions && (
+        <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
+            <TermsAndConditions />
+            <div className="mt-4 flex justify-between">
+              <button
+                className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
+                onClick={() => setShowConditions(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
