@@ -18,6 +18,7 @@ import Home_toggle from "../components/home_toggle";
 import EmpApplicants from "../Pages/EmpApplicants";
 import EditePage from "../Pages/EditePage";
 import Candidate from "../components/Candidate";
+import MyJobs from "../components/MyJobs";
 
 
 const router = createBrowserRouter([
@@ -42,6 +43,7 @@ children:[
    {path:"/jobhunt4u-admin/addjob",element:<CreateJob/>},
    {path: "/jobhunt4u-admin/site-content",element:<EditePage/>},
    {path:"/jobhunt4u-admin/candidate", element:<Candidate/>},
+   {path:"/jobhunt4u-admin/my-jobs", element:<MyJobs/>}
 ]},{ path: "/singlejob/:jobId", element: <SingleJob /> },
 {path:"/applicants/:jobId",element:<EmpApplicants/>},
 ]);

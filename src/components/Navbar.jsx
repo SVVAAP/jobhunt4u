@@ -103,7 +103,7 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
-      <div className={`px-4 bg-black py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
+      <div className={`px-4 bg-blend-screen py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
         <ul>
           {navItems.map(({ link, title, icon }) => (
             <li key={link} className="text-base text-white py-2 flex items-center gap-2">
@@ -118,7 +118,7 @@ const Navbar = () => {
           ))}
           {isLoggedIn ? (
             <>
-              <li className="text-white py-2 flex justify-normal items-center gap-2">
+              <li className=" py-2 flex justify-normal items-center gap-2">
                 <Link to={isEmployer ? "/profile-emp" : "/profile"}>
                 <i className="fa-solid fa-user"></i> <span>Profile</span>
                 </Link>
@@ -131,12 +131,12 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <li className="text-white py-2 flex items-center gap-2">
+              <li className=" py-2 flex items-center gap-2">
                 <Link to="/login" onClick={handleMenuToggler} className="flex items-center gap-2">
                   <i className="fa-solid fa-right-to-bracket"></i> Log in
                 </Link>
               </li>
-              <li className="text-white py-2 flex items-center gap-2">
+              <li className=" py-2 flex items-center gap-2">
                 <Link to="/signup" onClick={handleMenuToggler} className="flex items-center gap-2">
                   <i className="fa-solid fa-user-plus"></i> Sign up
                 </Link>

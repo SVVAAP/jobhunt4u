@@ -43,6 +43,7 @@ function Manager() {
     { link: "/jobhunt4u-admin/candidate", title: "Candidate Details" },
     { link: "/jobhunt4u-admin/addjob", title: "Add Jobs" },
     { link: "/jobhunt4u-admin/site-content", title: "Site Content" },
+    { link: "/jobhunt4u-admin/my-jobs", title: "My Jobs"}
   ];
 
   return (
