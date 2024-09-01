@@ -19,6 +19,7 @@ import EmpApplicants from "../Pages/EmpApplicants";
 import EditePage from "../Pages/EditePage";
 import Candidate from "../components/Candidate";
 import MyJobs from "../components/MyJobs";
+import TermsAndCondition from "../components/TermsAndConditions";
 
 
 const router = createBrowserRouter([
@@ -26,25 +27,28 @@ const router = createBrowserRouter([
     path: "/",
     element: <App></App>,
     children: [
-      { path: "/", element: <Home_toggle/> },
+      { path: "/", element: <Home_toggle /> },
       { path: "/post-job", element: <CreateJob /> },
     ],
   },
-  {path:"/profile" ,element:<Profile/>},
-  {path:"/profile-emp" ,element:<ProfileEmp/>},
-  { path: "/login", element:<Login/>},
-  { path: "/login-admin", element:<Login2/>},
-  {path: "/signup",element:<Signup/>},
-  {path:"/jobhunt4u-admin", element:<PrivateRoute element={Manager}/>,
-children:[
-   {path:"/jobhunt4u-admin/",element:<JobList/>},
-   {path:"/jobhunt4u-admin/applicants",element:<Applicants/>},
-   {path:"/jobhunt4u-admin/employer", element:<EmployeerDetails/>},
-   {path:"/jobhunt4u-admin/addjob",element:<CreateJob/>},
-   {path: "/jobhunt4u-admin/site-content",element:<EditePage/>},
-   {path:"/jobhunt4u-admin/candidate", element:<Candidate/>},
-   {path:"/jobhunt4u-admin/my-jobs", element:<MyJobs/>}
-]},{ path: "/singlejob/:jobId", element: <SingleJob /> },
-{path:"/applicants/:jobId",element:<EmpApplicants/>},
+  { path: "/profile", element: <Profile /> },
+  { path: "/profile-emp", element: <ProfileEmp /> },
+  { path: "/login", element: <Login /> },
+  { path: "/login-admin", element: <Login2 /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/Terms&Condition", element: <TermsAndCondition /> },
+  {
+    path: "/jobhunt4u-admin", element: <PrivateRoute element={Manager} />,
+    children: [
+      { path: "/jobhunt4u-admin/", element: <JobList /> },
+      { path: "/jobhunt4u-admin/applicants", element: <Applicants /> },
+      { path: "/jobhunt4u-admin/employer", element: <EmployeerDetails /> },
+      { path: "/jobhunt4u-admin/addjob", element: <CreateJob /> },
+      { path: "/jobhunt4u-admin/site-content", element: <EditePage /> },
+      { path: "/jobhunt4u-admin/candidate", element: <Candidate /> },
+      { path: "/jobhunt4u-admin/my-jobs", element: <MyJobs /> }
+    ]
+  }, { path: "/singlejob/:jobId", element: <SingleJob /> },
+  { path: "/applicants/:jobId", element: <EmpApplicants /> },
 ]);
 export default router;

@@ -140,6 +140,7 @@ const Home_Emp = () => {
 
   return (
     <>
+  <h3 className="text-center bg-blue text-white align-middle flex-1 justify-normal p-1">Employer - Dashboard</h3>
       <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
         <h1 className="text-5xl font-bold text-primary mb-3">
           Empower Your Business with the{" "}
@@ -162,7 +163,7 @@ const Home_Emp = () => {
           <Link
           to="/post-job"
             className="rounded-md bg-blue px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
+           onClick={window.top}>
             Post a Job
           </Link>
           <a
@@ -197,7 +198,7 @@ const Home_Emp = () => {
         </div>
 
         {/* Main Content */}
-        <div className="col-span-2 bg-sky-800 p-4 rounded-2xl">
+        <div className="col-span-2 bg-sky-800 p-4 rounded">
           {isLoading ? (
             <p className="font-medium text-white">Loading...</p>
           ) : paginatedJobs.length > 0 ? (

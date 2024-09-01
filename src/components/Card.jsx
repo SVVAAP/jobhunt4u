@@ -51,7 +51,7 @@ const Card = ({ data }) => {
           <h1 className="font-bold me-5">
             Applicants:{" "}
             {applicants ? (
-              <span className="text-white ms-2 bg-red-700 rounded-full py-1 px-2">
+              <span className="text-white ms-2 bg-red-700 rounded py-1 px-2">
                 {applicants.length}
               </span>
             ) : (

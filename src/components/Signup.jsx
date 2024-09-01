@@ -151,7 +151,7 @@ const Signup = () => {
         className="relative bg-sky-50 shadow-2xl p-8 rounded-lg ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10 m-5"
         style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Signup</h2>
-        <form onSubmit={handleSignup} className="space-y-4 text-center">
+        <form onSubmit={handleSignup} className="space-y-4 text-left">
           <div className="flex justify-between items-center">
             <label className="block text-gray-700">Name</label>
             <input
@@ -212,7 +212,7 @@ const Signup = () => {
             />
           </div>
           <div className="flex justify-between items-center">
-            <label className="block text-gray-700">Phone Number</label>
+            <label className="block text-gray-700">Phone</label>
             <input
               type="text"
               placeholder="Phone Number"
@@ -301,11 +301,13 @@ const Signup = () => {
               </span>
             </label>
           </div>
+          <div className="items-center text-center">
           <button
             type="submit"
-            className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200">
+            className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200 ">
             Signup
           </button>
+          </div>
           <div className="flex flex-col justify-center items-center text-center">
             <p className="text-lg bg-white/60 rounded-full px-4 py-2 relative w-fit">
               Already have an Account?
@@ -318,18 +320,25 @@ const Signup = () => {
         </form>
       </div>
       {showConditions && (
-        <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
-            <TermsAndConditions />
-            <div className="mt-4 flex justify-between">
-              <button
-                className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
-                onClick={() => setShowConditions(false)}>
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
+       <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
+       <div className="bg-white p-4 rounded-lg shadow-lg max-w-2xl w-full h-4/5 flex flex-col">
+         {/* Terms and Conditions Component */}
+         <div className="flex-grow overflow-y-auto">
+           <TermsAndConditions className="h-full"/>
+         </div>
+     
+         {/* Modal Footer with Close Button */}
+         <div className="mt-4 flex justify-end">
+           <button
+             className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
+             onClick={() => setShowConditions(false)}
+           >
+             Close
+           </button>
+         </div>
+       </div>
+     </div>
+     
       )}
     </div>
   );

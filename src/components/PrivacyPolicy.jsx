@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-function TermsAndConditions() {
+function PrivacyPolicy() {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -151,5 +151,5 @@ function TermsAndConditions() {
   );
 }
 
-export default TermsAndConditions;
+export default PrivacyPolicy;
 
