@@ -38,10 +38,10 @@ const FootSection = () => {
                                 <a href="#conatct" className="hover:underline me-4 md:me-6">Contact</a>
                             </li>
                             <li>
-                                <Link to="/Terms&Condition" className="hover:underline me-4 md:me-6">Terms & Condition</Link>
+                                <Link to="/Terms&Condition" className="hover:underline me-4 md:me-6" onClick={ window.top}>Terms & Condition</Link>
                             </li>
                             <li>
-                                <Link to="/Privacy-Policy" className="hover:underline me-4 md:me-6">Privacy Policy</Link>
+                                <Link to="/PrivacyPolicy" className="hover:underline me-4 md:me-6" onClick={ window.top}>Privacy Policy</Link>
                           
                             </li>
                         </ul>
