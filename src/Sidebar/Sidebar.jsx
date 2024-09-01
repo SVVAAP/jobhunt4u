@@ -16,12 +16,13 @@ const Sidebar = ({ handleChange, handleClick, clearFilters }) => {
   return (
     <div className='p-4 md:p-6 lg:p-8 bg-sky-700 rounded'>
       <div className='flex justify-between transition-transform duration-500'>
-        <h3 className='text-2xl font-bold mb-2 text-white'>Filters</h3>
-        <div className='flex items-center'>
-          {isMobile ?
+        <h3 className='text-2xl font-bold mb-2 text-white'>Filters {isMobile ?
             (
-              <button onClick={() => { setShow(!show) }} className={`text-2xl font-bold mb-2 mx-6 pb-2 transition-transform duration-500 text-white ${show ? "rotate-180" : ""} `}><i className="fa-solid fa-sort-down"></i></button>
-            ) : (<></>)}
+              <button onClick={() => { setShow(!show) }} className={`text-2xl font-bold  mx-1 transition-transform duration-500 text-white ${show ? "rotate-180" : ""} `}><i className="fa-solid fa-sort-down"></i></button>
+            ) : (<></>)}</h3>
+        
+        <div className='flex items-center'>
+          
           <button onClick={clearFilters} className='text-xl font-bold mb-2 mx-2 text-white'>
             Clear <i className="fa-brands fa-rev"></i>
           </button>
