@@ -10,7 +10,7 @@ import Inbox from './inbox';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, user ,mark } = useJobs();
+  const { isLoggedIn, user, mark } = useJobs();
   let isEmployer = false;
   const auth = getAuth();
   const navigate = useNavigate();
@@ -50,8 +50,8 @@ const Navbar = () => {
 
   const navItems = [
     { link: "/", title: "Home", icon: <i className="fa-solid fa-house"></i> },
-    ...(location.pathname === '/' ? [{ link: "#search", title: "Find Jobs", icon: <i className="fa-solid fa-magnifying-glass"></i>}]: []),
-    ...(location.pathname === '/' ? [{ link: "#about", title: "About Us", icon: <i className="fa-solid fa-circle-info"></i> }]: []),
+    ...(location.pathname === '/' ? [{ link: "#search", title: "Find Jobs", icon: <i className="fa-solid fa-magnifying-glass"></i> }] : []),
+    ...(location.pathname === '/' ? [{ link: "#about", title: "About Us", icon: <i className="fa-solid fa-circle-info"></i> }] : []),
     ...(isEmployer ? [{ link: "/post-job", title: "Post A Job", icon: <i className="fa-solid fa-briefcase"></i> }] : []),
   ];
 
@@ -120,7 +120,7 @@ const Navbar = () => {
             <>
               <li className=" py-2 flex justify-normal items-center gap-2">
                 <Link to={isEmployer ? "/profile-emp" : "/profile"}>
-                <i className="fa-solid fa-user"></i> <span>Profile</span>
+                  <i className="fa-solid fa-user"></i> <span>Profile</span>
                 </Link>
               </li>
               {/* <li className="text-white py-2 flex items-center gap-2">

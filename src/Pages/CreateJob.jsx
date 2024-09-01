@@ -313,8 +313,8 @@ const CreateJob = () => {
         {showPopup && (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-      <h2 className="text-xl font-semibold mb-4">Job Created Successfully!</h2>
-      <p className="mb-4">Your job has been posted. Our team will review it, and it will be updated on the portal within 24 hours.</p>
+      <h2 className="text-xl font-semibold mb-4 text-black">Job Created Successfully!</h2>
+      <p className="mb-4 text-black">Your job has been posted. Our team will review it, and it will be updated on the portal within 24 hours.</p>
       <div className="flex justify-end">
         <button
           onClick={handleClosePopup}

@@ -179,7 +179,7 @@ const SingleJob = () => {
 
       <div className="job-detail-container p-5 min-h-screen flex items-center justify-center relative">
         <div
-          className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 transition-transform duration-1000 hover:scale-105 relative"
+          className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 relative"
           style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
           {/* Close button */}
           <button
