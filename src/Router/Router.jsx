@@ -20,7 +20,8 @@ import EditePage from "../Pages/EditePage";
 import Candidate from "../components/Candidate";
 import MyJobs from "../components/MyJobs";
 import TermsAndCondition from "../components/TermsAndConditions";
-import PrivacyPolicy from "../components/PrivacyPolicy";
+// import PrivacyPolicy from "../components/PrivacyPolicy";
+
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
   { path: "/login-admin", element: <Login2 /> },
   { path: "/signup", element: <Signup /> },
   { path: "/Terms&Condition", element: <TermsAndCondition /> },
-  { path: "/PrivacyPolicy", element: <PrivacyPolicy /> },
+  // { path: "/PrivacyPolicy", element: <PrivacyPolicy /> },
   {
     path: "/jobhunt4u-admin", element: <PrivateRoute element={Manager} />,
     children: [

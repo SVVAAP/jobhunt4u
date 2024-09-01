@@ -16,7 +16,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   if (isLoggedIn) {
-    if (user && (user.userType === "employer" || user.userType === "admin")) {
+    if (user && (user.userType !== "candidate")) {
       isEmployer = true;
     }
   }

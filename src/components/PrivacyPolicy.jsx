@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-function PrivacyPolicy() {
+ const PrivacyPolicy = ()=> {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function PrivacyPolicy() {
       <section className="mb-6">
         <h2 className="text-xl font-semibold mb-2">1. Introduction</h2>
         <p>
-          Welcome to <strong>Job Hunt 4 U</strong> ("we", "our", "us"). We are committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website <a href="https://www.jobhunt4u.in" className="text-blue-500">www.jobhunt4u.in</a> (the "Website") and use our services.
+          Welcome to <strong>Job Hunt 4 U</strong> (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;). We are committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website <a href="https://www.jobhunt4u.in" className="text-blue-500">www.jobhunt4u.in</a> (the &quot;Website&quot;) and use our services.
         </p>
       </section>
 
@@ -71,7 +71,7 @@ function PrivacyPolicy() {
         <p>We may share your information with third-party service providers who assist us in operating our Website, performing services on our behalf, or analyzing data (e.g., hosting, payment processing, analytics).</p>
 
         <h3 className="text-lg font-semibold mt-4">4.2. With Employers</h3>
-        <p>Job seekers' profiles and application details may be shared with employers to facilitate the recruitment process.</p>
+        <p>Job seekers&apos; profiles and application details may be shared with employers to facilitate the recruitment process.</p>
 
         <h3 className="text-lg font-semibold mt-4">4.3. Legal Requirements</h3>
         <p>We may disclose your information if required to do so by law or in response to valid requests by public authorities (e.g., a subpoena, court order).</p>
