@@ -148,7 +148,7 @@ const Home = () => {
             />
           </div>
 
-          <div className="col-span-2 bg-sky-800 p-4 rounded-2xl">
+          <div className="col-span-2 bg-sky-800 p-4 rounded-xl">
             {isLoading ? (
               <p className="font-medium text-white">Loading...</p>
             ) : paginatedJobs.length > 0 ? (

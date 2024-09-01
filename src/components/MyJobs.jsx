@@ -8,7 +8,7 @@ function MyJobs() {
   const userJobs = jobs?.filter((data) => data.postedBy === user.email);
   return (
     <div>
-         <div className="col-span-2 bg-sky-800 p-4 m-5 rounded-2xl">
+         <div className="col-span-2 bg-sky-800 p-4 m-5 rounded-xl">
           {isLoading ? (
             <p className="font-medium text-white">Loading...</p>
           ) : userJobs.length > 0 ? (

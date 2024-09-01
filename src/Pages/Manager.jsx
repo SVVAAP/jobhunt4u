@@ -47,28 +47,28 @@ function Manager() {
   ];
 
   return (
-    <div className="sticky top-0 over" id="profbg">
-      <div className=" bg-sky-900 p-2 rounded-xl m-2 ">
-        <div className="flex justify-center bg-sky-900 p-2">
-          <h1 className="text-white text-xl bg-white/25 m-0.5 w-fit p-0.5 rounded-xl px-6 ">Admin Console</h1>
+    <div className="sticky top-0 over" id="">
+      <div className=" bg-sky-900  pb-3 rounded-md m-3 ">
+        <div className="flex justify-center bg-sky-800 rounded-md">
+          <h1 className="text-white text-xl m-0.5 w-fit p-2 rounded-md px-100 ">Admin Console</h1>
         </div>
-        <div className="flex justify-center  space-x-5">
+        <div className="flex justify-center  space-x-5 m-3">
           {/*bg-sky-700 p-2 rounded-lg*/}
           {navItems.map(({ link, title, exact }) => (
             <li key={link} className="text-base text-white font-roboto flex items-center gap-2">
               <NavLink
                 to={link}
                 end={exact} // Only add the 'end' prop for exact matches
-                className={({ isActive }) => "w-fit p-0.5 rounded-xl px-2 " + (isActive ? "bg-white/25" : "")}
+                className={({ isActive }) => "w-fit p-0.5 rounded px-2 " + (isActive ? "bg-white/25" : "")}
                 onClick={() => handleLinkClick(link)}>
                 {title}
               </NavLink>
             </li>
           ))}
-
+{/* logout */}
           <div className="absolute right-8">
             <button className="float-right h-7 cursor-pointer " onClick={handleLogout}>
-              <i className="fa-solid fa-arrow-right-from-bracket text-white text-xl hover:bg-white/25 p-1 px-2 rounded-lg"></i>
+              <i className="fa-solid fa-arrow-right-from-bracket text-white text-xl hover:bg-white/25 p-1 px-2 rounded-md"></i>
             </button>
           </div>
         </div>
