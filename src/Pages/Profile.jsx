@@ -6,6 +6,7 @@ import { auth, database, storage, ref, set, storageRef, uploadBytes, getDownload
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import { HiPencil } from "react-icons/hi";
+import Navbar from "../components/Navbar";
 
 
 function Profile() {
@@ -143,8 +144,10 @@ function Profile() {
   }
 
   return (
-    <div className=" p-4" id="profbg">
-      <div className="container mx-auto flex justify-between content-center text-center m-auto p-8">
+    <>
+    <Navbar/>
+    <div className=" p-8" id="">
+      <div className="container mx-auto flex justify-between content-center text-center  mb-4">
         <button
           className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
           onClick={() => navigate(-1)}>
@@ -330,6 +333,7 @@ function Profile() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
