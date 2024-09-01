@@ -106,8 +106,8 @@ function Profile() {
   return (
     <>
       <Navbar />
-      <div className="w-screen p-4 px-8 " >
-        <div className=" container flex justify-between content-center text-center m-auto p-8">
+      <div className="w-screen h-full p-4 px-8 " >
+        <div className=" container flex justify-between content-center text-center m-auto p-4">
           <button
             className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded-md font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
             onClick={() => navigate(-1)}>
@@ -122,11 +122,11 @@ function Profile() {
 
           <div className="absolute top-4 right-4 flex items-center space-x-2">
             {/* droupdown icon */}
-            <button onClick={toggleDropdown} className="text-blue-500 cursor-pointer text-xl">
-              <HiDotsVertical />
+            <button onClick={toggleDropdown} className="text-blue-500 cursor-pointer text-xl mr-4">
+              <i className="fa-solid fa-sort-down"></i>
             </button>
             {/* add droupdown button */}
-            
+
           </div>
 
           <h1 className="text-2xl font-bold mb-4">Welcome, {profileData.companyName}!</h1>
@@ -136,9 +136,9 @@ function Profile() {
 
           {/* Dropdown Menu */}
           {showDropdown && (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 m-4">
 
-              
+
 
               {showSuccessMessage && (
                 <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
@@ -158,12 +158,15 @@ function Profile() {
 
               <div className="bg-gray-100 p-4 rounded-lg space-y-4">
 
-              {!isEditing && (
-              <HiPencil
-                onClick={handleEditClick}
-                className=" top-4 right-2 text-blue-500 cursor-pointer text-xl"
-              />
-            )}
+                {!isEditing && (
+                  <div className='flex justify-between shadow-sm'>
+                    <p className='ml-2 font-semibold'>Employer Profile </p> 
+                  <HiPencil
+                    onClick={handleEditClick}
+                    className=" top-4 right-2 text-blue-500 cursor-pointer text-xl"
+                  /> 
+                  </div>
+                )}
                 <div className="formField">
                   <label className="block text-gray-700 mb-1">Company Name</label>
                   <input
@@ -250,12 +253,10 @@ function Profile() {
 
           {/* Contact Admin Button */}
           {!isEditing && (
-            <button
-              onClick={handleContactAdmin}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-            >
-              Contact Admin
-            </button>
+            <a href="mailto:CustomerCare@jobhunt4u.in?subject=Support Request By Employer&body=Hello,%0D%0AI need assistance with..." >
+              Contact Admin - CustomerCare@jobhunt4u.in
+            </a>
+
           )}
         </div>
 
