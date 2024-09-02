@@ -8,7 +8,7 @@ function Manager() {
   const auth = getAuth();
   const handleLogout = async () => {
     try {
-      // eslint-disable-next-line no-restricted-globals
+     // eslint-disable-next-line no-restricted-globals
       var conf = confirm("Are you sure you want to log out?");
       if (conf === true) {
         signOut(auth)

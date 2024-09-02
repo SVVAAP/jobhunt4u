@@ -32,6 +32,8 @@ function Profile() {
         phone: user.phone || '',
         website: user.website || '',
         address: user.address || '',
+        userType:user.userType||'',
+        name:user.name||'',
       });
 
       // Fetch jobs posted by the employer
@@ -80,6 +82,8 @@ function Profile() {
           phone: profileData.phone,
           website: profileData.website,
           address: profileData.address,
+          name:profileData.name,
+          userType:profileData.userType,
         });
 
         setIsEditing(false);
