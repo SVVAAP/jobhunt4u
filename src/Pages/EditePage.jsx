@@ -105,23 +105,23 @@ function EditePage() {
 
   return (
     <div className="p-6 bg-sky-800">
-      <h2 className="text-2xl font-bold mb-4">Edit About Section</h2>
+      <h2 className="text-2xl text-white font-bold mb-4">Edit About Section</h2>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <>
+        <div className="bg-sky-600 p-8">
           {editor && <Toolbar />}
           <EditorContent
             editor={editor}
             className="w-full h-fit p-2 border border-gray-300 rounded-lg bg-white"
           />
           <button
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-sky-400"
             onClick={handleSave}
           >
             Save Changes
           </button>
-        </>
+        </div>
       )}
     </div>
   );
