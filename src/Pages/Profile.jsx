@@ -265,7 +265,7 @@ function Profile() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 mt-2 block">
-                  <b>Your Resume - [click here to view]</b>
+                  <b>Your Resume - [<span className=" underline text-sky-500">click here to view</span>]</b>
                 </a>
               ) : (
                 !formData.resume && (

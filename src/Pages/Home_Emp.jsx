@@ -140,9 +140,10 @@ const Home_Emp = () => {
 
   return (
     <>
-  <h3 className="text-center bg-blue text-white align-middle flex-1 justify-normal p-1">Employer - Dashboard</h3>
+    <div className=" flex justify-center mt-10">
+  <h3 className="text-center text-xl font-bold font-roboto animated-gradient-bg text-white  px-4  p-2 rounded">Employer - Dashboard</h3></div>
       <div className="max-w-screen-2xl container mx-auto xl:px-14 md:py-10 py-5 px-4">
-        <h1 className="text-5xl font-bold text-primary mb-3">
+        <h1 className="text-4xl font-bold text-primary mb-3">
           Empower Your Business with the{" "}
           <span className="text-blue animated-gradient-header">Best Talent</span>
         </h1>
@@ -151,7 +152,7 @@ const Home_Emp = () => {
           drive your company forward.
         </p>
 
-        <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+        <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-4xl">
           Hire the best with{" "}
           <span className="text-blue animated-gradient">JobHunt4U</span>
         </h1>
@@ -162,7 +163,7 @@ const Home_Emp = () => {
         <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
           <Link
           to="/post-job"
-            className="rounded-md bg-blue px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="rounded-md text-white bg-blue px-3.5 py-2.5 text-sm  shadow-sm hover:bg-gray-100 hover:text-sky-900 font-bold  focus-visible:outline-2 focus-visible:outline-offset-2 "
            onClick={window.top}>
             Post a Job
           </Link>
@@ -177,7 +178,7 @@ const Home_Emp = () => {
       <div className="flex flex-wrap justify-center">
         <h1
           id="search"
-          className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-black md:text-5xl lg:text-6xl"
+          className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-black md:text-3xl lg:text-4xl"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 animated-gradient-header">
             Manage Your{" "}
@@ -198,7 +199,7 @@ const Home_Emp = () => {
         </div>
 
         {/* Main Content */}
-        <div className="col-span-2 bg-sky-800 p-4 rounded">
+        <div className="col-span-2 bg-sky-800 p-4 rounded-lg">
           {isLoading ? (
             <p className="font-medium text-white">Loading...</p>
           ) : paginatedJobs.length > 0 ? (

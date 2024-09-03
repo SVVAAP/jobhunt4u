@@ -58,7 +58,7 @@ const About = () => {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        <h2 className="text-4xl font-extrabold text-gray-900 sm:text-4xl">
           <span className="animated-gradient-header"> About</span> Us
         </h2>
         <p
@@ -79,7 +79,7 @@ const About = () => {
       </div>
 
       <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="conatct">
-        <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">
+        <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
           <span className="animated-gradient-header">Contact Us</span> Now
         </h3>
         <div className="text-center mb-6">

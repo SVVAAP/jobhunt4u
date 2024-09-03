@@ -38,9 +38,10 @@ const PrivateRoute = ({ element: Component }) => {
   }
 
   if (error) {
-    return <div className='flex-col justify-center  text-red-500'>
+    return < >
       <Navbar/>
-      {error}</div>;
+      <div className='flex-row-reverse text-center justify-center mt-10 font-bold text-2xl text-red-500'>
+     <span className='mt-10'>{error}</span></div> </>;
   }
 
   return user ? <Component isEmployer={isEmployer} /> : <Navigate to="/login-admin" />;

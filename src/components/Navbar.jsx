@@ -56,6 +56,7 @@ const Navbar = () => {
   ];
 
   return (
+    <div className='flex justify-center'>
     <header className="max-w-screen-2xl container xl:px-12 px-4 bg-white/85 shadow-md rounded-b-lg">
       <nav className="flex justify-between items-center py-3">
         <Link to="/" className="flex items-center gap-2 text-2xl text-black">
@@ -146,6 +147,7 @@ const Navbar = () => {
         </ul>
       </div>
     </header>
+    </div>
   );
 };
 

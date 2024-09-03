@@ -14,7 +14,7 @@ const Sidebar = ({ handleChange, handleClick, clearFilters }) => {
   }, [isMobile]);
 
   return (
-    <div className='p-4 md:p-6 lg:p-8 bg-sky-700 rounded'>
+    <div className='p-4 md:p-6 lg:p-8 bg-sky-700 rounded-lg'>
       <div className='flex justify-between transition-transform duration-500'>
         <h3 className='text-2xl font-bold mb-2 text-white'>Filters {isMobile ?
             (

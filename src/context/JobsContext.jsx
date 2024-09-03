@@ -24,8 +24,9 @@ export function JobsProvider({ children }) {
       const jobsData = snapshot.val();
       const loadedJobs = [];
       for (const id in jobsData) {
-        loadedJobs.push({ id, ...jobsData[id] });
-      }
+        if (jobsData[id].status === "approved") {
+          loadedJobs.push({ id, ...jobsData[id] });
+        } }
       const reversedJobs = loadedJobs.reverse();
       setJobs(reversedJobs);
       setIsLoading(false);
