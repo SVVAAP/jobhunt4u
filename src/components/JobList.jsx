@@ -53,7 +53,7 @@ function JobList() {
     return (
         <>
             {/* Filter UI */}
-            <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+            <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 m-4">
                 <input
                     type="text"
                     name="jobTitle"
