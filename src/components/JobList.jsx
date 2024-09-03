@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ref, update } from "firebase/database";
 import { database } from "../firebase";
 import Card from './Card2';
@@ -7,6 +7,35 @@ import { useJobs } from '../context/jobsContext';
 function JobList() {
     const { jobs } = useJobs(); // Retrieve jobs from context
 
+    // State for filters
+    const [filters, setFilters] = useState({
+        jobTitle: '',
+        companyName: '',
+        jobLocation: '',
+        employmentType: '',
+        status: ''
+    });
+
+    // Handle filter changes
+    const handleFilterChange = (e) => {
+        setFilters({
+            ...filters,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // Filter jobs based on criteria
+    const filteredJobs = jobs.filter(job => {
+        return (
+            (filters.jobTitle === '' || job.jobTitle.toLowerCase().includes(filters.jobTitle.toLowerCase())) &&
+            (filters.companyName === '' || job.companyName.toLowerCase().includes(filters.companyName.toLowerCase())) &&
+            (filters.jobLocation === '' || job.jobLocation.toLowerCase().includes(filters.jobLocation.toLowerCase())) &&
+            (filters.employmentType === '' || job.employmentType.toLowerCase().includes(filters.employmentType.toLowerCase())) &&
+            (filters.status === '' || job.status.toLowerCase().includes(filters.status.toLowerCase()))
+        );
+    });
+
+    // Define handleApprove and handleDecline functions
     const handleApprove = (id) => {
         const jobRef = ref(database, `jobs/${id}`);
         update(jobRef, { status: "approved" })
@@ -20,26 +49,60 @@ function JobList() {
             .then(() => console.log("Job declined"))
             .catch((error) => console.error("Error declining job: ", error));
     };
- // useEffect(() => {
-    //   const jobRef = ref(database, "jobs");
-    //   onValue(jobRef, (snapshot) => {
-    //     const jobsData = snapshot.val();
-    //     const loadedJobs = [];
-    //     for (const id in jobsData) {
-    //     //  if (jobsData[id].status === "approved") {
-    //         loadedJobs.push({ id, ...jobsData[id] });
-    //      // }
-    //     }
-    //     setJobs(loadedJobs);
-    //     setIsLoading(false);
-    //   });
-    // }, []);
+
     return (
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-            {jobs && jobs.map((data, i) => (
-                <Card key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
-            ))}
-        </div>
+        <>
+            {/* Filter UI */}
+            <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                <input
+                    type="text"
+                    name="jobTitle"
+                    value={filters.jobTitle}
+                    onChange={handleFilterChange}
+                    placeholder="Filter by Job Title"
+                    className="p-2 border rounded"
+                />
+                <input
+                    type="text"
+                    name="companyName"
+                    value={filters.companyName}
+                    onChange={handleFilterChange}
+                    placeholder="Filter by Company Name"
+                    className="p-2 border rounded"
+                />
+                <input
+                    type="text"
+                    name="jobLocation"
+                    value={filters.jobLocation}
+                    onChange={handleFilterChange}
+                    placeholder="Filter by Location"
+                    className="p-2 border rounded"
+                />
+                <input
+                    type="text"
+                    name="employmentType"
+                    value={filters.employmentType}
+                    onChange={handleFilterChange}
+                    placeholder="Filter by Employment Type"
+                    className="p-2 border rounded"
+                />
+                <input
+                    type="text"
+                    name="status"
+                    value={filters.status}
+                    onChange={handleFilterChange}
+                    placeholder="Filter by Status"
+                    className="p-2 border rounded"
+                />
+            </div>
+
+            {/* Job List */}
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                {filteredJobs && filteredJobs.map((data, i) => (
+                    <Card key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
+                ))}
+            </div>
+        </>
     );
 }
 
