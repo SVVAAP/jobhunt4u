@@ -26,7 +26,7 @@ function Applicant_card({ job, downloadExcel }) {
 
         // Create a message based on the status
         const message = {
-          title: `Your application status has been updated to ${status}`,
+          title: `Your application status : ${status}`,
           message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been ${status === 'withEmployer' ? 'approved and sent to the employer' : 'declined'}.`,
           timestamp: Date.now()
         };
