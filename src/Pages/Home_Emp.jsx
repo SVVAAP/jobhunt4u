@@ -141,7 +141,7 @@ const Home_Emp = () => {
   return (
     <>
   <h3 className="text-center bg-blue text-white align-middle flex-1 justify-normal p-1">Employer - Dashboard</h3>
-      <div className="max-w-screen-2xl container mx-auto xl:px-24 md:py-20 py-14 px-4">
+      <div className="max-w-screen-2xl container mx-auto xl:px-14 md:py-10 py-5 px-4">
         <h1 className="text-5xl font-bold text-primary mb-3">
           Empower Your Business with the{" "}
           <span className="text-blue animated-gradient-header">Best Talent</span>
@@ -176,7 +176,7 @@ const Home_Emp = () => {
       </div>
       <div className="flex flex-wrap justify-center">
         <h1
-          id="manage-jobs"
+          id="search"
           className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-black md:text-5xl lg:text-6xl"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 animated-gradient-header">

@@ -50,7 +50,7 @@ const Navbar = () => {
 
   const navItems = [
     { link: "/", title: "Home", icon: <i className="fa-solid fa-house"></i> },
-    ...(location.pathname === '/' ? [{ link: "#search", title: "Find Jobs", icon: <i className="fa-solid fa-magnifying-glass"></i> }] : []),
+    ...(location.pathname === '/' ? [{ link: "#search", title: isEmployer ? "View Applicants" :"Find Jobs", icon: <i className="fa-solid fa-magnifying-glass"></i> }] : []),
     ...(location.pathname === '/' ? [{ link: "#about", title: "About Us", icon: <i className="fa-solid fa-circle-info"></i> }] : []),
     ...(isEmployer ? [{ link: "/post-job", title: "Post A Job", icon: <i className="fa-solid fa-briefcase"></i> }] : []),
   ];
