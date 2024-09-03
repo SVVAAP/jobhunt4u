@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, database } from '../firebase';
 import { ref, onValue } from "firebase/database";
+import Navbar from './Navbar';
 
 const PrivateRoute = ({ element: Component }) => {
   const [user, loading] = useAuthState(auth);
@@ -37,7 +38,9 @@ const PrivateRoute = ({ element: Component }) => {
   }
 
   if (error) {
-    return <div className='flex justify-center text-red-500'>{error}</div>;
+    return <div className='flex-col justify-center  text-red-500'>
+      <Navbar/>
+      {error}</div>;
   }
 
   return user ? <Component isEmployer={isEmployer} /> : <Navigate to="/login-admin" />;
