@@ -5,13 +5,16 @@ import Card2 from "../components/Card2";
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 
-function Employee_card({ employer, index , Candidate}) {
+function Employee_card({ employer, index, Candidate, onDelete, onApproveDecline }) {
   const [showJobs, setShowJobs] = useState(false);
-  const { jobs, user } = useJobs();
+  const { jobs } = useJobs();
 
+  // Get jobs applied by the employer
   const applied = employer?.appliedJobs && Array.isArray(employer.appliedJobs)
-  ? jobs.filter((job) => employer.appliedJobs.includes(job.id))
-  : [];
+    ? jobs.filter((job) => employer.appliedJobs.includes(job.id))
+    : [];
+
+  // Approve job handler
   const handleApprove = (id) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "approved" })
@@ -19,6 +22,7 @@ function Employee_card({ employer, index , Candidate}) {
       .catch((error) => console.error("Error approving job: ", error));
   };
 
+  // Decline job handler
   const handleDecline = (id) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "declined" })
@@ -28,64 +32,79 @@ function Employee_card({ employer, index , Candidate}) {
 
   const userJobs = jobs?.filter(data => data.postedBy === employer.email);
 
-  return  (
-    <div className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 mb-4">
-      <div key={index} className="grid grid-cols-[repeat(6,_1fr)_auto] gap-4 items-center">
-        <div>
-          <h2 className="text-xl font-semibold">Name</h2>
-          <p>{employer.name}</p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Email</h2>
-          <p>{employer.email}</p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Phone</h2>
-          <p>{employer.phone}</p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Company</h2>
-          <p>{employer.companyName}</p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Location</h2>
-          <p>{employer.location}</p>
-        </div>
-        <div className="flex items-center justify-center col-span-5 md:col-span-1">
-          <i
-            className={`fa-solid fa-chevron-down cursor-pointer transition-transform duration-700 ${showJobs ? "rotate-180" : ""}`}
-            onClick={() => setShowJobs(!showJobs)}
-          ></i>
-        </div>
-      </div>
-{!Candidate ?(
-      <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
-        <h3 className="text-lg font-semibold mb-2">Uploaded Jobs</h3>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-          {userJobs && userJobs.length > 0 ? (
-            userJobs.map((data, i) => (
-              <Card2 key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
-            ))
-          ) : (
-            <p>No Jobs Uploaded....</p>
-          )}
-        </div>
-      </div> ):(
-        <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
-           <h3 className="text-lg font-semibold mb-2">Applied Jobs</h3>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-          {applied && applied.length > 0 ? (
-            applied.map((data, i) => (
-              <Card key={i} data={data}  />
-            ))
-          ) : (
-            <p>No Jobs Applied....</p>
-          )}
+  return (
+    <div className="relative">
+      <div className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 mb-4">
+        <div key={index} className="grid grid-cols-[repeat(7,_1fr)_auto] gap-4 items-center">
+          <div>
+            <h2 className="text-xl font-semibold">Name</h2>
+            <p>{employer.name}</p>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold">Email</h2>
+            <p>{employer.email}</p>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold">Phone</h2>
+            <p>{employer.phone}</p>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold">Company</h2>
+            <p>{employer.companyName}</p>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold">Location</h2>
+            <p>{employer.location}</p>
+          </div>
+          <div className="flex items-center justify-center col-span-5 md:col-span-1">
+            <i
+              className={`fa-solid fa-chevron-down cursor-pointer transition-transform duration-700 ${showJobs ? "rotate-180" : ""}`}
+              onClick={() => setShowJobs(!showJobs)}
+            ></i>
           </div>
         </div>
-      )
-      }
+        {/* Action Buttons */}
+        <div className='text-white text-xl absolute top-5 right-4 space-x-4 z-0'>
+         {!Candidate&& <> <button className='bg-green-500 rounded-md p-2' onClick={() => onApproveDecline(employer.id, true)}>
+            <i className="fa-solid fa-check"></i>
+          </button>
+          <button className='bg-red-500 rounded-md p-2' onClick={() => onApproveDecline(employer.id, false)}>
+            <i className="fa-solid fa-x"></i>
+          </button></>}
+          <button className='bg-sky-500 rounded-md p-2' onClick={()=>{onDelete(employer.id)}}>
+            <i className="fa-solid fa-trash"></i>
+          </button>
+        </div>
 
+        {/* Uploaded Jobs Section */}
+        {!Candidate ? (
+          <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
+            <h3 className="text-lg font-semibold mb-2">Uploaded Jobs</h3>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+              {userJobs && userJobs.length > 0 ? (
+                userJobs.map((data, i) => (
+                  <Card2 key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
+                ))
+              ) : (
+                <p>No Jobs Uploaded....</p>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className={`${showJobs ? "block" : "hidden"} transition-transform duration-700 mt-4`}>
+            <h3 className="text-lg font-semibold mb-2">Applied Jobs</h3>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+              {applied && applied.length > 0 ? (
+                applied.map((data, i) => (
+                  <Card key={i} data={data} />
+                ))
+              ) : (
+                <p>No Jobs Applied....</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

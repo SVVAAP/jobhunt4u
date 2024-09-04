@@ -107,6 +107,14 @@ const CreateJob = () => {
     { value: "writing skills", label: "Writing Skills" },
   ];
 
+  if(!user.approved){
+    return(
+      <div className="text-center mt-5">
+      <h1>You Are currently Under Verification By admin&apos;s</h1>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4" id="profbg">
       <div className="bg-sky-900/80 rounded-xl mt-5 text-white py-10 px-4 lg:px-16">
