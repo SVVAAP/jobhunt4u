@@ -53,14 +53,20 @@ function JobList() {
     return (
         <>
             {/* Filter UI */}
-            <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 m-4">
+            <div className=' bg-sky-900 p-3 rounded-lg m-4'>
+                <div className='flex justify-between'> 
+                <h1 className='text-white font-roboto font-extrabold text-2xl m-2'>Filter</h1>
+                <button onClick={ ()=>{/*clearFilters*/}} className='text-xl font-bold mb-2 mx-2 text-white'>
+            Clear <i className="fa-brands fa-rev"></i>
+          </button></div>
+            <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 ">
                 <input
                     type="text"
                     name="jobTitle"
                     value={filters.jobTitle}
                     onChange={handleFilterChange}
                     placeholder="Filter by Job Title"
-                    className="p-2 border rounded"
+                    className="p-2 border rounded text-sky-950"
                 />
                 <input
                     type="text"
@@ -95,7 +101,7 @@ function JobList() {
                     className="p-2 border rounded"
                 />
             </div>
-
+            </div>
             {/* Job List */}
             <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                 {filteredJobs && filteredJobs.map((data, i) => (
