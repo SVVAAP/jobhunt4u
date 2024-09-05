@@ -84,6 +84,7 @@ function Profile() {
           address: profileData.address,
           name:profileData.name,
           userType:profileData.userType,
+          approved:user.approved ||"",
         });
 
         setIsEditing(false);
