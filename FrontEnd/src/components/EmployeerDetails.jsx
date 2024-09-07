@@ -25,6 +25,13 @@ function EmployeerDetails() {
   }, []);
 
   const handleDelete = async (id) => {
+    // Prompt the user to confirm deletion
+    const isConfirmed = window.confirm("Are you sure you want to delete this employer? This action cannot be undone.");
+    
+    if (!isConfirmed) {
+      return; // Exit if the user does not confirm
+    }
+  
     try {
       const response = await fetch(`http://localhost:3002/api/users/deleteUser/${id}`, {
         method: 'DELETE',
@@ -34,13 +41,16 @@ function EmployeerDetails() {
       });
   
       if (response.ok) {
+        window.alert("Employer deleted successfully.");
         console.log("Employer deleted successfully.");
-        // Update UI or state here
+        // Update UI or state here if needed
       } else {
         const errorData = await response.json();
+        window.alert(`Failed to delete employer: ${errorData.error}`);
         console.error("Failed to delete employer:", errorData.error);
       }
     } catch (error) {
+      window.alert("An error occurred while deleting the employer. Please try again.");
       console.error("Error deleting employer:", error);
     }
   };
