@@ -25,45 +25,26 @@ function EmployeerDetails() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!id) {
-      console.error("Invalid employer id");
-      return;
-    }
-  
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
+      const response = await fetch(`http://localhost:3002/api/users/deleteUser/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
   
-      if (user) {
-        // Prompt the user to enter their password
-        const password = prompt("Please enter your password to confirm deletion:");
-  
-        if (!password) {
-          console.log("Password is required for re-authentication.");
-          return;
-        }
-  
-        // Re-authenticate with the user's password
-        const credential = EmailAuthProvider.credential(user.email, password);
-  
-        await reauthenticateWithCredential(user, credential);
-        
-        // Delete the user after re-authentication
-        await deleteUser(user);
-        console.log("User deleted from authentication");
-  
-        // Proceed with deleting user from the database
-        const userRef = ref(database, `users/${id}`);
-        await remove(userRef);
+      if (response.ok) {
         console.log("Employer deleted successfully.");
+        // Update UI or state here
       } else {
-        console.log("No user is currently signed in.");
+        const errorData = await response.json();
+        console.error("Failed to delete employer:", errorData.error);
       }
     } catch (error) {
-      console.error("Error deleting user from authentication:", error);
+      console.error("Error deleting employer:", error);
     }
   };
-
+  
   const handleApproveDecline = (id, status) => {
     const employerRef = ref(database, `users/${id}`);
     update(employerRef, { approved: status }) // Update the employer's approval status
