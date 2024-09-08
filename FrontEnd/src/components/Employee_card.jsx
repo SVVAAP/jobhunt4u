@@ -59,7 +59,7 @@ function Employee_card({ employer, index, Candidate, onDelete, onApproveDecline 
           </div>
           <div>
             <h2 className="text-lg font-semibold">Status</h2>
-            <p>{employer.approved ? "Approved" : "Declined"}</p>
+            <p>{employer.status }</p>
           </div>
           {/* Action Buttons */}
           <div className="text-white text-lg space-x-4">

@@ -55,11 +55,12 @@ function EmployeerDetails() {
     }
   };
   
-  const handleApproveDecline = (id, status) => {
+  const handleApproveDecline = (id, cstatus) => {
     const employerRef = ref(database, `users/${id}`);
-    update(employerRef, { approved: status }) // Update the employer's approval status
+    // Correctly update the status without extra concatenation
+    update(employerRef, { 'status': cstatus ? "approved" : "declined" }) // Update the employer's approval status
       .then(() => {
-        alert(`Employer has been ${status ? "approved" : "declined"}.`);
+        alert(`Employer has been ${cstatus ? "approved" : "declined"}.`);
       })
       .catch((error) => {
         console.error("Error updating employer status: ", error);

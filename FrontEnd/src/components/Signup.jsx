@@ -111,7 +111,7 @@ const Signup = () => {
           companyName: userType === "employer" ? companyName : "",
           location: userType === "employer" ? location : "",
           resume: userType === "candidate" && resume ? await uploadResume(resume) : "",
-          approved:false,
+          status:"pending",
         };
 
         // Store user data in database
