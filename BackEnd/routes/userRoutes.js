@@ -21,5 +21,16 @@ router.delete('/deleteUser/:uid', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.get("/", async (req, res) => {
+    try {
+      console.log("Attempt to get in");  // Log the attempt
+      // You can add more logic here if needed, like processing the request body
+  
+      res.status(200).json({ message: "Connected to Backend" });  // Respond with a success message
+    } catch (error) {
+      console.error("Error handling POST request:", error);
+      res.status(500).json({ message: "Server error" });  // Handle any potential errors
+    }
+  });
 
 module.exports = router;

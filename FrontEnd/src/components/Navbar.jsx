@@ -1,6 +1,6 @@
 // Navbar.js
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import logo from '../assets/logo.png';
 import { useJobs } from '../context/jobsContext';
@@ -14,6 +14,8 @@ const Navbar = () => {
   let isEmployer = false;
   const auth = getAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // Use useLocation to get the current path
+
 
   if (isLoggedIn) {
     if (user && (user.userType !== "candidate")) {
@@ -119,16 +121,18 @@ const Navbar = () => {
           ))}
           {isLoggedIn ? (
             <>
-              <li className=" py-2 flex justify-normal items-center gap-2">
+              {location.pathname !== "/profile"  ?
+              (<li className=" py-2 flex justify-normal items-center gap-2">
                 <Link to={isEmployer ? "/profile-emp" : "/profile"}>
                   <i className="fa-solid fa-user"></i> <span>Profile</span>
                 </Link>
-              </li>
+              </li>):(<></>) }
               {/* <li className="text-white py-2 flex items-center gap-2">
                 <button onClick={handleLogout} className="flex items-center gap-2">
                   <i className="fa-solid fa-right-from-bracket"></i> Log out
                 </button>
               </li> */}
+             
             </>
           ) : (
             <>
