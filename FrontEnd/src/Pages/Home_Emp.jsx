@@ -140,9 +140,10 @@ const Home_Emp = () => {
 
   return (
     <>
-    <div className=" flex justify-center mt-10">
-  <h3 className="text-center text-xl font-bold font-roboto animated-gradient-bg text-white  px-4  p-2 rounded">Employer - Dashboard</h3></div>
-      <div className="max-w-screen-2xl container mx-auto xl:px-14 md:py-10 py-5 px-4">
+      <div className="max-w-screen container p-1 mx-auto mt-4 mb-8 rounded-lg animated-gradient-bg">
+      <div className=" flex justify-center ">
+      <h3 className="text-center text-xl font-bold font-roboto my-1  text-white  px-4  p-2 rounded">Employer - Dashboard</h3></div>
+        <div className="md:py-10 py-5 xl:px-14 mx-auto  px-4 rounded-md bg-white/90">
         <h1 className="text-4xl font-bold text-primary mb-3">
           Empower Your Business with the{" "}
           <span className="text-blue animated-gradient-header">Best Talent</span>
@@ -175,6 +176,7 @@ const Home_Emp = () => {
           </a>
         </div>
       </div>
+     </div>
       <div className="flex flex-wrap justify-center">
         <h1
           id="search"
