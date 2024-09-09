@@ -11,6 +11,7 @@ router.delete('/deleteUser/:uid', async (req, res) => {
     await admin.auth().deleteUser(uid);
     console.log(`Successfully deleted user from Firebase Auth: ${uid}`);
 
+    
     // Optionally, delete user data from Firestore or Realtime Database
     await admin.database().ref(`users/${uid}`).remove();
     console.log(`Successfully deleted user data from Realtime Database: ${uid}`);

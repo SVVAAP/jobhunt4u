@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { ref, onValue, remove, update } from 'firebase/database';
+import React, { useEffect, useState } from "react";
+import { ref, onValue, remove, update } from "firebase/database";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth"; // Import required functions from Firebase Auth
-import { database } from '../firebase';
-import { useJobs } from '../context/jobsContext';
-import Employee_card from './Employee_card';
+import { database } from "../firebase";
+import { useJobs } from "../context/jobsContext";
+import User_card from "./User_card";
 
 function EmployeerDetails() {
   const [employers, setEmployers] = useState([]);
@@ -27,19 +27,19 @@ function EmployeerDetails() {
   const handleDelete = async (id) => {
     // Prompt the user to confirm deletion
     const isConfirmed = window.confirm("Are you sure you want to delete this employer? This action cannot be undone.");
-    
+
     if (!isConfirmed) {
       return; // Exit if the user does not confirm
     }
-  
+
     try {
       const response = await fetch(`https://jobhunt4u-backend.vercel.app/api/users/deleteUser/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
-  
+
       if (response.ok) {
         window.alert("Employer deleted successfully.");
         console.log("Employer deleted successfully.");
@@ -54,11 +54,11 @@ function EmployeerDetails() {
       console.error("Error deleting employer:", error);
     }
   };
-  
+
   const handleApproveDecline = (id, cstatus) => {
     const employerRef = ref(database, `users/${id}`);
     // Correctly update the status without extra concatenation
-    update(employerRef, { 'status': cstatus ? "approved" : "declined" }) // Update the employer's approval status
+    update(employerRef, { status: cstatus ? "approved" : "declined" }) // Update the employer's approval status
       .then(() => {
         alert(`Employer has been ${cstatus ? "approved" : "declined"}.`);
       })
@@ -73,9 +73,9 @@ function EmployeerDetails() {
       {employers.length > 0 ? (
         <div className="">
           {employers.map((employer, index) => (
-            <Employee_card
+            <User_card
               key={index}
-              employer={employer}
+              user={employer}
               index={index}
               onDelete={handleDelete} // Pass delete handler
               onApproveDecline={handleApproveDecline} // Pass approve/decline handler
