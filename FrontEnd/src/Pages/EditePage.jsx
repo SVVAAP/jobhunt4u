@@ -107,6 +107,8 @@ function EditePage() {
         <div className="flex justify-items-center">
           <div className="bg-sky-600 p-8 rounded-lg">
             {editor && <Toolbar />}
+            <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
+
             <EditorContent
               editor={editor}
               className="  p-4 border border-gray-300 rounded-lg bg-white"
