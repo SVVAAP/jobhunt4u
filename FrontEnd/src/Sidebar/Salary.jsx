@@ -10,9 +10,9 @@ const Salary = ({ handleChange, handleClick }) => {
       <h4 className="text-lg font-medium mb-2">Salary</h4>
       <div className="mb-4">
         <Button onClickHandler={handleClick} value="" title="All" />
-        <Button onClickHandler={handleClick} value="hourly" title="Hourly" />
-        <Button onClickHandler={handleClick} value="monthly" title="Monthly" />
-        <Button onClickHandler={handleClick} value="yearly" title="Yearly" />
+        <Button onClickHandler={handleClick} value="Hourly" title="Hourly" />
+        <Button onClickHandler={handleClick} value="Monthly" title="Monthly" />
+        <Button onClickHandler={handleClick} value="Yearly" title="Yearly" />
       </div>
 
       {/* {isMobile ? (
