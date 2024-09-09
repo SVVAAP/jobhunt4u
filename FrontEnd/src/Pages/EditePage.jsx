@@ -5,6 +5,7 @@ import { useJobs } from "../context/jobsContext";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
+import About from "../components/About";
 
 function EditePage() {
   const { isLoading, aboutContent, setAboutContent } = useJobs();
@@ -48,55 +49,49 @@ function EditePage() {
     <div className="flex space-x-2 mb-4">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive("bold") ? "bg-blue-500 text-white" : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive("bold") ? "bg-black text-white" : "bg-gray-200"
+          }`}
       >
         Bold
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive("italic") ? "bg-blue-500 text-white" : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive("italic") ? "bg-black text-white" : "bg-gray-200"
+          }`}
       >
         Italic
       </button>
       <button
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive("underline") ? "bg-blue-500 text-white" : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive("underline") ? "bg-black text-white" : "bg-gray-200"
+          }`}
       >
         Underline
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("left").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "left" })
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "left" })
+          ? "bg-black text-white"
+          : "bg-gray-200"
+          }`}
       >
         Left
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("center").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "center" })
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "center" })
+          ? "bg-black text-white"
+          : "bg-gray-200"
+          }`}
       >
         Center
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("right").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "right" })
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200"
-        }`}
+        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "right" })
+          ? "bg-black text-white"
+          : "bg-gray-200"
+          }`}
       >
         Right
       </button>
@@ -104,23 +99,29 @@ function EditePage() {
   );
 
   return (
-    <div className="p-6 bg-sky-800">
+    <div className="m-3 rounded-lg p-5 bg-sky-800">
       <h2 className="text-2xl text-white font-bold mb-4">Edit About Section</h2>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <div className="bg-sky-600 p-8">
-          {editor && <Toolbar />}
-          <EditorContent
-            editor={editor}
-            className="w-full h-fit p-2 border border-gray-300 rounded-lg bg-white"
-          />
-          <button
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-sky-400"
-            onClick={handleSave}
-          >
-            Save Changes
-          </button>
+        <div className="flex justify-items-center">
+          <div className="bg-sky-600 p-8 rounded-lg">
+            {editor && <Toolbar />}
+            <EditorContent
+              editor={editor}
+              className="  p-4 border border-gray-300 rounded-lg bg-white"
+            />
+            <button
+              className="mt-4 px-4 py-2 bg-white text-black font-bold rounded-lg hover:bg-sky-400"
+              onClick={handleSave}
+            >
+              Save Changes
+            </button>
+          </div>
+          {/* previes of autbuut */}
+          {/* <div className="bg-white ">
+            <About />
+          </div> */}
         </div>
       )}
     </div>

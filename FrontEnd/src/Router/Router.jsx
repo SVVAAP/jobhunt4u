@@ -19,6 +19,7 @@ import EmpApplicants from "../Pages/EmpApplicants";
 import EditePage from "../Pages/EditePage";
 import Candidate from "../components/Candidate";
 import MyJobs from "../components/MyJobs";
+import NotFound from '../components/404';
 import TermsAndCondition from "../components/TermsAndConditions";
 // import PrivacyPolicy from "../components/PrivacyPolicy";
 
@@ -50,7 +51,9 @@ const router = createBrowserRouter([
       { path: "/jobhunt4u-admin/candidate", element: <Candidate /> },
       { path: "/jobhunt4u-admin/my-jobs", element: <MyJobs /> }
     ]
-  }, { path: "/singlejob/:jobId", element: <SingleJob /> },
+  },
+  { path: "/singlejob/:jobId", element: <SingleJob /> },
   { path: "/applicants/:jobId", element: <EmpApplicants /> },
+  { path: "*", element: <NotFound /> },
 ]);
 export default router;
