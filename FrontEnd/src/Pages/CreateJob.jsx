@@ -265,7 +265,14 @@ const CreateJob = () => {
                   <option value="Marketing">Marketing</option>
                   <option value="Healthcare">Healthcare</option>
                   <option value="Education">Education</option>
-                  <option value="Sales">Sales</option>
+                  <option value="Sales and Service">Sales and Service</option>
+                  <option value="Office Administration">Office Administration</option>
+                  <option value="Hospitality">Hospitality </option>
+                  <option value="Care takers/ Nanny">Care takers/ Nanny</option>
+                  <option value="Trades, transport, and equipment operators">Trades, transport, and equipment operators</option>
+                  <option value="Natural resources, agriculture, or related production">Natural resources, agriculture, or related production</option>
+                  <option value="Manufacturing and utilities">Manufacturing and utilities</option>
+                  <option value="Other services">Other services</option>
                 </select>
                 {errors.jobCategory && <p className="text-red-500">{errors.jobCategory.message}</p>}
               </div>

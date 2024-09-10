@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, get } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { database } from "../firebase";
@@ -16,7 +16,7 @@ export function JobsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState("");
   const [aboutContent, setAboutContent] = useState("");
-  
+
   useEffect(() => {
     setIsLoading(true);
     const database = getDatabase();
@@ -71,6 +71,20 @@ export function JobsProvider({ children }) {
       setIsLoading(false);
     });
   }, []);
+const [contactInfo, setContactInfo] = useState({
+    phone: "",
+    email: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    const contactRef = ref(database, "siteContent/contact");
+    get(contactRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        setContactInfo(snapshot.val());
+      }
+    });
+  }, []);
 
   // Convert inbox object to array
   const messageData = user?.inbox
@@ -84,7 +98,7 @@ export function JobsProvider({ children }) {
   const mark = inboxMessages.some((message) => !message.seen);
 
   return (
-    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent}}>
+    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo}}>
       {children}
     </JobContext.Provider>
   );

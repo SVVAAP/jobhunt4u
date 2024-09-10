@@ -20,8 +20,8 @@ const About = () => {
     { value: "1,000+", label: "open job positions" },
     { value: "9k", label: "Placement Served" },
   ];
-  const { aboutContent } = useJobs();
-
+  const { aboutContent, contactInfo } = useJobs();
+  
   const jobCategories = [
     { name: "Fintech", description: "Finance Tech", icon: <AcademicCapIcon className="w-6 h-6 text-gray-600" /> },
     {
@@ -78,32 +78,27 @@ const About = () => {
         </div>
       </div>
 
-      <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="conatct">
-        <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
-          <span className="animated-gradient-header">Contact Us</span> Now
-        </h3>
-        <div className="text-center mb-6">
-          <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
-          <a href="tel:9035331774">
-            <p className="text-xl font-semibold text-gray-900">9035331774</p>
-          </a>
-        </div>
-        <div className="text-center mb-6">
-          <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
-          <a href="mailto:jobhunt4u2020@gmail.com" className="text-xl font-semibold text-blue-600 hover:underline">
-            jobhunt4u2020@gmail.com
-          </a>
-        </div>
-        <div className="text-center">
-          <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
-          <p className="text-xl font-semibold text-gray-900">
-            Near Alphonso Matrimony, Leo Brother&apos;s Shopping Complex
-          </p>
-          <a href="#map">
-            <p className="text-lg font-semibold text-gray-900">Mukamar, Udupi Dist. 574111</p>
-          </a>
-        </div>
+      <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="contact">
+      <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
+        <span className="animated-gradient-header">Contact Us</span> Now
+      </h3>
+      <div className="text-center mb-6">
+        <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
+        <a href={`tel:${contactInfo.phone || ""}`}>
+          <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
+        </a>
       </div>
+      <div className="text-center mb-6">
+        <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
+        <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
+          {contactInfo.email || ''}
+        </a>
+      </div>
+      <div className="text-center">
+        <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
+        <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
+      </div>
+    </div>
 
       <div className="mt-10">
         <h3 className="text-2xl font-bold text-gray-900 text-center">

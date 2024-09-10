@@ -13,7 +13,6 @@ import SingleJob from "../Pages/SingleJob";
 import Profile from "../Pages/Profile";
 import Login2 from "../components/login2";
 import ProfileEmp from "../Pages/ProfileEmp";
-import { useJobs } from "../context/jobsContext";
 import Home_toggle from "../components/home_toggle";
 import EmpApplicants from "../Pages/EmpApplicants";
 import EditePage from "../Pages/EditePage";
@@ -21,7 +20,7 @@ import Candidate from "../components/Candidate";
 import MyJobs from "../components/MyJobs";
 import NotFound from '../components/404';
 import TermsAndCondition from "../components/TermsAndConditions";
-import PrivacyPolicy from "../components/PrivacyPolicy";
+//import Policy from "../components/PrivacyPolicy";
 
 
 const router = createBrowserRouter([
@@ -39,7 +38,7 @@ const router = createBrowserRouter([
   { path: "/login-admin", element: <Login2 /> },
   { path: "/signup", element: <Signup /> },
   { path: "/Terms&Condition", element: <TermsAndCondition /> },
- { path: "/PrivacyPolicy", element: <PrivacyPolicy /> },
+ //{ path: "/PrivacyPolicy", element: <Policy /> },
   {
     path: "/jobhunt4u-admin", element: <PrivateRoute element={Manager} />,
     children: [
