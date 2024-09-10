@@ -11,9 +11,11 @@ const EmploymentType = ({ handleChange }) => {
       {isMobile ? (
         <select onChange={handleChange} name="employmentType" className="form-select">
           <option value="" >Any</option>
-          <option value="full-time">Full-time</option>
-          <option value="temporary">Temporary</option>
-          <option value="part-time">Part-time</option>
+          <option value="FullTime">Full Time</option>
+          <option value="PartTime">Part Time</option>
+          <option value="Contract">Contract</option>
+          <option value="Internship">Internship</option>
+          <option value="Remote">Remote</option>
         </select>
       ) : (
         <div>
@@ -23,20 +25,33 @@ const EmploymentType = ({ handleChange }) => {
           </label>
           <InputField
             handleChange={handleChange}
-            value="full-time"
+            value="FullTime"
             title="Full-time"
             name="employmentType"
           />
+          
           <InputField
             handleChange={handleChange}
-            value="temporary"
-            title="Temporary"
+            value="PartTime"
+            title="Part-time"
             name="employmentType"
           />
           <InputField
             handleChange={handleChange}
-            value="part-time"
-            title="Part-time"
+            value="Contract"
+            title="Contract"
+            name="employmentType"
+          />
+          <InputField
+            handleChange={handleChange}
+            value="Internship"
+            title="Internship"
+            name="employmentType"
+          />
+          <InputField
+            handleChange={handleChange}
+            value="Remote"
+            title="Remote"
             name="employmentType"
           />
         </div>
