@@ -16,6 +16,7 @@ export function JobsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState("");
   const [aboutContent, setAboutContent] = useState("");
+  
   useEffect(() => {
     setIsLoading(true);
     const database = getDatabase();

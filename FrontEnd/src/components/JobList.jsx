@@ -1,11 +1,29 @@
-import React, { useState } from 'react';
-import { ref, update } from "firebase/database";
+import React, { useEffect, useState } from 'react';
+import { getDatabase, onValue, ref, update } from "firebase/database";
 import { database } from "../firebase";
 import Card from './Card2';
 import { useJobs } from '../context/jobsContext';
 
 function JobList() {
-    const { jobs } = useJobs(); // Retrieve jobs from context
+    const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const database = getDatabase();
+        const jobRef = ref(database, "jobs");
+        const unsubscribeJobs = onValue(jobRef, (snapshot) => {
+          const jobsData = snapshot.val();
+          const loadedJobs = [];
+          for (const id in jobsData) {
+              loadedJobs.push({ id, ...jobsData[id] });
+            } 
+          const reversedJobs = loadedJobs.reverse();
+          setJobs(reversedJobs);
+          setIsLoading(false);
+        });
+    }, []);
+    // const { jobs } = useJobs(); // Retrieve jobs from context
 
     // State for filters
     const [filters, setFilters] = useState({
@@ -16,6 +34,8 @@ function JobList() {
         status: ''
     });
 
+    const [activeTab, setActiveTab] = useState('new');
+
     // Handle filter changes
     const handleFilterChange = (e) => {
         setFilters({
@@ -23,6 +43,10 @@ function JobList() {
             [e.target.name]: e.target.value
         });
     };
+
+    const currentDate = new Date();
+    const sevenDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 7));
+
 
     // Filter jobs based on criteria
     const filteredJobs = jobs.filter(job => {
@@ -121,6 +145,23 @@ function JobList() {
                     />
                 </div>
             </div >
+
+
+            {/* Tabs for New and Old Jobs */}
+            <div className="tabs-container flex justify-center mb-4">
+                <button
+                    className={`px-4 py-2 mx-2 ${activeTab === 'new' ? 'bg-sky-600 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setActiveTab('new')}
+                >
+                    New Jobs
+                </button>
+                <button
+                    className={`px-4 py-2 mx-2 ${activeTab === 'old' ? 'bg-sky-600 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setActiveTab('old')}
+                >
+                    Old Jobs
+                </button>
+            </div>
             {/* Job List */}
             < div className='grid grid-cols-1 md:grid-cols-3 gap-3' >
                 {filteredJobs && filteredJobs.map((data, i) => (
