@@ -49,13 +49,13 @@ function Applicant_card({ job, downloadExcel }) {
     <div className=''>
       <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2 bg-slate-300">
         <div className=" relative flex justify-between item-center rounded-lg p-3 bg-white">
-          <div className=' absolute -top-4 right-2' >
+          <div className=' absolute -top-1 right-2' >
         {job.applicants ? (
-              <span className="text-white ms-2 bg-red-700 rounded-full py-0.5 px-1.5">
+              <span className="text-white ms-2 bg-red-700 rounded-md py-0.5 px-1.5">
                 {job.applicants.length}
               </span>
             ) : (
-              <span className="text-white ms-2 bg-red-700 rounded-full py-0.5 px-1">
+              <span className="text-white ms-2 bg-red-700 rounded-md py-0.5 px-1">
               0
             </span>
             )}
