@@ -20,7 +20,7 @@ import Candidate from "../components/Candidate";
 import MyJobs from "../components/MyJobs";
 import NotFound from '../components/404';
 import TermsAndCondition from "../components/TermsAndConditions";
-//import Policy from "../components/PrivacyPolicy";
+import Policy from "../components/PrivacyPolicy";
 
 
 const router = createBrowserRouter([
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
   { path: "/login-admin", element: <Login2 /> },
   { path: "/signup", element: <Signup /> },
   { path: "/Terms&Condition", element: <TermsAndCondition /> },
- //{ path: "/PrivacyPolicy", element: <Policy /> },
+ { path: "/PrivacyPolicy", element: <Policy /> },
   {
     path: "/jobhunt4u-admin", element: <PrivateRoute element={Manager} />,
     children: [
