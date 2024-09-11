@@ -68,7 +68,6 @@ const CreateJob = () => {
         jobCategory: data.jobCategory, // Added jobCategory field
         jobType: data.jobType, // Added jobType field
         status: data.status,
-        seen:false,
       };
 
       await set(newJobRef, jobData);

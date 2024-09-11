@@ -162,6 +162,7 @@ const SingleJob = () => {
     skills,
     salaryType,
     workmode,
+    jobCategory,
   } = job;
 
   const handleBack = () => {
@@ -224,6 +225,9 @@ const SingleJob = () => {
               </div>
               <div>
                 <span className="font-semibold text-gray-700">Work Mode:</span> {workmode}
+              </div>
+              <div>
+                <span className="font-semibold text-gray-700">Catogery:</span> {jobCategory}
               </div>
             </div>
 
