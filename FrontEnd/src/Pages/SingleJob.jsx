@@ -54,7 +54,7 @@ const SuccessPopup = ({ message, onClose }) => (
 );
 
 const SingleJob = () => {
-  const { jobs, user, uid, isLoggedIn, userType } = useJobs();
+  const { allJobs, user, uid, isLoggedIn, userType } = useJobs();
   const { jobId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -66,7 +66,7 @@ const SingleJob = () => {
   const auth = getAuth();
 
   useEffect(() => {
-    const foundJob = jobs.find((job) => job.id === jobId);
+    const foundJob = allJobs.find((job) => job.id === jobId);
     setJob(foundJob);
 
     if (foundJob && foundJob.applicants) {
@@ -77,7 +77,7 @@ const SingleJob = () => {
         setApplicationStatus(applicant.applicationStatus || "");
       }
     }
-  }, [jobId, jobs, auth.currentUser]);
+  }, [jobId, allJobs, auth.currentUser]);
 
   const [applied, setApplied] = useState(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId));
 
@@ -220,7 +220,7 @@ const SingleJob = () => {
                 <span className="font-semibold text-gray-700">Experience Level:</span> {experienceLevel}
               </div>
               <div>
-                <span className="font-semibold text-gray-700">Skills Required:</span> {skills.join(", ")}
+                <span className="font-semibold text-gray-700">Skills Required:</span> {skills && skills.join(", ")}
               </div>
               <div>
                 <span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}

@@ -10,6 +10,7 @@ export const useJobs = () => useContext(JobContext);
 
 export function JobsProvider({ children }) {
   const [jobs, setJobs] = useState([]);
+  const [allJobs, setAllJobs] = useState([]);
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [uid, setUid] = useState(null);
@@ -24,12 +25,15 @@ export function JobsProvider({ children }) {
     const unsubscribeJobs = onValue(jobRef, (snapshot) => {
       const jobsData = snapshot.val();
       const loadedJobs = [];
+      const unfilyJobs=[];
       for (const id in jobsData) {
+        unfilyJobs.push({ id, ...jobsData[id] });
         if (jobsData[id].status === "approved") {
           loadedJobs.push({ id, ...jobsData[id] });
         } }
       const reversedJobs = loadedJobs.reverse();
       setJobs(reversedJobs);
+      setAllJobs(unfilyJobs.reverse());
       setIsLoading(false);
     });
 
@@ -98,7 +102,7 @@ const [contactInfo, setContactInfo] = useState({
   const mark = inboxMessages.some((message) => !message.seen);
 
   return (
-    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo}}>
+    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs}}>
       {children}
     </JobContext.Provider>
   );

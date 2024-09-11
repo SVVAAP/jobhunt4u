@@ -13,7 +13,7 @@ const CreateJob = () => {
   const [logoFile, setLogoFile] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { user } = useJobs();
+  const { user, isLoading } = useJobs();
 
   const {
     register,
@@ -81,7 +81,7 @@ const CreateJob = () => {
 
   const handleClosePopup = () => {
     setShowPopup(false);
-    navigate("/");
+    window.location.reload(); // Refresh the page
   };
 
   const options = [
@@ -108,8 +108,11 @@ const CreateJob = () => {
     { value: "financial literacy", label: "Financial Literacy" },
     { value: "writing skills", label: "Writing Skills" },
   ];
+  if(isLoading){
+    return <div>Loading....</div>
+  }else{
 
-  if (user.status && user.status === "approved") {
+  if (user && user.status && user.status === "approved") {
     return (
       <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4" id="">
         <div className="bg-sky-900/80 rounded-xl mt-5 text-white py-10 px-4 lg:px-16">
@@ -336,7 +339,7 @@ const CreateJob = () => {
                 </p>
                 <div className="flex justify-end">
                   <button onClick={handleClosePopup} className="bg-blue text-white px-4 py-2 rounded hover:bg-blue">
-                    Continue Hunting
+                    Continue
                   </button>
                 </div>
               </div>
@@ -346,7 +349,7 @@ const CreateJob = () => {
       </div>
     );
   } else {
-    if (user.status === "pending") {
+    if (user && user.status === "pending") {
       return (
         <div className="m-5 text-center">
           <h1 className="text-red text-2xl text-red-600 font-bold animate-pulse">
@@ -365,6 +368,7 @@ const CreateJob = () => {
       );
     }
   }
+}
 };
 
 export default CreateJob;
