@@ -161,7 +161,7 @@ const SingleJob = () => {
     experienceLevel,
     skills,
     salaryType,
-    Workmode,
+    workmode,
   } = job;
 
   const handleBack = () => {
@@ -223,7 +223,7 @@ const SingleJob = () => {
                 <span className="font-semibold text-gray-700">Skills Required:</span> {skills && skills.join(", ")}
               </div>
               <div>
-                <span className="font-semibold text-gray-700">Work Mode:</span> {Workmode}
+                <span className="font-semibold text-gray-700">Work Mode:</span> {workmode}
               </div>
             </div>
 
