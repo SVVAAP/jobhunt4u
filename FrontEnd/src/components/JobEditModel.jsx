@@ -227,16 +227,17 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
 
               {/* Job Description */}
               <div className="mb-3">
-                <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700">Job Description</label>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Job Description</label>
                 <textarea
-                  name="jobDescription"
-                  id="jobDescription"
+                  name="description"  // Changed to match 'description' key in formData
+                  id="description"
                   value={formData.description}
                   onChange={handleChange}
                   className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
                   rows="4"
                 ></textarea>
               </div>
+
             </div>
 
             <div className="px-5 py-3 bg-gray-100 text-right">
