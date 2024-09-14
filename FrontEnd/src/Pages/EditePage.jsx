@@ -182,6 +182,12 @@ function EditePage() {
           </div>
         </div>
       )}
+      <div>
+        <h1>C</h1>
+        <div className="flex">
+
+        </div>
+      </div>
     </div>
   );
 }

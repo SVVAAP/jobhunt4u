@@ -7,13 +7,14 @@ import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
 import card_bg from "../assets/sign_card.png";
 import TermsAndConditions from "./TermsAndConditions";
+import { stateObject } from "../assets/Country+State+District-City-Data"; // Import the country-state-district data
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [userType, setUserType] = useState("candidate");
+  const [userType, setUserType] = useState("");
   const [error, setError] = useState(null);
   const [companyName, setCompanyName] = useState("");
   const [resume, setResume] = useState(null);
@@ -21,12 +22,29 @@ const Signup = () => {
   const [sentOtp, setSentOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [verified, setVerified] = useState(false);
-  const [location, setLocation] = useState("");
-  const [showConditions, setShowConditions] = useState(false); 
+  const [location, setLocation] = useState({
+    country: "",
+    state: "",
+    district: "",
+  });
+  const [showConditions, setShowConditions] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false); // State to check Terms acceptance
   const [timer, setTimer] = useState(0); // State to keep track of timer
-  
+
   const navigate = useNavigate();
+  const countries = Object.keys(stateObject); // Get the list of countries
+
+  const handleCountryChange = (e) => {
+    setLocation({ ...location, country: e.target.value, state: "", district: "" });
+  };
+
+  const handleStateChange = (e) => {
+    setLocation({ ...location, state: e.target.value, district: "" });
+  };
+
+  const handleDistrictChange = (e) => {
+    setLocation({ ...location, district: e.target.value });
+  };
 
   useEffect(() => {
     let interval;
@@ -51,7 +69,7 @@ const Signup = () => {
       to_email: email,
     };
 
-    emailjs.send("service_w9shb6j", "template_9b9fk37", templateParams, "MZ-qy3k1Y1ct2suVP").then(
+    emailjs.send("service_w9shb6j", userType==="candidate"?"template_9b9fk37":"template_gv8hq77", templateParams, "MZ-qy3k1Y1ct2suVP").then(
       (result) => {
         console.log("OTP sent:", result.text);
       },
@@ -111,7 +129,7 @@ const Signup = () => {
           companyName: userType === "employer" ? companyName : "",
           location: userType === "employer" ? location : "",
           resume: userType === "candidate" && resume ? await uploadResume(resume) : "",
-          status:"pending",
+          status: "pending",
         };
 
         // Store user data in database
@@ -141,89 +159,159 @@ const Signup = () => {
       return "";
     }
   };
+  const handleUserType = (type) => {
+    setUserType(type);
+  };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-400">
+    <div className="relative min-h-screen flex items-center justify-center ">
       <div
         className="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-25"
         style={{ backgroundImage: `url(${background})` }}
       />
       <div
-        className="relative bg-sky-50 shadow-2xl p-8 rounded-lg ring-1 ring-sky-700 w-full max-w-2xl transform transition duration-500 hover:scale-105 z-10 m-5"
+        className= {`relative  shadow-2xl p-8 rounded-2xl ring-1 ring-sky-700 w-full max-w-2xl my-10 transform transition duration-500 hover:scale-105 z-10 m-5 ${userType===""? "bg-gradient-to-tr from-sky-200 to-sky-600":"bg-sky-50"}`}
         style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Signup</h2>
-        <form onSubmit={handleSignup} className="space-y-4 text-left">
-          <div className="flex justify-between items-center">
-            <label className="block text-gray-700">Name</label>
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <label className="text-gray-700">Email</label>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-3/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              required
-            />
-           <button
-              className="bg-blue-600 ring-2 bg-white/85 ring-blue text-sky-950 p-2 rounded-md hover:bg-sky-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
-              onClick={openOtp}
-              type="button"
-              disabled={verified || timer > 0}>
-              {verified ? "Verified" : timer > 0 ? `Resend in ${timer}s` : "Verify"}
-            </button>
-          </div>
-          {showOtp && (
-            <div className="flex justify-between items-center">
-              <label className="block text-red-700">OTP</label>
-              <input
-                type="number"
-                placeholder="OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                required
-              />
-              <button
-                className="bg-blue-600 ring-2 ring-red-700 text-sky-950 p-2 rounded-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
-                onClick={verifyOtp}
-                type="button">
-                Check
-              </button>
-            </div>
-          )}
-          <div className="flex justify-between items-center">
-            <label className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <label className="block text-gray-700">Phone</label>
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div className="flex justify-between items-center ">
+
+        {/* User Type Selection - Gradient Buttons */}
+        <div className="flex justify-center space-x-4 mb-6">
+          <button
+            onClick={() => handleUserType("candidate")}
+            className={`px-4 py-2 rounded-lg font-bold  transition-all duration-300 transform hover:bg-sky-400 ${
+              userType === "candidate"
+                ? "bg-gradient-to-r from-sky-400 to-sky-600 scale-105 text-white"
+                : "bg-white"
+            }`}>
+            Candidate
+          </button>
+          <button
+            onClick={() => handleUserType("employer")}
+            className={`px-4 py-2 rounded-lg font-bold transition-all duration-300 transform hover:bg-sky-400 ${
+              userType === "employer"
+                ? "bg-gradient-to-r from-sky-400 to-sky-600 text-white scale-105"
+                : "bg-white"
+            }`}>
+            Employer
+          </button>
+        </div>
+
+        {/* Display Form Fields Based on Selection with Animation */}
+        {userType && (
+          <div className={`transition-opacity duration-700 ease-in ${userType ? "opacity-100" : "opacity-0"}`}>
+            <form onSubmit={handleSignup} className="space-y-4 text-left">
+              <div className="flex justify-between items-center">
+                <label className="block text-gray-700">Name</label>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <label className="text-gray-700">Email</label>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 block w-3/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  required
+                />
+                <button
+                  className="bg-blue-600 ring-2 bg-white/85 ring-blue text-sky-950 p-2 rounded-md hover:bg-sky-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
+                  onClick={openOtp}
+                  type="button"
+                  disabled={verified || timer > 0}>
+                  {verified ? "Verified" : timer > 0 ? `Resend in ${timer}s` : "Verify"}
+                </button>
+              </div>
+              {showOtp && (
+                <div className="flex justify-between items-center">
+                  <label className="block text-red-700">OTP</label>
+                  <input
+                    type="number"
+                    placeholder="OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                  <button
+                    className="bg-blue-600 ring-2 ring-red-700 text-sky-950 p-2 rounded-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200"
+                    onClick={verifyOtp}
+                    type="button">
+                    Check
+                  </button>
+                </div>
+              )}
+              <div className="flex justify-between items-center">
+                <label className="block text-gray-700">Password</label>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <label className="block text-gray-700">Phone</label>
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  required
+                />
+              </div>
+              {/* Country, State, District Selection */}
+              <div className="flex justify-between items-center">
+                <label className="block text-gray-700">Country</label>
+                <select value={location.country} onChange={handleCountryChange} className="mt-1 block w-4/5 p-2 border">
+                  <option value="">Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {location.country && (
+                <div className="flex justify-between items-center">
+                  <label className="block text-gray-700">State</label>
+                  <select value={location.state} onChange={handleStateChange} className="mt-1 block w-4/5 p-2 border">
+                    <option value="">Select State</option>
+                    {Object.keys(stateObject[location.country]).map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {location.state && (
+                <div className="flex justify-between items-center">
+                  <label className="block text-gray-700">District</label>
+                  <select
+                    value={location.district}
+                    onChange={handleDistrictChange}
+                    className="mt-1 block w-4/5 p-2 border">
+                    <option value="">Select District</option>
+                    {stateObject[location.country][location.state].map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {/* <div className="flex justify-between items-center ">
             <label className="block text-gray-700">I am a</label>
             <div className="mt-1 flex space-x-4">
               <label className="inline-flex w-4/5 items-center">
@@ -247,99 +335,96 @@ const Signup = () => {
                 <span className="ml-2">Employer</span>
               </label>
             </div>
-          </div>
-          {userType === "employer" && (
-            <>
-              <div className="flex justify-between items-center">
-                <label className="block text-gray-700">Company Name</label>
+          </div> */}
+              {userType === "employer" && (
+                <>
+                  <div className="flex justify-between items-center">
+                    <label className="block text-gray-700">Company Name</label>
+                    <input
+                      type="text"
+                      placeholder="Company Name"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <label className="block text-gray-700">Location</label>
+                    <input
+                      type="text"
+                      placeholder="Location"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+              {userType === "candidate" && (
+                <div className="flex justify-between items-center">
+                  <label className="block text-gray-700">Resume</label>
+                  <input
+                    type="file"
+                    onChange={(e) => setResume(e.target.files[0])}
+                    className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                </div>
+              )}
+              <div className="flex justify-start space-x-3 items-center">
                 <input
-                  type="text"
-                  placeholder="Company Name"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  required
+                  type="checkbox"
+                  name="termsAndConditions"
+                  checked={termsAccepted}
+                  onChange={() => setTermsAccepted(!termsAccepted)}
                 />
+                <label className="block text-gray-700">
+                  I accept all the{" "}
+                  <span className="font-bold underline italic cursor-pointer" onClick={() => setShowConditions(true)}>
+                    Terms & Conditions
+                  </span>
+                </label>
               </div>
-              <div className="flex justify-between items-center">
-                <label className="block text-gray-700">Location</label>
-                <input
-                  type="text"
-                  placeholder="Location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  required
-                />
+              <div className="items-center text-center">
+                <button
+                  type="submit"
+                  className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200 ">
+                  Signup
+                </button>
               </div>
-            </>
-          )}
-          {userType === "candidate" && (
-            <div className="flex justify-between items-center">
-              <label className="block text-gray-700">Resume</label>
-              <input
-                type="file"
-                onChange={(e) => setResume(e.target.files[0])}
-                className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                required
-              />
-            </div>
-          )}
-           <div className="flex justify-start space-x-3 items-center">
-            <input
-              type="checkbox"
-              name="termsAndConditions"
-              checked={termsAccepted}
-              onChange={() => setTermsAccepted(!termsAccepted)}
-            />
-            <label className="block text-gray-700">
-              I accept all the{" "}
-              <span
-                className="font-bold underline italic cursor-pointer"
-                onClick={() => setShowConditions(true)}
-              >
-                Terms & Conditions
-              </span>
-            </label>
+              <div className="flex flex-col justify-center items-center text-center">
+                <p className="text-lg bg-white/60 rounded-full px-4 py-2 relative w-fit">
+                  Already have an Account?
+                  <Link to="/login" className="text-sky-600 underline ml-1">
+                    Login
+                  </Link>
+                </p>
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+              </div>
+            </form>
           </div>
-          <div className="items-center text-center">
-          <button
-            type="submit"
-            className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200 ">
-            Signup
-          </button>
-          </div>
-          <div className="flex flex-col justify-center items-center text-center">
-            <p className="text-lg bg-white/60 rounded-full px-4 py-2 relative w-fit">
-              Already have an Account?
-              <Link to="/login" className="text-sky-600 underline ml-1">
-                Login
-              </Link>
-            </p>
-            {error && <p className="text-red-500 mt-2">{error}</p>}
-          </div>
-        </form>
+        )}
       </div>
       {showConditions && (
-       <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
-       <div className="bg-white p-4 rounded-lg shadow-lg max-w-2xl w-full h-4/5 flex flex-col">
-         {/* Terms and Conditions Component */}
-         <div className="flex-grow overflow-y-auto">
-           <TermsAndConditions className="h-full"/>
-         </div>
-     
-         {/* Modal Footer with Close Button */}
-         <div className="mt-4 flex justify-end">
-           <button
-             className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
-             onClick={() => setShowConditions(false)}
-           >
-             Close
-           </button>
-         </div>
-       </div>
-     </div>
-     
+        <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-2xl w-full h-4/5 flex flex-col">
+            {/* Terms and Conditions Component */}
+            <div className="flex-grow overflow-y-auto">
+              <TermsAndConditions className="h-full" />
+            </div>
+
+            {/* Modal Footer with Close Button */}
+            <div className="mt-4 flex justify-end">
+              <button
+                className="px-3 py-1.5 font-bold rounded-lg bg-blue text-white hover:bg-blue-700 transition-all duration-300"
+                onClick={() => setShowConditions(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
