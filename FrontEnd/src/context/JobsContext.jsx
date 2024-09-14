@@ -17,6 +17,7 @@ export function JobsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState("");
   const [aboutContent, setAboutContent] = useState("");
+  const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,6 +57,13 @@ export function JobsProvider({ children }) {
       }
 
       setIsLoading(false);
+    });
+
+    const categoryRef = ref(database, "siteContent/category");
+    get(categoryRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        setCategoryList(Object.values(snapshot.val()));
+      }
     });
 
     // Cleanup for job and auth listeners
@@ -102,7 +110,7 @@ const [contactInfo, setContactInfo] = useState({
   const mark = inboxMessages.some((message) => !message.seen);
 
   return (
-    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs}}>
+    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs ,categoryList, setCategoryList}}>
       {children}
     </JobContext.Provider>
   );

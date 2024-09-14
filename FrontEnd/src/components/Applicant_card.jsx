@@ -1,48 +1,80 @@
-import React, { useState } from 'react';
-import { getDatabase, push, ref, update } from 'firebase/database'; // Import Firebase functions
+import React, { useEffect, useState } from 'react';
+import { getDatabase, push, ref, remove, update } from 'firebase/database'; // Import Firebase functions
 import excel from "../assets/excel.png";
 
 function Applicant_card({ job, downloadExcel }) {
   const [showJobs, setShowJobs] = useState(false);
   const database = getDatabase(); // Initialize the Firebase database
+  const [newCandidates,setNewCandidates]=useState([]);
+
+  useEffect(() => {
+    if (job.applicants) {
+      const filteredCandidates = job.applicants.filter((applicant) => applicant.applicationStatus === "pending");
+      setNewCandidates(filteredCandidates);
+    }
+  }, [job.applicants]);
 
   const updateApplicationStatus = (applicantIndex, status) => {
-    const updatedApplicants = job.applicants.map((applicant, index) => {
-      if (index === applicantIndex) {
-        return { ...applicant, applicationStatus: status };
-      }
-      return applicant;
-    });
+    const updatedApplicants = job.applicants.filter((_, index) => index !== applicantIndex);
 
-    const jobRef = ref(database, `jobs/${job.id}`);
-    update(jobRef, { applicants: updatedApplicants })
-      .then(() => {
-        alert(`Application ${status === 'withEmployer' ? 'Approved' : 'Declined'} Successfully!`);
+    if (status === 'declined') {
+      // Remove the applicant from the database
+      const jobRef = ref(database, `jobs/${job.id}/applicants/${applicantIndex}`);
+      remove(jobRef)
+        .then(() => {
+          alert(`Application Declined and Removed Successfully!`);
+          // Send a message to the applicant's inbox
+          const applicant = job.applicants[applicantIndex];
+          const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
+          const newMessageRef = push(applicantInboxRef);
 
-        // Send a message to the applicant's inbox
-        const applicant = updatedApplicants[applicantIndex];
-        const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`); // Reference to the user's inbox
-        const newMessageRef = push(applicantInboxRef); // Create a new push reference
+          const message = {
+            title: `Your application status: ${status}`,
+            message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been declined.`,
+            timestamp: Date.now()
+          };
 
-        // Create a message based on the status
-        const message = {
-          title: `Your application status : ${status}`,
-          message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been ${status === 'withEmployer' ? 'approved and sent to the employer' : 'declined'}.`,
-          timestamp: Date.now()
-        };
+          update(newMessageRef, message)
+            .then(() => {
+              console.log('Message sent to applicant inbox');
+            })
+            .catch((error) => {
+              console.error('Error sending message: ', error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error removing applicant: ", error);
+        });
+    } else {
+      // Update the application status
+      const jobRef = ref(database, `jobs/${job.id}`);
+      update(jobRef, { applicants: updatedApplicants })
+        .then(() => {
+          alert(`Application Approved Successfully!`);
 
-        // Save the message to the applicant's inbox
-        update(newMessageRef, message)
-          .then(() => {
-            console.log('Message sent to applicant inbox');
-          })
-          .catch((error) => {
-            console.error('Error sending message: ', error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error updating status: ", error);
-      });
+          // Send a message to the applicant's inbox
+          const applicant = job.applicants[applicantIndex];
+          const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
+          const newMessageRef = push(applicantInboxRef);
+
+          const message = {
+            title: `Your application status: ${status}`,
+            message: `Your application for the position of ${job.jobTitle} at ${job.companyName} has been approved and sent to the employer.`,
+            timestamp: Date.now()
+          };
+
+          update(newMessageRef, message)
+            .then(() => {
+              console.log('Message sent to applicant inbox');
+            })
+            .catch((error) => {
+              console.error('Error sending message: ', error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error updating status: ", error);
+        });
+    }
   };
 
   return (
@@ -50,9 +82,9 @@ function Applicant_card({ job, downloadExcel }) {
       <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2 bg-slate-300">
         <div className=" relative flex justify-between item-center rounded-lg p-3 bg-white">
           <div className='absolute -top-3 -right-2'>
-            {job.applicants && job.applicants.length > 0 ? (
+            {newCandidates && newCandidates.length > 0 ? (
               <span className="text-white bg-red-700 rounded-lg py-1 px-3 text-xs font-semibold">
-                {job.applicants.length}
+                {newCandidates.length}
               </span>
             ) : null}
           </div>

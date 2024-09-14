@@ -74,8 +74,12 @@ const SingleJob = () => {
       const applicant = Object.values(foundJob.applicants).find((app) => app.email === currentUserEmail);
 
       if (applicant) {
-        setApplicationStatus(applicant.applicationStatus || "");
+        setApplicationStatus(applicant.applicationStatus || "declined");
+      } else {
+        setApplicationStatus("declined");
       }
+    } else {
+      setApplicationStatus("declined");
     }
   }, [jobId, allJobs, auth.currentUser]);
 
@@ -91,44 +95,43 @@ const SingleJob = () => {
 
   const applyJob = () => {
     setShowConditions(false);
-   
-      if (user.resume !== "") {
-        if (!user.appliedJobs) {
-          user.appliedJobs = [];
-        }
 
-        if (!user.appliedJobs.includes(jobId)) {
-          const newAppliedJobs = [...user.appliedJobs, jobId];
-          const userRef = ref(database, `users/${uid}`);
-
-          update(userRef, { appliedJobs: newAppliedJobs })
-            .then(() => {
-              setApplied(true);
-
-              // Correcting the destructuring of the user object
-              const { userType, appliedJobs, ...userWithoutTypeAndAppliedJobs } = user;
-
-              const applicantWithStatus = {
-                ...userWithoutTypeAndAppliedJobs,
-                uid: uid, // Add uid here
-                applicationStatus: "pending",
-              };
-
-              const newApplicants = job.applicants ? [...job.applicants, applicantWithStatus] : [applicantWithStatus];
-              const jobRef = ref(database, `jobs/${jobId}`);
-
-              update(jobRef, { applicants: newApplicants })
-                .then(() => setShowPopup(true))
-                .catch((error) => console.error("Error: ", error));
-            })
-            .catch((error) => console.log(error));
-        } else {
-          alert("You have already applied for this job.");
-        }
-      } else {
-        alert("Please Upload Your Resume.");
+    if (user.resume !== "") {
+      if (!user.appliedJobs) {
+        user.appliedJobs = [];
       }
-   
+
+      if (!user.appliedJobs.includes(jobId)) {
+        const newAppliedJobs = [...user.appliedJobs, jobId];
+        const userRef = ref(database, `users/${uid}`);
+
+        update(userRef, { appliedJobs: newAppliedJobs })
+          .then(() => {
+            setApplied(true);
+
+            // Correcting the destructuring of the user object
+            const { userType, appliedJobs, ...userWithoutTypeAndAppliedJobs } = user;
+
+            const applicantWithStatus = {
+              ...userWithoutTypeAndAppliedJobs,
+              uid: uid, // Add uid here
+              applicationStatus: "pending",
+            };
+
+            const newApplicants = job.applicants ? [...job.applicants, applicantWithStatus] : [applicantWithStatus];
+            const jobRef = ref(database, `jobs/${jobId}`);
+
+            update(jobRef, { applicants: newApplicants })
+              .then(() => setShowPopup(true))
+              .catch((error) => console.error("Error: ", error));
+          })
+          .catch((error) => console.log(error));
+      } else {
+        alert("You have already applied for this job.");
+      }
+    } else {
+      alert("Please Upload Your Resume.");
+    }
   };
 
   const candidate = user && userType === "candidate";
@@ -137,16 +140,16 @@ const SingleJob = () => {
       pending: 10,
       withEmployer: 66,
       approved: 100,
-      declined: 100,
+      declined: 0,
     }[applicationStatus] || 0;
-  console.log(applicationStatus);
+
   const progressText =
     {
-      pending: "Your Application is currently under review ",
+      pending: "Your Application is currently under review",
       withEmployer: "Your Application is being reviewed by Recruiter",
       approved: "Your Application was Accepted",
       declined: "Your Application for this Job role was Rejected, Better Luck Next Time !!!!",
-    }[applicationStatus] || 0;
+    }[applicationStatus] || "Your Application for this Job role was Rejected, Better Luck Next Time !!!!";
 
   const {
     companyLogo,
@@ -172,6 +175,7 @@ const SingleJob = () => {
       navigate("/");
     }
   };
+
   return (
     <div
       className="bg-cover bg-center bg-blend-lighten"
@@ -227,7 +231,7 @@ const SingleJob = () => {
                 <span className="font-semibold text-gray-700">Work Mode:</span> {workmode}
               </div>
               <div>
-                <span className="font-semibold text-gray-700">Catogery:</span> {jobCategory}
+                <span className="font-semibold text-gray-700">Category:</span> {jobCategory}
               </div>
             </div>
 
@@ -239,10 +243,10 @@ const SingleJob = () => {
               candidate && (
                 <button
                   className={`px-3 py-1.5 mt-2 ${
-                    applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
+                    applied ? "animated-gradient-header ring-2 ring-blue" : "apply-bt"
                   } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
                   onClick={() => {
-                   applyJob();
+                    applyJob();
                   }}
                   disabled={applied}>
                   {applied ? "Applied" : "Apply Now"}
@@ -251,7 +255,7 @@ const SingleJob = () => {
             ) : (
               <button
                 className={`px-3 py-1.5 mt-2 ${
-                  applied ? "animated-gradient-header ring-2 ring-blue  " : "apply-bt"
+                  applied ? "animated-gradient-header ring-2 ring-blue" : "apply-bt"
                 } font-bold rounded-md hover:bg-blue-700 transition-all duration-300`}
                 onClick={() => {
                   if (confirm("Please login to apply for the job!")) {
@@ -286,7 +290,6 @@ const SingleJob = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
-     
     </div>
   );
 };

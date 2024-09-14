@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ref, update, get } from "firebase/database";
+import { ref, update, get, remove, set } from "firebase/database";
 import { database } from "../firebase";
 import { useJobs } from "../context/jobsContext";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -8,7 +8,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 
 function EditPage() {
-  const { isLoading, aboutContent, setAboutContent } = useJobs();
+  const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList } = useJobs();
   const [termsContent, setTermsContent] = useState(""); // State for Terms and Conditions content
   const [privacyPolicyContent, setPrivacyPolicyContent] = useState(""); // State for Privacy Policy content
   const [contactInfo, setContactInfo] = useState({
@@ -16,6 +16,7 @@ function EditPage() {
     email: "",
     address: "",
   });
+  const [category, setCategory] = useState("");
 
   // Editor for About Us
   const editor = useEditor({
@@ -156,6 +157,67 @@ function EditPage() {
       });
   };
 
+  const handleAddCategory = () => {
+    // Reference to the categories object in Firebase
+    const categoryRef = ref(database, `siteContent/categories`);
+  
+    // Retrieve the existing categories object
+    get(categoryRef)
+      .then((snapshot) => {
+        const existingCategories = snapshot.val() || {}; // Get existing object or an empty object if none exist
+  
+        // Check if category already exists
+        if (!Object.values(existingCategories).includes(category)) {
+          // Find the next available index
+          const nextIndex = Object.keys(existingCategories).length;
+          const updatedCategories = { ...existingCategories, [nextIndex]: category };
+  
+          // Update Firebase with the new object
+          update(categoryRef, updatedCategories)
+            .then(() => {
+              setCategoryList(Object.values(updatedCategories)); // Update local state
+              setCategory("");
+              alert("Category added successfully!");
+            })
+            .catch((error) => {
+              console.error("Error adding category: ", error);
+            });
+        } else {
+          alert("Category already exists!");
+        }
+      })
+      .catch((error) => {
+        console.error("Error retrieving categories: ", error);
+      });
+  };
+  
+
+  const handleDeleteCategory = (categoryToDelete) => {
+    // Reference to the categories array in Firebase
+    const categoryRef = ref(database, `siteContent/categories`);
+  
+    // Get the existing categories array
+    get(categoryRef).then((snapshot) => {
+      const existingCategories = snapshot.val() || [];
+  
+      // Filter out the category that needs to be deleted
+      const updatedCategories = existingCategories.filter(cat => cat !== categoryToDelete);
+  
+      // Update Firebase with the new array
+      set(categoryRef, updatedCategories)
+        .then(() => {
+          setCategoryList(updatedCategories); // Update local state
+          alert("Category deleted successfully!");
+        })
+        .catch((error) => {
+          console.error("Error deleting category: ", error);
+        });
+    }).catch((error) => {
+      console.error("Error retrieving categories: ", error);
+    });
+  };
+  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setContactInfo((prev) => ({ ...prev, [name]: value }));
@@ -165,44 +227,38 @@ function EditPage() {
     <div className="flex space-x-2 mb-4">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("bold") ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${editor.isActive("bold") ? "bg-black text-white" : "bg-gray-200"}`}>
         Bold
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("italic") ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${editor.isActive("italic") ? "bg-black text-white" : "bg-gray-200"}`}>
         Italic
       </button>
       <button
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("underline") ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${editor.isActive("underline") ? "bg-black text-white" : "bg-gray-200"}`}>
         Underline
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("left").run()}
-        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "left" }) ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${
+          editor.isActive({ textAlign: "left" }) ? "bg-black text-white" : "bg-gray-200"
+        }`}>
         Left
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("center").run()}
-        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "center" }) ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${
+          editor.isActive({ textAlign: "center" }) ? "bg-black text-white" : "bg-gray-200"
+        }`}>
         Center
       </button>
       <button
         onClick={() => editor.chain().focus().setTextAlign("right").run()}
-        className={`px-2 py-1 rounded ${editor.isActive({ textAlign: "right" }) ? "bg-black text-white" : "bg-gray-200"
-          }`}
-      >
+        className={`px-2 py-1 rounded ${
+          editor.isActive({ textAlign: "right" }) ? "bg-black text-white" : "bg-gray-200"
+        }`}>
         Right
       </button>
       <button
@@ -210,17 +266,16 @@ function EditPage() {
           const url = prompt("Enter the URL");
           if (url) {
             // Check if some text is selected
-            if (editor.isActive('link')) {
+            if (editor.isActive("link")) {
               // If link is already applied, update it
-              editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+              editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
             } else {
               // Apply link to selected text
               editor.chain().focus().setLink({ href: url }).run();
             }
           }
         }}
-        className="px-2 py-1 rounded bg-gray-200"
-      >
+        className="px-2 py-1 rounded bg-gray-200">
         Add Link
       </button>
     </div>
@@ -237,38 +292,23 @@ function EditPage() {
             {/* About Us Section */}
             <h3 className="text-xl text-white mb-2">Edit About Us</h3>
             {editor && <Toolbar editor={editor} />}
-            <p className="text-sm text-white mb-2">
-              [ Use the toolbar above to format and edit the content below. ]
-            </p>
-            <EditorContent
-              editor={editor}
-              className="p-4 border border-gray-300 rounded-lg bg-white"
-            />
+            <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
+            <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
 
             {/* Terms and Conditions Section */}
             <div className="mt-8">
               <h3 className="text-xl text-white mb-2">Edit Terms and Conditions</h3>
               {termsEditor && <Toolbar editor={termsEditor} />}
-              <p className="text-sm text-white mb-2">
-                [ Use the toolbar above to format and edit the content below. ]
-              </p>
-              <EditorContent
-                editor={termsEditor}
-                className="p-4 border border-gray-300 rounded-lg bg-white"
-              />
+              <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
+              <EditorContent editor={termsEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
             </div>
 
             {/* Privacy Policy Section */}
             <div className="mt-8">
               <h3 className="text-xl text-white mb-2">Edit Privacy Policy</h3>
               {privacyEditor && <Toolbar editor={privacyEditor} />}
-              <p className="text-sm text-white mb-2">
-                [ Use the toolbar above to format and edit the content below. ]
-              </p>
-              <EditorContent
-                editor={privacyEditor}
-                className="p-4 border border-gray-300 rounded-lg bg-white"
-              />
+              <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
+              <EditorContent editor={privacyEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
             </div>
 
             {/* Contact Info Section */}
@@ -307,19 +347,37 @@ function EditPage() {
             </div>
 
             {/* Save Button */}
-            <button
-              onClick={handleSave}
-              className="bg-green-500 text-white px-4 py-2 mt-4 rounded"
-            >
+            <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 mt-4 rounded">
               Save All Changes
             </button>
           </div>
         </div>
       )}
-      <div>
-        <h1>C</h1>
+      <div className="mt-8">
+        <h3 className="text-xl text-white mb-2">Edit Categories</h3>
         <div className="flex">
+          <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="p-2 rounded-lg"
+            placeholder="Enter new category"
+          />
+          <button onClick={handleAddCategory} className="ml-2 bg-green-500 text-white px-4 py-2 rounded">
+            Add
+          </button>
+        </div>
 
+        {/* Display Category List */}
+        <div className="grid grid-cols-4 gap-1 mt-4">
+          {categoryList.map((cat, index) => (
+            <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
+              <span>{cat}</span> {/* Directly display the category string */}
+              <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDeleteCategory(cat)}>
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

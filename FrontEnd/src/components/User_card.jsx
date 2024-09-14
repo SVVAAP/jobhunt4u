@@ -34,7 +34,7 @@ function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
   return (
     <div className="relative">
     <div className="bg-white shadow-lg rounded-lg p-4 border text-sm border-gray-200 mb-4">
-      <div key={index} className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto_auto] gap-5 items-center">
+      <div key={index} className={`grid ${!Candidate? 'grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto_auto]':"grid-cols-[1fr_1fr_1fr_1fr_auto_auto]"} gap-5 items-center`}>
         <div className="w-1/6">
           <h2 className="text-lg font-semibold">Name</h2>
           <p>{user.name}</p>
@@ -47,18 +47,18 @@ function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
           <h2 className="text-lg font-semibold">Phone</h2>
           <p >{user.phone}</p>
         </div>
-        <div className="w-1/6">
+       {!Candidate && <div className="w-1/6">
           <h2 className="text-lg font-semibold">Company</h2>
           <p>{user.companyName}</p>
-        </div>
+        </div>}
         <div className="w-1/6">
           <h2 className="text-lg font-semibold">Location</h2>
           <p >{user.location}</p>
         </div>
-        <div className="w-1/6">
+        {!Candidate && <div className="w-1/6">
           <h2 className="text-lg font-semibold">Status</h2>
           <p>{user.status}</p>
-        </div>
+        </div>}
         {/* Action Buttons */}
         <div className="text-white text-lg space-x-4 flex justify-center">
           {!Candidate && (
