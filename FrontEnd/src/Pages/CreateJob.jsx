@@ -13,7 +13,7 @@ const CreateJob = () => {
   const [logoFile, setLogoFile] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { user, isLoading } = useJobs();
+  const { user, isLoading ,categoryList} = useJobs();
 
   const {
     register,
@@ -262,19 +262,8 @@ const CreateJob = () => {
                   {...register("jobCategory", { required: "This field is required. Please select a job category." })}
                   className="create-job-input rounded-md">
                   <option value="">Choose job category</option>
-                  <option value="Accounting/Finance">Accounting/Finance</option>
-                  <option value="IT/Software">IT/Software</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Education">Education</option>
-                  <option value="Sales and Service">Sales and Service</option>
-                  <option value="Office Administration">Office Administration</option>
-                  <option value="Hospitality">Hospitality </option>
-                  <option value="Care takers/ Nanny">Care takers/ Nanny</option>
-                  <option value="Trades, transport, and equipment operators">Trades, transport, and equipment operators</option>
-                  <option value="Natural resources, agriculture, or related production">Natural resources, agriculture, or related production</option>
-                  <option value="Manufacturing and utilities">Manufacturing and utilities</option>
-                  <option value="Other services">Other services</option>
+                  {categoryList.map((cat, index) => (
+                    <option key={index} value={cat}>{cat}</option>))}
                 </select>
                 {errors.jobCategory && <p className="text-red-500">{errors.jobCategory.message}</p>}
               </div>

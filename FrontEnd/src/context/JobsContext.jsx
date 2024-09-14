@@ -59,7 +59,8 @@ export function JobsProvider({ children }) {
       setIsLoading(false);
     });
 
-    const categoryRef = ref(database, "siteContent/category");
+    const categoryRef = ref(database, `siteContent/categories`);
+    // Retrieve the existing categories object
     get(categoryRef).then((snapshot) => {
       if (snapshot.exists()) {
         setCategoryList(Object.values(snapshot.val()));
