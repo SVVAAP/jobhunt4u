@@ -127,7 +127,7 @@ const Signup = () => {
           phone,
           userType,
           companyName: userType === "employer" ? companyName : "",
-          location: userType === "employer" ? location : "",
+          location,
           resume: userType === "candidate" && resume ? await uploadResume(resume) : "",
           status: "pending",
         };
@@ -349,7 +349,7 @@ const Signup = () => {
                       required
                     />
                   </div>
-                  <div className="flex justify-between items-center">
+                  {/* <div className="flex justify-between items-center">
                     <label className="block text-gray-700">Location</label>
                     <input
                       type="text"
@@ -359,7 +359,7 @@ const Signup = () => {
                       className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                       required
                     />
-                  </div>
+                  </div> */}
                 </>
               )}
               {userType === "candidate" && (

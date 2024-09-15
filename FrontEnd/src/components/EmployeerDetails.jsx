@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ref, onValue, remove, update } from "firebase/database";
-import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth"; // Import required functions from Firebase Auth
+import { ref, onValue,update } from "firebase/database";
+import { getAuth } from "firebase/auth"; // Import required functions from Firebase Auth
 import { database } from "../firebase";
-import { useJobs } from "../context/jobsContext";
 import User_card from "./User_card";
 
 function EmployeerDetails() {

@@ -17,6 +17,11 @@ function EditPage() {
     address: "",
   });
   const [category, setCategory] = useState("");
+  const [showAbout, setShowAbout] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showCat, setShowCat] = useState(false);
 
   // Editor for About Us
   const editor = useEditor({
@@ -160,18 +165,18 @@ function EditPage() {
   const handleAddCategory = () => {
     // Reference to the categories object in Firebase
     const categoryRef = ref(database, `siteContent/categories`);
-  
+
     // Retrieve the existing categories object
     get(categoryRef)
       .then((snapshot) => {
         const existingCategories = snapshot.val() || {}; // Get existing object or an empty object if none exist
-  
+
         // Check if category already exists
         if (!Object.values(existingCategories).includes(category)) {
           // Find the next available index
           const nextIndex = Object.keys(existingCategories).length;
           const updatedCategories = { ...existingCategories, [nextIndex]: category };
-  
+
           // Update Firebase with the new object
           update(categoryRef, updatedCategories)
             .then(() => {
@@ -190,33 +195,33 @@ function EditPage() {
         console.error("Error retrieving categories: ", error);
       });
   };
-  
 
   const handleDeleteCategory = (categoryToDelete) => {
     // Reference to the categories array in Firebase
     const categoryRef = ref(database, `siteContent/categories`);
-  
+
     // Get the existing categories array
-    get(categoryRef).then((snapshot) => {
-      const existingCategories = snapshot.val() || [];
-  
-      // Filter out the category that needs to be deleted
-      const updatedCategories = existingCategories.filter(cat => cat !== categoryToDelete);
-  
-      // Update Firebase with the new array
-      set(categoryRef, updatedCategories)
-        .then(() => {
-          setCategoryList(updatedCategories); // Update local state
-          alert("Category deleted successfully!");
-        })
-        .catch((error) => {
-          console.error("Error deleting category: ", error);
-        });
-    }).catch((error) => {
-      console.error("Error retrieving categories: ", error);
-    });
+    get(categoryRef)
+      .then((snapshot) => {
+        const existingCategories = snapshot.val() || [];
+
+        // Filter out the category that needs to be deleted
+        const updatedCategories = existingCategories.filter((cat) => cat !== categoryToDelete);
+
+        // Update Firebase with the new array
+        set(categoryRef, updatedCategories)
+          .then(() => {
+            setCategoryList(updatedCategories); // Update local state
+            alert("Category deleted successfully!");
+          })
+          .catch((error) => {
+            console.error("Error deleting category: ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving categories: ", error);
+      });
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -288,98 +293,195 @@ function EditPage() {
         <p>Loading...</p>
       ) : (
         <div className="flex justify-items-center">
-          <div className="bg-sky-600 p-8 rounded-lg">
+          <div className="bg-sky-600 w-full p-8 rounded-lg">
             {/* About Us Section */}
+            <div className="relative ring-2 ring-white p-2 rounded-lg">
             <h3 className="text-xl text-white mb-2">Edit About Us</h3>
-            {editor && <Toolbar editor={editor} />}
-            <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
-            <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
 
+            <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+              {/* droupdown icon */}
+              <button
+                onClick={() => {
+                  setShowAbout(!showAbout);
+                }}
+                className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                <i
+                  className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                    showAbout ? "rotate-180" : ""
+                  }`}></i>
+              </button>
+              {/* add droupdown button */}
+            </div>
+            {showAbout && (
+              <div>
+                {editor && <Toolbar editor={editor} />}
+                <p className="text-sm text-white mb-2">
+                  [ Use the toolbar above to format and edit the content below. ]
+                </p>
+                <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+              </div>
+            )}
+</div>
             {/* Terms and Conditions Section */}
-            <div className="mt-8">
+            <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
               <h3 className="text-xl text-white mb-2">Edit Terms and Conditions</h3>
-              {termsEditor && <Toolbar editor={termsEditor} />}
-              <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
-              <EditorContent editor={termsEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowTerms(!showTerms);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showTerms ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+                {/* add droupdown button */}
+              </div>
+              {showTerms && (
+                <div>
+                  {termsEditor && <Toolbar editor={termsEditor} />}
+                  <p className="text-sm text-white mb-2">
+                    [ Use the toolbar above to format and edit the content below. ]
+                  </p>
+                  <EditorContent editor={termsEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+                </div>
+              )}
             </div>
 
             {/* Privacy Policy Section */}
-            <div className="mt-8">
+            <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
               <h3 className="text-xl text-white mb-2">Edit Privacy Policy</h3>
-              {privacyEditor && <Toolbar editor={privacyEditor} />}
-              <p className="text-sm text-white mb-2">[ Use the toolbar above to format and edit the content below. ]</p>
-              <EditorContent editor={privacyEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowPrivacy(!showPrivacy);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showPrivacy ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+                {/* add droupdown button */}
+              </div>
+              {showPrivacy && (
+                <div>
+                  {privacyEditor && <Toolbar editor={privacyEditor} />}
+                  <p className="text-sm text-white mb-2">
+                    [ Use the toolbar above to format and edit the content below. ]
+                  </p>
+                  <EditorContent editor={privacyEditor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+                </div>
+              )}
             </div>
 
             {/* Contact Info Section */}
-            <div className="mt-8">
+            <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
               <h3 className="text-xl text-white mb-2">Edit Contact Information</h3>
-              <div className="flex flex-col mb-4">
-                <label className="text-white mb-1">Phone:</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={contactInfo.phone}
-                  onChange={handleInputChange}
-                  className="p-2 rounded-lg"
-                />
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowContact(!showContact);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showContact ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+                {/* add droupdown button */}
               </div>
-              <div className="flex flex-col mb-4">
-                <label className="text-white mb-1">Email:</label>
-                <input
-                  type="text"
-                  name="email"
-                  value={contactInfo.email}
-                  onChange={handleInputChange}
-                  className="p-2 rounded-lg"
-                />
-              </div>
-              <div className="flex flex-col mb-4">
-                <label className="text-white mb-1">Address:</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={contactInfo.address}
-                  onChange={handleInputChange}
-                  className="p-2 rounded-lg"
-                />
-              </div>
+              {showContact && (
+                <div>
+                  <div className="flex flex-col mb-4">
+                    <label className="text-white mb-1">Phone:</label>
+                    <input
+                      type="text"
+                      name="phone"
+                      value={contactInfo.phone}
+                      onChange={handleInputChange}
+                      className="p-2 rounded-lg"
+                    />
+                  </div>
+                  <div className="flex flex-col mb-4">
+                    <label className="text-white mb-1">Email:</label>
+                    <input
+                      type="text"
+                      name="email"
+                      value={contactInfo.email}
+                      onChange={handleInputChange}
+                      className="p-2 rounded-lg"
+                    />
+                  </div>
+                  <div className="flex flex-col mb-4">
+                    <label className="text-white mb-1">Address:</label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={contactInfo.address}
+                      onChange={handleInputChange}
+                      className="p-2 rounded-lg"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Save Button */}
             <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 mt-4 rounded">
               Save All Changes
             </button>
-          </div>
-        </div>
-      )}
-      <div className="mt-8">
+          
+          <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
         <h3 className="text-xl text-white mb-2">Edit Categories</h3>
-        <div className="flex">
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="p-2 rounded-lg"
-            placeholder="Enter new category"
-          />
-          <button onClick={handleAddCategory} className="ml-2 bg-green-500 text-white px-4 py-2 rounded">
-            Add
+        <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+          {/* droupdown icon */}
+          <button
+            onClick={() => {
+              setShowCat(!showCat);
+            }}
+            className={`text-white cursor-pointer  text-2xl mr-4 `}>
+            <i className={`fa-solid fa-sort-down transition-transform duration-500 ${showCat ? "rotate-180" : ""}`}></i>
           </button>
+          {/* add droupdown button */}
         </div>
-
-        {/* Display Category List */}
-        <div className="grid grid-cols-4 gap-1 mt-4">
-          {categoryList.map((cat, index) => (
-            <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
-              <span>{cat}</span> {/* Directly display the category string */}
-              <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDeleteCategory(cat)}>
-                Delete
+        {showCat && (
+          <div>
+            <div className="flex">
+              <input
+                type="text"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="p-2 rounded-lg"
+                placeholder="Enter new category"
+              />
+              <button onClick={handleAddCategory} className="ml-2 bg-green-500 text-white px-4 py-2 rounded">
+                Add
               </button>
             </div>
-          ))}
-        </div>
+
+            {/* Display Category List */}
+            <div className="grid grid-cols-4 gap-1 mt-4">
+              {categoryList.map((cat, index) => (
+                <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
+                  <span>{cat}</span> {/* Directly display the category string */}
+                  <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDeleteCategory(cat)}>
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+        </div>
+        </div> 
+      )}
+     
     </div>
   );
 }

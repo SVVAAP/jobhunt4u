@@ -15,7 +15,7 @@
 
 *::-webkit-scrollbar-thumb {
   background: #888; /* Color of the scrollbar thumb */
-  border-radius: 50%; /* Rounded corners for the thumb */
+  border-radius: 10%; /* Rounded corners for the thumb */
 }
 
 *::-webkit-scrollbar-thumb:hover {

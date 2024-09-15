@@ -127,8 +127,8 @@ function Profile() {
 
           <div className="absolute top-4 right-4 flex items-center space-x-2">
             {/* droupdown icon */}
-            <button onClick={toggleDropdown} className={`text-blue-500 cursor-pointer transition-transform duration-500 text-2xl mr-4 ${showDropdown ? 'rotate-180':''}`}>
-              <i className="fa-solid fa-sort-down"></i>
+            <button onClick={toggleDropdown} className={`text-blue-500 cursor-pointer  text-2xl mr-4 `}>
+              <i className={`fa-solid fa-sort-down transition-transform duration-500 ${showDropdown ? 'rotate-180':''}`}></i>
             </button>
             {/* add droupdown button */}
 

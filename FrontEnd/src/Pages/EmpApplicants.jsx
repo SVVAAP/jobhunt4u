@@ -5,7 +5,7 @@ import { push, ref, update } from 'firebase/database';
 import { database } from '../firebase';
 
 function EmpApplicants() {
-  const { jobs } = useJobs();
+  const { jobs ,userType } = useJobs();
   const { jobId } = useParams();
   const navigate = useNavigate();
   const job = jobs.find((job) => job.id === jobId);
@@ -50,8 +50,10 @@ function EmpApplicants() {
   };
 
   // Filter applicants based on status
-  const nonPendingApplicants = job?.applicants?.filter(applicant => applicant.applicationStatus !== "pending");
-
+  
+  const nonPendingApplicants = userType !== "admin" 
+  ? job?.applicants?.filter(applicant => applicant.applicationStatus !== "pending") 
+  : job?.applicants || []; // Fix for accessing undefined
   return (
     <div className='flex-col bg-sky-900 text-white m-2 rounded-lg p-1 min-h-svh items-center  '>
       <h1 className='font-roboto font-bold text-2xl m-5'>Applicants for <span className='animated-gradient-white'>{job?.jobTitle}</span> </h1>
@@ -84,7 +86,7 @@ function EmpApplicants() {
                     </a>
                   </p>
                   <div className="flex justify-around">
-                    {applicant.applicationStatus === "withEmployer" ? (
+                    {applicant.applicationStatus !== "approved" ? (
                       <div className='space-x-4'>
                         <button
                           className="bg-green-600 rounded-lg text-white p-2"
