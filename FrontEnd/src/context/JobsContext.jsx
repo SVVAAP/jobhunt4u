@@ -28,6 +28,14 @@ export function JobsProvider({ children }) {
       const loadedJobs = [];
       const unfilyJobs=[];
       for (const id in jobsData) {
+        const job = jobsData[id];
+        if (job.applicants) {
+          // Convert applicants object to an array with keys (id)
+          job.applicants = Object.keys(job.applicants).map((applicantId) => ({
+            id: applicantId,
+            ...job.applicants[applicantId],
+          }));
+        }
         unfilyJobs.push({ id, ...jobsData[id] });
         if (jobsData[id].status === "approved") {
           loadedJobs.push({ id, ...jobsData[id] });

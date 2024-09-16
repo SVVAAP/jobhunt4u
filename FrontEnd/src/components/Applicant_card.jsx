@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getDatabase, push, ref, remove, update } from "firebase/database"; // Import Firebase functions
 import excel from "../assets/excel.png";
 
 function Applicant_card({ job, downloadExcel }) {
   const [showJobs, setShowJobs] = useState(false);
   const database = getDatabase(); // Initialize the Firebase database
+  const [newCandidates,setNewCandidates]=useState([]);
+
+  useEffect(() => {
+    if (job.applicants) {
+      // Convert the object to an array using Object.values
+      const applicantsArray = Object.values(job.applicants);
+
+      // Filter the array to find pending applicants
+      const filteredCandidates = applicantsArray.filter(
+        (applicant) => applicant.applicationStatus === "pending"
+      );
+
+      // Update the state with the filtered candidates
+      setNewCandidates(filteredCandidates);
+    }
+  }, [job.applicants]);
 
   const updateApplicationStatus = async (applicantIndex, status) => {
     // Update the applicants array with the new status
@@ -56,9 +72,9 @@ function Applicant_card({ job, downloadExcel }) {
       <div key={job.id} className="m-5 p-2 flex justify-between flex-col rounded ring-2 bg-slate-300">
         <div className=" relative flex justify-between item-center rounded-lg p-3 bg-white">
           <div className="absolute -top-3 -right-2">
-            {job.applicants && job.applicants.length > 0 ? (
+          {newCandidates.length > 0 ? (
               <span className="text-white bg-red-700 rounded-lg py-1 px-3 text-xs font-semibold">
-                {job.applicants.length}
+                {newCandidates.length}
               </span>
             ) : null}
           </div>
