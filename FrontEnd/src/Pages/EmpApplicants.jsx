@@ -10,22 +10,15 @@ function EmpApplicants() {
   const navigate = useNavigate();
   const job = jobs.find((job) => job.id === jobId);
 
-  const updateApplicationStatus = (applicantIndex, status) => {
-    const updatedApplicants = job.applicants.map((applicant, index) => {
-      if (index === applicantIndex) {
-        return { ...applicant, applicationStatus: status };
-      }
-      return applicant;
-    });
-
-    const jobRef = ref(database, `jobs/${job.id}`);
-    update(jobRef, { applicants: updatedApplicants })
+  const updateApplicationStatus = (applicantIndex, status,uid) => {
+    const applicantRef = ref(database, `jobs/${job.id}/applicants/${applicantIndex}`);
+    update(applicantRef, { applicationStatus: status })
       .then(() => {
         alert(`Application ${status} Successfully!`);
 
         // Send a message to the applicant's inbox
-        const applicant = updatedApplicants[applicantIndex];
-        const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
+      
+        const applicantInboxRef = ref(database, `users/${uid}/inbox`);
         const newMessageRef = push(applicantInboxRef);
 
         // Create a message based on the status
@@ -90,13 +83,13 @@ function EmpApplicants() {
                       <div className='space-x-4'>
                         <button
                           className="bg-green-600 rounded-lg text-white p-2"
-                          onClick={() => updateApplicationStatus(index, "approved")}
+                          onClick={() => updateApplicationStatus(applicant.id, "approved",applicant.uid)}
                         >
                           Approve
                         </button>
                         <button
                           className="bg-red-600 rounded-lg text-white p-2"
-                          onClick={() => updateApplicationStatus(index, "declined")}
+                          onClick={() => updateApplicationStatus(applicant.id, "declined",applicant.uid)}
                         >
                           Decline
                         </button>

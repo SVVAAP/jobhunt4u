@@ -22,29 +22,22 @@ function Applicant_card({ job, downloadExcel }) {
     }
   }, [job.applicants]);
 
-  const updateApplicationStatus = async (applicantId, status) => {
+  const updateApplicationStatus = async (applicantIndex, status,uid) => {
+    // Update the applicants array with the new status
     try {
       // Reference to the specific applicant
-      const applicantRef = ref(database, `jobs/${job.id}/applicants/${applicantId}`);
+      const applicantRef = ref(database, `jobs/${job.id}/applicants/${applicantIndex}`);
       
-      // Handle status
+      // Remove or update applicant based on the status
       if (status === "declined") {
-        // If declined by admin, remove the applicant from the database
-        await remove(applicantRef);
-        alert("Application Declined and Deleted by Admin!");
-      } else if (status === "declinedByEmployer") {
-        // Update applicant status to 'declined' by the employer, but keep the data
-        await update(applicantRef, { applicationStatus: status });
-        alert("Application Declined by Employer!");
+        await remove(applicantRef); // Use await with remove
       } else {
-        // Update applicant status (e.g., approved or sent to employer)
         await update(applicantRef, { applicationStatus: status });
-        alert("Application Approved and Sent to Employer!");
       }
   
-      // Send a message to the applicant's inbox
-      const applicant = job.applicants[applicantId];
-      const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
+      alert(`Application ${status === "withEmployer" ? "Approved" : "Declined"} Successfully!`);
+
+      const applicantInboxRef = ref(database, `users/${uid}/inbox`);
       const newMessageRef = push(applicantInboxRef); // Create a new push reference for the message
   
       // Construct the message
@@ -63,6 +56,7 @@ function Applicant_card({ job, downloadExcel }) {
       console.error("Error updating status or sending message: ", error);
     }
   };
+  
 
   return (
     <div className="">
@@ -130,12 +124,12 @@ function Applicant_card({ job, downloadExcel }) {
                         {" "}
                         <button
                           className="bg-green-600 rounded-lg text-white p-2"
-                          onClick={() => updateApplicationStatus(index, "withEmployer")}>
+                          onClick={() => updateApplicationStatus(applicant.id, "withEmployer",applicant.uid)}>
                           Approve
                         </button>
                         <button
                           className="bg-red-600 rounded-lg ms-5 text-white p-2"
-                          onClick={() => updateApplicationStatus(index, "declined")}>
+                          onClick={() => updateApplicationStatus(applicant.id, "declined",applicant.uid)}>
                           Decline
                         </button>
                       </div>

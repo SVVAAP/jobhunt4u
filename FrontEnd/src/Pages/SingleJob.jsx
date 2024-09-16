@@ -65,7 +65,7 @@ const SingleJob = () => {
   const database = getDatabase();
   const auth = getAuth();
 
-  useEffect(() => {
+ useEffect(() => {
     const foundJob = allJobs.find((job) => job.id === jobId);
     setJob(foundJob);
   
@@ -79,25 +79,12 @@ const SingleJob = () => {
       const applicant = applicantsArray.find((app) => app.email === currentUserEmail);
   
       if (applicant) {
-        if (applicant.applicationStatus === "declinedByAdmin") {
-          // If the status is declined by admin, delete the data
-          const applicantRef = ref(database, `jobs/${jobId}/applicants/${applicant.key}`);
-          remove(applicantRef)
-            .then(() => {
-              console.log("Application data deleted by admin.");
-              setApplicationStatus("declinedByAdmin");
-            })
-            .catch((error) => console.error("Error deleting data: ", error));
-        } else {
-          // Set status if it exists, or "declinedByEmployer" if employer declined
-          setApplicationStatus(applicant.applicationStatus || "declinedByEmployer");
-        }
-      } else {
-        // If no applicant found, treat as declined by admin (this happens if data is already deleted)
-        setApplicationStatus("declinedByAdmin");
-      }
+      setApplicationStatus(applicant.applicationStatus || "");
+    } else{
+      setApplicationStatus("declinedByAdmin");
     }
-  }, [jobId, allJobs, auth.currentUser]);
+  }
+}, [jobId, allJobs, auth.currentUser]);
 
   const [applied, setApplied] = useState(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId));
 
@@ -171,8 +158,7 @@ const progressText =
     approved: "Your Application was accepted.",
     declinedByEmployer: "Your Application was rejected by the employer.",
     declinedByAdmin: "Your Application was declined by admin and removed from the system.",
-  }[applicationStatus] || "Unknown status";
-
+  }[applicationStatus] || "Your Application was declined by admin";
   const {
     companyLogo,
     jobTitle,
