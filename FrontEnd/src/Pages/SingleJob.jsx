@@ -71,12 +71,30 @@ const SingleJob = () => {
   
     if (foundJob && foundJob.applicants) {
       const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
-      
-      // Since applicants is an object, we loop through the object values to find the correct applicant
-      const applicant = Object.values(foundJob.applicants).find((app) => app.email === currentUserEmail);
+  
+      // Convert the applicants object to an array
+      const applicantsArray = Object.values(foundJob.applicants);
+  
+      // Find the applicant that matches the current user's email
+      const applicant = applicantsArray.find((app) => app.email === currentUserEmail);
   
       if (applicant) {
-        setApplicationStatus(applicant.applicationStatus || "");
+        if (applicant.applicationStatus === "declinedByAdmin") {
+          // If the status is declined by admin, delete the data
+          const applicantRef = ref(database, `jobs/${jobId}/applicants/${applicant.key}`);
+          remove(applicantRef)
+            .then(() => {
+              console.log("Application data deleted by admin.");
+              setApplicationStatus("declinedByAdmin");
+            })
+            .catch((error) => console.error("Error deleting data: ", error));
+        } else {
+          // Set status if it exists, or "declinedByEmployer" if employer declined
+          setApplicationStatus(applicant.applicationStatus || "declinedByEmployer");
+        }
+      } else {
+        // If no applicant found, treat as declined by admin (this happens if data is already deleted)
+        setApplicationStatus("declinedByAdmin");
       }
     }
   }, [jobId, allJobs, auth.currentUser]);
@@ -138,19 +156,22 @@ const SingleJob = () => {
 
   const candidate = user && userType === "candidate";
   const progressPercentage =
-    {
-      pending: 10,
-      withEmployer: 66,
-      approved: 100,
-      declined: 100,
-    }[applicationStatus] || 0;
-  const progressText =
-    {
-      pending: "Your Application is currently under review ",
-      withEmployer: "Your Application is being reviewed by Recruiter",
-      approved: "Your Application was Accepted",
-      declined: "Your Application for this Job role was Rejected, Better Luck Next Time !!!!",
-    }[applicationStatus] || 0;
+  {
+    pending: 10,
+    withEmployer: 66,
+    approved: 100,
+    declinedByEmployer: 100,
+    declinedByAdmin: 100,
+  }[applicationStatus] || 0;
+
+const progressText =
+  {
+    pending: "Your Application is currently under review.",
+    withEmployer: "Your Application is being reviewed by the employer.",
+    approved: "Your Application was accepted.",
+    declinedByEmployer: "Your Application was rejected by the employer.",
+    declinedByAdmin: "Your Application was declined by admin and removed from the system.",
+  }[applicationStatus] || "Unknown status";
 
   const {
     companyLogo,
