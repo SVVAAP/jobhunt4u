@@ -68,11 +68,13 @@ const SingleJob = () => {
   useEffect(() => {
     const foundJob = allJobs.find((job) => job.id === jobId);
     setJob(foundJob);
-
+  
     if (foundJob && foundJob.applicants) {
       const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
+      
+      // Since applicants is an object, we loop through the object values to find the correct applicant
       const applicant = Object.values(foundJob.applicants).find((app) => app.email === currentUserEmail);
-
+  
       if (applicant) {
         setApplicationStatus(applicant.applicationStatus || "");
       }
