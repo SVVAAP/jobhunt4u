@@ -22,30 +22,28 @@ function Applicant_card({ job, downloadExcel }) {
     }
   }, [job.applicants]);
 
-  const updateApplicationStatus = async (applicantIndex, status) => {
-    // Update the applicants array with the new status
-    const updatedApplicants = job.applicants.map((applicant, index) => {
-      if (index === applicantIndex) {
-        return { ...applicant, applicationStatus: status };
-      }
-      return applicant;
-    });
-  
+  const updateApplicationStatus = async (applicantId, status) => {
     try {
       // Reference to the specific applicant
-      const jobRef = ref(database, `jobs/${job.id}/applicants/${applicantIndex}`);
+      const applicantRef = ref(database, `jobs/${job.id}/applicants/${applicantId}`);
       
-      // Remove or update applicant based on the status
+      // Handle status
       if (status === "declined") {
-        await remove(jobRef); // Use await with remove
+        // If declined by admin, remove the applicant from the database
+        await remove(applicantRef);
+        alert("Application Declined and Deleted by Admin!");
+      } else if (status === "declinedByEmployer") {
+        // Update applicant status to 'declined' by the employer, but keep the data
+        await update(applicantRef, { applicationStatus: status });
+        alert("Application Declined by Employer!");
       } else {
-        await update(ref(database, `jobs/${job.id}`), { applicants: updatedApplicants }); // Use await with update
+        // Update applicant status (e.g., approved or sent to employer)
+        await update(applicantRef, { applicationStatus: status });
+        alert("Application Approved and Sent to Employer!");
       }
   
-      alert(`Application ${status === "withEmployer" ? "Approved" : "Declined"} Successfully!`);
-  
       // Send a message to the applicant's inbox
-      const applicant = updatedApplicants[applicantIndex];
+      const applicant = job.applicants[applicantId];
       const applicantInboxRef = ref(database, `users/${applicant.uid}/inbox`);
       const newMessageRef = push(applicantInboxRef); // Create a new push reference for the message
   
@@ -65,7 +63,6 @@ function Applicant_card({ job, downloadExcel }) {
       console.error("Error updating status or sending message: ", error);
     }
   };
-  
 
   return (
     <div className="">
