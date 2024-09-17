@@ -134,7 +134,7 @@ function Applicant_card({ job, downloadExcel }) {
                         </button>
                       </div>
                     ) : (
-                      <div className="text-center font-bold text-2xl">{applicant.applicationStatus}</div>
+                      <div className="text-center font-serif text-2xl">{applicant.applicationStatus.toUpperCase()}</div>
                     )}
                   </div>
                 </div>
