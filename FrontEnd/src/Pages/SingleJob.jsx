@@ -64,6 +64,7 @@ const SingleJob = () => {
   const navigate = useNavigate();
   const database = getDatabase();
   const auth = getAuth();
+const [applied, setApplied] = useState(false);
 
  useEffect(() => {
     const foundJob = allJobs.find((job) => job.id === jobId);
@@ -84,9 +85,10 @@ const SingleJob = () => {
       setApplicationStatus("declinedByAdmin");
     }
   }
-}, [jobId, allJobs, auth.currentUser]);
+  setApplied(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId))
+}, [jobId, allJobs, auth.currentUser,user,isLoggedIn]);
 
-  const [applied, setApplied] = useState(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId));
+  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -148,7 +150,7 @@ const SingleJob = () => {
     withEmployer: 66,
     approved: 100,
     declinedByEmployer: 100,
-    declinedByAdmin: 100,
+    declinedByAdmin: 0,
   }[applicationStatus] || 0;
 
 const progressText =
@@ -157,8 +159,8 @@ const progressText =
     withEmployer: "Your Application is being reviewed by the employer.",
     approved: "Your Application was accepted.",
     declinedByEmployer: "Your Application was rejected by the employer.",
-    declinedByAdmin: "Your Application was declined by admin and removed from the system.",
-  }[applicationStatus] || "Your Application was declined by admin";
+    declinedByAdmin: "Your Application was declined by Admin .",
+  }[applicationStatus] || "Your Application was declined by Admin";
   const {
     companyLogo,
     jobTitle,
