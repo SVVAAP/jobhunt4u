@@ -87,7 +87,7 @@ const [applied, setApplied] = useState(false);
     console.log(applicationStatus || "blank")
   }
   setApplied(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId))
-}, [jobId, allJobs, auth.currentUser,user,isLoggedIn]);
+}, [jobId, allJobs, auth.currentUser,user,isLoggedIn,applicationStatus]);
 
   
 

@@ -79,7 +79,7 @@ function EmpApplicants() {
                     </a>
                   </p>
                   <div className="flex justify-around">
-                    {applicant.applicationStatus !== "approved" ? (
+                    {applicant.applicationStatus === "withEmployer"  ? (
                       <div className='space-x-4'>
                         <button
                           className="bg-green-600 rounded-lg text-white p-2"
