@@ -84,6 +84,7 @@ const [applied, setApplied] = useState(false);
     } else{
       setApplicationStatus("declinedByAdmin");
     }
+    console.log(applicationStatus || "blank")
   }
   setApplied(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId))
 }, [jobId, allJobs, auth.currentUser,user,isLoggedIn]);
@@ -149,7 +150,7 @@ const [applied, setApplied] = useState(false);
     pending: 10,
     withEmployer: 66,
     approved: 100,
-    declinedByEmployer: 100,
+    declined: 100,
     declinedByAdmin: 0,
   }[applicationStatus] || 0;
 
@@ -158,8 +159,8 @@ const progressText =
     pending: "Your Application is currently under review.",
     withEmployer: "Your Application is being reviewed by the employer.",
     approved: "Your Application was accepted.",
-    declinedByEmployer: "Your Application was rejected by the employer.",
-    declinedByAdmin: "Your Application was declined by Admin .",
+    declined: "Your Application was rejected by the employer.",
+    //declinedByAdmin: "Your Application was declined by Admin .",
   }[applicationStatus] || "Your Application was declined by Admin";
   const {
     companyLogo,
@@ -296,7 +297,8 @@ const progressText =
       {showPopup && (
         <SuccessPopup
           message="You have successfully applied for the job. <br /> Please keep track of your application status."
-          onClose={() => setShowPopup(false)}
+          onClose={() =>{ console.log(applicationStatus);
+             setShowPopup(false);}}
         />
       )}
      
