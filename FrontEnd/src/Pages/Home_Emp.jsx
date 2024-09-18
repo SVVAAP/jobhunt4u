@@ -8,8 +8,8 @@ import About from "../components/About";
 import { Link } from "react-router-dom";
 
 const Home_Emp = () => {
-  const { jobs, user, isLoading } = useJobs();
-  const userJobs = jobs?.filter((data) => data.postedBy === user.email);
+  const { allJobs, user, isLoading } = useJobs();
+  const userJobs = allJobs?.filter((data) => data.postedBy === user.email);
 
   const [selectedCategory, setSelectedCategory] = useState({});
   const [filteredJobs, setFilteredJobs] = useState([]);
