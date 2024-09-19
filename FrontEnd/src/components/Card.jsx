@@ -20,7 +20,7 @@ const formatIndianCurrency = (price) => {
   return formattedPrice;
 };
 
-const Card = ({ data }) => {
+const Card = ({ data ,setShowAlert }) => {
   const { user, userType } = useJobs(); // Fix the useJobs destructuring
   const candidate = user && userType === "candidate";
 
@@ -39,6 +39,7 @@ const Card = ({ data }) => {
     Workmode,
     salaryType,
     applicants,
+    status,
   } = data;
 
   return (
@@ -73,10 +74,18 @@ const Card = ({ data }) => {
         </RWebShare>
       </div>
       <section className="card">
-        <Link
-          to={user? (candidate ? `/singlejob/${id}` : `/applicants/${id}`):(`/singlejob/${id}`)}
-          className="flex gap-4 flex-col sm:flex-row items-start"
-        >
+      <Link
+  to={status === "review" 
+    ? "#" 
+    : (user ? (candidate ? `/singlejob/${id}` : `/applicants/${id}`) : `/singlejob/${id}`)
+  }
+  onClick={() => {
+    if (status === "review") {
+      setShowAlert(true);
+    }
+  }}
+  className="flex gap-4 flex-col sm:flex-row items-start"
+>
           <img
             src={companyLogo || placeholderLogo}
             alt={jobTitle}

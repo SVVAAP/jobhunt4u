@@ -5,11 +5,13 @@ import { useJobs } from "../context/jobsContext";
 import Jobs from "./Jobs";
 import FootSection from "../components/footSection";
 import About from "../components/About";
+import card_image from "../assets/card_back.png";
 import { Link } from "react-router-dom";
 
 const Home_Emp = () => {
   const { allJobs, user, isLoading } = useJobs();
   const userJobs = allJobs?.filter((data) => data.postedBy === user.email);
+  
 
   const [selectedCategory, setSelectedCategory] = useState({});
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -18,6 +20,7 @@ const Home_Emp = () => {
   const [totalJobs, setTotalJobs] = useState(0);
   const [query, setQuery] = useState("");
   const [refreshSidebar, setRefreshSidebar] = useState(false);
+  const [showAlert,setShowAlert]=useState(false);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -207,7 +210,7 @@ const Home_Emp = () => {
           ) : paginatedJobs.length > 0 ? (
             <Jobs
               result={paginatedJobs.map((data, i) => (
-                <Card key={i} data={data} />
+                <Card key={i} data={data} setShowAlert={setShowAlert} />
               ))}
               totalJobs={totalJobs}
             />
@@ -249,8 +252,34 @@ const Home_Emp = () => {
       <div>
         <FootSection />
       </div>
+      {showAlert &&
+         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+         <div
+           className="bg-white rounded-lg p-8 text-center"
+           style={{ backgroundImage: `url(${card_image})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+           <svg
+             className="w-16 h-16 mx-auto mb-4 text-sky-700"
+             xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             strokeWidth="2"
+             strokeLinecap="round"
+             strokeLinejoin="round">
+             <path d="M9 11l3 3L22 4" />
+             <path d="M22 12v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9" />
+           </svg>
+           <p>This Jobs Application is currently under Review <br/> Please Wait!!!</p>
+           <button
+             onClick={()=>{setShowAlert(false)}}
+             className="bg-blue-600 text-blue ring-2 mt-4 ring-blue rounded px-8 py-1 hover:bg-blue-700 transition-all duration-300">
+             OK
+           </button>
+         </div>
+       </div>
+      }
     </>
   );
-};
+  }
 
 export default Home_Emp;
