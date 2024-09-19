@@ -48,13 +48,6 @@ function EmpApplicants() {
   ? job?.applicants?.filter(applicant => applicant.applicationStatus !== "pending") 
   : job?.applicants || []; // Fix for accessing undefined
 
-  if(job && job.status==="review"){
-    return (<div>
-<div className='flex justify-center bg-sky-700 m-2 p-2 rounded-lg items-center my-24 text-3xl font-roboto animate-pulse'>
-           <p>This Jobs Application is currently under Review Please Wait!!!</p>
-          </div>
-    </div>)
-  }
   return (
     <div className='flex-col bg-sky-900 text-white m-2 rounded-lg p-1 min-h-svh items-center  '>
       <h1 className='font-roboto font-bold text-2xl m-5'>Applicants for <span className='animated-gradient-white'>{job?.jobTitle}</span> </h1>
