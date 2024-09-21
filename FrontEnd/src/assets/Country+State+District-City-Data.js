@@ -103427,7 +103427,7 @@ export const stateObject = {
         "Sainte-Suzanne"
     ],
     "Saint-Paul": [
-        "L\'\'Etang-Sale",
+        "L Etang-Sale",
         "Les Aviron",
         "Les Trois-Bassins",
         "Saint-Leu",
@@ -145675,7 +145675,7 @@ export const stateObject = {
 "Wallis & Futana Islands": {
 "Alo": [
     "Kolia",
-    "Mala\'\'e",
+    "Mala e",
     "Ono",
     "Poi",
     "Tamana",

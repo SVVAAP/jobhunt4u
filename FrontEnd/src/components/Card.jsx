@@ -62,7 +62,7 @@ const Card = ({ data ,setShowAlert }) => {
         )}
         <RWebShare
           data={{
-            text: `JobHunt4u \n  *${jobTitle}*\n Description: ${description}\n`,
+            text: `Job Hunt 4 u \n  *${jobTitle}*\n Description: ${description}\n`,
             url: `https://jobhunt4u.in/singlejob/${id}`,
             title: jobTitle,
           }}
