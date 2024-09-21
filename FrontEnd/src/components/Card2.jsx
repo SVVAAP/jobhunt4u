@@ -9,7 +9,7 @@ import { FaRubleSign, FaRupeeSign } from 'react-icons/fa';
 
 const Card = ({ data, handleApprove, handleDecline }) => {
   const {user}=useJobs();
-  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description, status } = data;
+  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description, status ,uid } = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const deleteJob = async () => {
@@ -69,13 +69,13 @@ const Card = ({ data, handleApprove, handleDecline }) => {
         <div className="flex justify-around">
           <button
             className="bg-sky-600 hover:bg-sky-900 px-3 py-1 rounded text-white"
-            onClick={() => handleApprove(id)}
+            onClick={() => handleApprove(id,jobTitle,uid)}
           >
             Approve
           </button>
           <button
             className="bg-red-600 hover:bg-red-900 px-3 py-1 rounded text-white"
-            onClick={() => handleDecline(id)}
+            onClick={() => handleDecline(id,jobTitle,uid)}
           >
             Decline
           </button>

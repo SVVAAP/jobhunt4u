@@ -2,32 +2,58 @@ import React, { useState } from "react";
 import { useJobs } from "../context/jobsContext";
 import Card from "./Card";
 import Card2 from "./Card2";
-import { ref, update } from "firebase/database";
+import { push, ref, update } from "firebase/database";
 import { database } from "../firebase";
 
 function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
   const [showJobs, setShowJobs] = useState(false);
   const { jobs } = useJobs();
+  console.log(user.id);
 
   // Get jobs applied by the user
   const applied =
     user?.appliedJobs && Array.isArray(user.appliedJobs) ? jobs.filter((job) => user.appliedJobs.includes(job.id)) : [];
 
   // Approve job handler
-  const handleApprove = (id) => {
+  const handleApprove = (id,jobTitle) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "approved" })
-      .then(() => console.log("Job approved"))
+      .then(() =>{ 
+       notify(jobTitle,"Approved")
+      console.log("Job approved")})
       .catch((error) => console.error("Error approving job: ", error));
   };
 
   // Decline job handler
-  const handleDecline = (id) => {
+  const handleDecline =(id,jobTitle) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "declined" })
-      .then(() => console.log("Job declined"))
+      .then(() => {
+          notify(jobTitle,"Declined")
+        console.log("Job declined")})
       .catch((error) => console.error("Error declining job: ", error));
   };
+
+  const notify=(jobTitle,status)=>{
+    const applicantInboxRef = ref(database, `users/${user.id}/inbox`);
+        const newMessageRef = push(applicantInboxRef);
+
+        // Create a message based on the status
+        const message = {
+          title: `Your Job ${jobTitle}`,
+          message: `Your Job ${jobTitle} Has Been ${status}`,
+          timestamp: Date.now()
+        };
+
+        // Save the message to the applicant's inbox
+        update(newMessageRef, message)
+          .then(() => {
+            console.log('Message sent to applicant inbox');
+          })
+          .catch((error) => {
+            console.error('Error sending message: ', error);
+          });
+  }
 
   const userJobs = jobs?.filter((data) => data.postedBy === user.email);
 
@@ -108,7 +134,7 @@ function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {userJobs && userJobs.length > 0 ? (
                 userJobs.map((data, i) => (
-                  <Card2 key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} />
+                  <Card2 key={i} data={data} handleApprove={handleApprove} handleDecline={handleDecline} userId={user.id} />
                 ))
               ) : (
                 <p>No Jobs Uploaded....</p>

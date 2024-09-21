@@ -59,6 +59,7 @@ function EmployeerDetails() {
     // Correctly update the status without extra concatenation
     update(employerRef, { status: cstatus ? "approved" : "declined" }) // Update the employer's approval status
       .then(() => {
+        
         alert(`Employer has been ${cstatus ? "approved" : "declined"}.`);
       })
       .catch((error) => {

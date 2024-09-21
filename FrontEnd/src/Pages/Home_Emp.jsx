@@ -50,14 +50,14 @@ const Home_Emp = () => {
 
   useEffect(() => {
     const applyFilters = () => {
-      let filtered = userJobs;
-
+      let filtered = userJobs || [];
+  
       if (query) {
         filtered = filtered.filter((job) =>
           job.jobTitle.toLowerCase().includes(query.toLowerCase())
         );
       }
-
+  
       if (selectedCategory) {
         filtered = filtered.filter(
           ({
@@ -69,7 +69,7 @@ const Home_Emp = () => {
             employmentType,
           }) => {
             let match = true;
-
+  
             if (selectedCategory.location) {
               match =
                 match &&
@@ -102,18 +102,19 @@ const Home_Emp = () => {
                 employmentType.toLowerCase() ===
                   selectedCategory.employmentType.toLowerCase();
             }
-
+  
             return match;
           }
         );
       }
-
+  
       setFilteredJobs(filtered);
       setTotalJobs(filtered.length);
     };
-
+  
     applyFilters();
-  }, [userJobs, selectedCategory, query]);
+  }, [selectedCategory, query]);
+  
 
   useEffect(() => {
     // Reset the current page to 1 only when the filters or query changes

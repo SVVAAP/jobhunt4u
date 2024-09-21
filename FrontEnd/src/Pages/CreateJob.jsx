@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { database, storage } from "../firebase";
-import { ref, set, push } from "firebase/database";
+import { ref, set, push, update } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { useJobs } from "../context/jobsContext";
+import { getAuth } from "firebase/auth";
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -68,9 +69,28 @@ const CreateJob = () => {
         jobCategory: data.jobCategory, // Added jobCategory field
         jobType: data.jobType, // Added jobType field
         status: data.status,
+        uid:user.uid,
       };
 
       await set(newJobRef, jobData);
+      const applicantInboxRef = ref(database, `users/${user.uid}/inbox`);
+      const newMessageRef = push(applicantInboxRef);
+
+      // Create a message based on the status
+      const message = {
+        title: `Your Job ${data.jobTitle}`,
+        message: `Your recently Uploaded Job ${data.jobTitle} is under Review`,
+        timestamp: Date.now()
+      };
+
+      // Save the message to the applicant's inbox
+      update(newMessageRef, message)
+        .then(() => {
+          console.log('Message sent to applicant inbox');
+        })
+        .catch((error) => {
+          console.error('Error sending message: ', error);
+        });
       console.log("Data saved successfully!");
       setShowPopup(true);
     } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, onValue, ref, update } from "firebase/database";
+import { getDatabase, onValue, push, ref, update } from "firebase/database";
 import { database } from "../firebase";
 import Card from "./Card2";
 import { useJobs } from "../context/jobsContext";
@@ -64,19 +64,40 @@ function JobList() {
   });
 
   // Define handleApprove and handleDecline functions
-  const handleApprove = (id) => {
+  const handleApprove = (id,jobTitle,uid) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "approved" })
-      .then(() => console.log("Job approved"))
+      .then(() => notify(jobTitle,"Approved",uid))
       .catch((error) => console.error("Error approving job: ", error));
   };
 
-  const handleDecline = (id) => {
+  const handleDecline = (id,jobTitle,uid) => {
     const jobRef = ref(database, `jobs/${id}`);
     update(jobRef, { status: "declined" })
-      .then(() => console.log("Job declined"))
+      .then(() => notify(jobTitle,"Declined",uid))
       .catch((error) => console.error("Error declining job: ", error));
   };
+
+  const notify=(jobTitle,status,uid)=>{
+    const applicantInboxRef = ref(database, `users/${uid}/inbox`);
+        const newMessageRef = push(applicantInboxRef);
+
+        // Create a message based on the status
+        const message = {
+          title: `Your Job ${jobTitle}`,
+          message: `Your Job ${jobTitle} Has Been ${status}`,
+          timestamp: Date.now()
+        };
+
+        // Save the message to the applicant's inbox
+        update(newMessageRef, message)
+          .then(() => {
+            console.log('Message sent to applicant inbox');
+          })
+          .catch((error) => {
+            console.error('Error sending message: ', error);
+          });
+        }
   const clearFilters = () => {
     setFilters({
       jobTitle: "",

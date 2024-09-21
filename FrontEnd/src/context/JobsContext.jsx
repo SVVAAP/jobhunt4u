@@ -54,7 +54,8 @@ export function JobsProvider({ children }) {
         const userRef = ref(database, `users/${user.uid}`);
         onValue(userRef, (snapshot) => {
           const userData = snapshot.val();
-          setUser(userData);
+          const userDataWithUid = { ...userData, uid: user.uid };
+          setUser(userDataWithUid);
           console.log(userData.userType);
           setUserType(userData.userType);
         });
