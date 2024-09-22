@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import CountUp from "react-countup";
 import {
   AcademicCapIcon,
   ComputerDesktopIcon,
@@ -15,11 +16,24 @@ import {
 import { useJobs } from "../context/jobsContext";
 
 const About = () => {
-  const stats = [
-    { value: "6k", label: "daily active users" },
-    { value: "1,000+", label: "open job positions" },
-    { value: "9k", label: "Placement Served" },
-  ];
+  const [stats, setStats] = useState([
+    { value: 6000, label: "daily active users" },
+    { value: 1000, label: "open job positions" },
+    { value: 9050, label: "Placement Served" },
+  ]);
+
+  useEffect(() => {
+    // Randomly select values for daily active users and open job positions
+    const dailyUsers = Math.floor(Math.random() * (7000 - 6000 + 1)) + 6000;
+    const openPositions = Math.floor(Math.random() * (1100 - 1000 + 1)) + 1000;
+
+    // Update the stats with the new values
+    setStats((prevStats) => [
+      { value: dailyUsers, label: "daily active users" },
+      { value: openPositions, label: "open job positions" },
+      { value: 9050, label: "Placement Served" },
+    ]);
+  }, []);
   const { aboutContent, contactInfo } = useJobs();
   
   const jobCategories = [
@@ -68,14 +82,16 @@ const About = () => {
       </div>
 
       <div className="mt-10">
-        <div className="flex flex-wrap justify-around text-center">
-          {stats.map((stat, index) => (
-            <div key={index} className="p-4">
-              <p className="text-4xl font-bold animated-gradient ">{stat.value}</p>
-              <p className="text-lg text-gray-500">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+      <div className="flex flex-wrap justify-around text-center">
+        {stats.map((stat, index) => (
+          <div key={index} className="p-4">
+            <p className="text-4xl font-bold animated-gradient">
+              <CountUp start={0} end={stat.value} duration={10} />+
+            </p>
+            <p className="text-lg text-gray-500">{stat.label}</p>
+          </div>
+        ))}
+      </div>
       </div>
 
       <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="contact">
