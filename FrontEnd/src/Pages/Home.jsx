@@ -64,6 +64,7 @@ const Home = () => {
             maxPrice,
             postingDate,
             employmentType,
+            jobCategory
           }) => {
             let match = true;
 
@@ -99,6 +100,13 @@ const Home = () => {
                 employmentType.toLowerCase() ===
                   selectedCategory.employmentType.toLowerCase();
             }
+            if (selectedCategory.jobCategory) {
+              match =
+                match &&
+                jobCategory ===
+                  selectedCategory.jobCategory;
+            }
+
 
             return match;
           }

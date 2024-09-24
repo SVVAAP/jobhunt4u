@@ -15,16 +15,16 @@ const JobPostingData = ({ handleChange }) => {
   const thirtyDaysAgoDate = thirtyDaysAgo.toISOString();
 
   return (
-    <div className="bg-white rounded-lg p-2">
+    <div className="bg-white flex space-x-10 rounded-lg p-2">
       <h4 className="text-lg font-medium mb-2">Date of posting</h4>
-      {isMobile ? (
+      {/* {isMobile? ( */}
         <select onChange={handleChange} name="postingDate" className="form-select">
           <option value="">All time</option>
           <option value={twentyFourHoursAgoDate}>Last 24 hours</option>
           <option value={sevenDaysAgoDate}>Last 7 days</option>
           <option value={thirtyDaysAgoDate}>Last Month</option>
         </select>
-      ) : (
+      {/* ) : (
         <div>
           <label className="sidebar-label-container">
             <input onChange={handleChange} type="radio" value="" name="postingDate" />
@@ -49,7 +49,7 @@ const JobPostingData = ({ handleChange }) => {
             name="postingDate"
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

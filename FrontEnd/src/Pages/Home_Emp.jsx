@@ -67,6 +67,7 @@ const Home_Emp = () => {
             maxPrice,
             postingDate,
             employmentType,
+            jobCategory,
           }) => {
             let match = true;
   
@@ -101,6 +102,12 @@ const Home_Emp = () => {
                 match &&
                 employmentType.toLowerCase() ===
                   selectedCategory.employmentType.toLowerCase();
+            }
+            if (selectedCategory.jobCategory) {
+              match =
+                match &&
+                jobCategory ===
+                  selectedCategory.jobCategory;
             }
   
             return match;
@@ -258,18 +265,7 @@ const Home_Emp = () => {
          <div
            className="bg-white rounded-lg p-8 text-center"
            style={{ backgroundImage: `url(${card_image})`, backgroundSize: "cover", backgroundPosition: "center" }}>
-           <svg
-             className="w-16 h-16 mx-auto mb-4 text-sky-700"
-             xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             strokeWidth="2"
-             strokeLinecap="round"
-             strokeLinejoin="round">
-             <path d="M9 11l3 3L22 4" />
-             <path d="M22 12v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9" />
-           </svg>
+             <i className="fa-solid fa-file-pen text-6xl mx-auto mb-4 text-sky-700"></i>
            <p>This Jobs Application is currently under Review <br/> Please Wait!!!</p>
            <button
              onClick={()=>{setShowAlert(false)}}
