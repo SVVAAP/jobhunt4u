@@ -5,6 +5,7 @@ import Jobs from "./Jobs";
 import FootSection from "../components/footSection";
 import About from "../components/About";
 import Sidebar from "../Sidebar/Sidebar";
+
 import { useJobs } from "../context/jobsContext";
 
 const Home = () => {
@@ -201,10 +202,12 @@ const Home = () => {
             )}
           </div>
         </div>
+        
       </div>
       <div>
         <About />
       </div>
+     
       <div>
         <FootSection />
       </div>

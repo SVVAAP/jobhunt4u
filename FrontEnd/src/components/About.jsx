@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CountUp from "react-countup";
+import Othersevice from "../components/OtherServices";
 import {
   AcademicCapIcon,
   ComputerDesktopIcon,
@@ -35,7 +36,7 @@ const About = () => {
     ]);
   }, []);
   const { aboutContent, contactInfo } = useJobs();
-  
+
   const jobCategories = [
     { name: "Fintech", description: "Finance Tech", icon: <AcademicCapIcon className="w-6 h-6 text-gray-600" /> },
     {
@@ -82,39 +83,42 @@ const About = () => {
       </div>
 
       <div className="mt-10">
-      <div className="flex flex-wrap justify-around text-center">
-        {stats.map((stat, index) => (
-          <div key={index} className="p-4">
-            <p className="text-4xl font-bold animated-gradient">
-              <CountUp start={0} end={stat.value} duration={10} />+
-            </p>
-            <p className="text-lg text-gray-500">{stat.label}</p>
-          </div>
-        ))}
-      </div>
+        <div className="flex flex-wrap justify-around text-center">
+          {stats.map((stat, index) => (
+            <div key={index} className="p-4">
+              <p className="text-4xl font-bold animated-gradient">
+                <CountUp start={0} end={stat.value} duration={10} />+
+              </p>
+              <p className="text-lg text-gray-500">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="contact">
-      <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
-        <span className="animated-gradient-header">Contact Us</span> Now
-      </h3>
-      <div className="text-center mb-6">
-        <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
-        <a href={`tel:${contactInfo.phone || ""}`}>
-          <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
-        </a>
+        <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
+          <span className="animated-gradient-header">Contact Us</span> Now
+        </h3>
+        <div className="text-center mb-6">
+          <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
+          <a href={`tel:${contactInfo.phone || ""}`}>
+            <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
+          </a>
+        </div>
+        <div className="text-center mb-6">
+          <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
+          <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
+            {contactInfo.email || ''}
+          </a>
+        </div>
+        <div className="text-center">
+          <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
+          <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
+        </div>
       </div>
-      <div className="text-center mb-6">
-        <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
-        <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
-          {contactInfo.email || ''}
-        </a>
+      <div>
+      <Othersevice/>
       </div>
-      <div className="text-center">
-        <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
-        <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
-      </div>
-    </div>
 
       <div className="mt-10">
         <h3 className="text-2xl font-bold text-gray-900 text-center">
