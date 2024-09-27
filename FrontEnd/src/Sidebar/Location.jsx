@@ -43,10 +43,10 @@ const Location = ({ handleChange }) => {
           onChange={handleInputChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="form-input mt-2 mb-2 border-gray-300 p-2" 
+          className="form-input mt-1 mb-1 border-gray-300 p-2" 
         />
         
-          <div className="mt-2 max-h-40 overflow-y-auto  rounded">
+          <div className="mt-1 max-h-40 overflow-y-auto  rounded">
             {filteredLocations.map(location => (
               <div key={location}>
                 <label className="sidebar-label-container">

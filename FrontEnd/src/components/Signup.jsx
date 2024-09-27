@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, database, getDownloadURL, storage, ref as storageRef, uploadBytes } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { push, ref, set, update } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
@@ -18,6 +18,7 @@ const Signup = () => {
   const [error, setError] = useState(null);
   const [companyName, setCompanyName] = useState("");
   const [resume, setResume] = useState(null);
+  const [logo, setLogo] = useState(false);
   const [otp, setOtp] = useState("");
   const [sentOtp, setSentOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
@@ -128,13 +129,16 @@ const Signup = () => {
           userType,
           companyName: userType === "employer" ? companyName : "",
           location,
-          resume: userType === "candidate" && resume ? await uploadResume(resume) : "",
+          resume: userType === "candidate" && resume ? await uploadResume(resume,"resumes") : "",
+          logo:  userType === "employer" && logo? await uploadResume(logo,"logos"):"",
           status: "pending",
         };
 
         // Store user data in database
         await set(ref(database, "users/" + user.uid), userData);
-
+        const logoRef = ref(database, `logos`);
+        const newLogoRef = push(logoRef);
+        await update(newLogoRef,{logo : logo});
         console.log("User signed up:", user);
         navigate("/");
       } catch (error) {
@@ -147,9 +151,9 @@ const Signup = () => {
     }
   };
 
-  const uploadResume = async (file) => {
+  const uploadResume = async (file,path) => {
     try {
-      const resumeRef = storageRef(storage, `resumes/${auth.currentUser.uid}/${file.name}`);
+      const resumeRef = storageRef(storage, `${path}/${auth.currentUser.uid}/${file.name}`);
       await uploadBytes(resumeRef, file);
       const downloadURL = await getDownloadURL(resumeRef);
       return downloadURL;
@@ -311,31 +315,6 @@ const Signup = () => {
                   </select>
                 </div>
               )}
-              {/* <div className="flex justify-between items-center ">
-            <label className="block text-gray-700">I am a</label>
-            <div className="mt-1 flex space-x-4">
-              <label className="inline-flex w-4/5 items-center">
-                <input
-                  type="radio"
-                  value="candidate"
-                  checked={userType === "candidate"}
-                  onChange={(e) => setUserType(e.target.value)}
-                  className="form-radio"
-                />
-                <span className="ml-2">Candidate</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  value="employer"
-                  checked={userType === "employer"}
-                  onChange={(e) => setUserType(e.target.value)}
-                  className="form-radio"
-                />
-                <span className="ml-2">Employer</span>
-              </label>
-            </div>
-          </div> */}
               {userType === "employer" && (
                 <>
                   <div className="flex justify-between items-center">
@@ -360,6 +339,16 @@ const Signup = () => {
                       required
                     />
                   </div> */}
+               
+                 <div className="flex justify-between items-center">
+                 <label className="block text-gray-700">Company logo</label>
+                 <input
+                   type="file"
+                   onChange={(e) => setLogo(e.target.files[0])}
+                   className="mt-1 block w-4/5 p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                   required
+                 />
+               </div>
                 </>
               )}
               {userType === "candidate" && (

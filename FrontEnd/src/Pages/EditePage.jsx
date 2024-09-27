@@ -6,6 +6,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
+import TextStyle from "@tiptap/extension-text-style"; // Import TextStyle extension
 
 function EditPage() {
   const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList } = useJobs();
@@ -23,13 +24,13 @@ function EditPage() {
   const [showContact, setShowContact] = useState(false);
   const [showCat, setShowCat] = useState(false);
 
-  // Editor for About Us
   const editor = useEditor({
     extensions: [
       StarterKit,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      TextStyle, // Enable inline text styles like font size
       Link.configure({
         openOnClick: false,
       }),
@@ -228,63 +229,79 @@ function EditPage() {
     setContactInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const Toolbar = ({ editor }) => (
-    <div className="flex space-x-2 mb-4">
-      <button
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("bold") ? "bg-black text-white" : "bg-gray-200"}`}>
-        Bold
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("italic") ? "bg-black text-white" : "bg-gray-200"}`}>
-        Italic
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`px-2 py-1 rounded ${editor.isActive("underline") ? "bg-black text-white" : "bg-gray-200"}`}>
-        Underline
-      </button>
-      <button
-        onClick={() => editor.chain().focus().setTextAlign("left").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "left" }) ? "bg-black text-white" : "bg-gray-200"
-        }`}>
-        Left
-      </button>
-      <button
-        onClick={() => editor.chain().focus().setTextAlign("center").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "center" }) ? "bg-black text-white" : "bg-gray-200"
-        }`}>
-        Center
-      </button>
-      <button
-        onClick={() => editor.chain().focus().setTextAlign("right").run()}
-        className={`px-2 py-1 rounded ${
-          editor.isActive({ textAlign: "right" }) ? "bg-black text-white" : "bg-gray-200"
-        }`}>
-        Right
-      </button>
-      <button
-        onClick={() => {
-          const url = prompt("Enter the URL");
-          if (url) {
-            // Check if some text is selected
-            if (editor.isActive("link")) {
-              // If link is already applied, update it
-              editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-            } else {
-              // Apply link to selected text
+  const Toolbar = ({ editor }) => {
+    const changeFontSize = (increase) => {
+      // Get the current font size or set a default size if none exists
+      const currentFontSize = editor.getAttributes("textStyle").fontSize || "16px";
+      const newFontSize = increase ? `${parseInt(currentFontSize) + 2}px` : `${parseInt(currentFontSize) - 2}px`;
+console.log(currentFontSize);
+      // Apply the new font size
+      editor.chain().focus().setMark("textStyle", { fontSize: newFontSize }).run();
+    };
+
+    return (
+      <div className="flex space-x-2 mb-4">
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`px-2 py-1 rounded ${editor.isActive("bold") ? "bg-black text-white" : "bg-gray-200"}`}>
+          Bold
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`px-2 py-1 rounded ${editor.isActive("italic") ? "bg-black text-white" : "bg-gray-200"}`}>
+          Italic
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={`px-2 py-1 rounded ${editor.isActive("underline") ? "bg-black text-white" : "bg-gray-200"}`}>
+          Underline
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          className={`px-2 py-1 rounded ${
+            editor.isActive({ textAlign: "left" }) ? "bg-black text-white" : "bg-gray-200"
+          }`}>
+          Left
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          className={`px-2 py-1 rounded ${
+            editor.isActive({ textAlign: "center" }) ? "bg-black text-white" : "bg-gray-200"
+          }`}>
+          Center
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          className={`px-2 py-1 rounded ${
+            editor.isActive({ textAlign: "right" }) ? "bg-black text-white" : "bg-gray-200"
+          }`}>
+          Right
+        </button>
+
+        {/* Add Link Button */}
+        <button
+          onClick={() => {
+            const url = prompt("Enter the URL");
+            if (url) {
               editor.chain().focus().setLink({ href: url }).run();
             }
-          }
-        }}
-        className="px-2 py-1 rounded bg-gray-200">
-        Add Link
-      </button>
-    </div>
-  );
+          }}
+          className="px-2 py-1 rounded bg-gray-200">
+          Add Link
+        </button>
+
+        {/* Increase Font Size Button */}
+        <button onClick={() => changeFontSize(true)} className="px-2 py-1 rounded bg-gray-200">
+          Increase Font Size
+        </button>
+
+        {/* Decrease Font Size Button */}
+        <button onClick={() => changeFontSize(false)} className="px-2 py-1 rounded bg-gray-200">
+          Decrease Font Size
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="m-3 rounded-lg p-5 bg-sky-800">
@@ -296,32 +313,32 @@ function EditPage() {
           <div className="bg-sky-600 w-full p-8 rounded-lg">
             {/* About Us Section */}
             <div className="relative ring-2 ring-white p-2 rounded-lg">
-            <h3 className="text-xl text-white mb-2">Edit About Us</h3>
+              <h3 className="text-xl text-white mb-2">Edit About Us</h3>
 
-            <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
-              {/* droupdown icon */}
-              <button
-                onClick={() => {
-                  setShowAbout(!showAbout);
-                }}
-                className={`text-white cursor-pointer  text-2xl mr-4 `}>
-                <i
-                  className={`fa-solid fa-sort-down transition-transform duration-500 ${
-                    showAbout ? "rotate-180" : ""
-                  }`}></i>
-              </button>
-              {/* add droupdown button */}
-            </div>
-            {showAbout && (
-              <div>
-                {editor && <Toolbar editor={editor} />}
-                <p className="text-sm text-white mb-2">
-                  [ Use the toolbar above to format and edit the content below. ]
-                </p>
-                <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowAbout(!showAbout);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showAbout ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+                {/* add droupdown button */}
               </div>
-            )}
-</div>
+              {showAbout && (
+                <div>
+                  {editor && <Toolbar editor={editor} />}
+                  <p className="text-sm text-white mb-2">
+                    [ Use the toolbar above to format and edit the content below. ]
+                  </p>
+                  <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+                </div>
+              )}
+            </div>
             {/* Terms and Conditions Section */}
             <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
               <h3 className="text-xl text-white mb-2">Edit Terms and Conditions</h3>
@@ -435,53 +452,57 @@ function EditPage() {
             <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 mt-4 rounded">
               Save All Changes
             </button>
-          
-          <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
-        <h3 className="text-xl text-white mb-2">Edit Categories</h3>
-        <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
-          {/* droupdown icon */}
-          <button
-            onClick={() => {
-              setShowCat(!showCat);
-            }}
-            className={`text-white cursor-pointer  text-2xl mr-4 `}>
-            <i className={`fa-solid fa-sort-down transition-transform duration-500 ${showCat ? "rotate-180" : ""}`}></i>
-          </button>
-          {/* add droupdown button */}
-        </div>
-        {showCat && (
-          <div>
-            <div className="flex">
-              <input
-                type="text"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="p-2 rounded-lg"
-                placeholder="Enter new category"
-              />
-              <button onClick={handleAddCategory} className="ml-2 bg-green-500 text-white px-4 py-2 rounded">
-                Add
-              </button>
-            </div>
 
-            {/* Display Category List */}
-            <div className="grid grid-cols-4 gap-1 mt-4">
-              {categoryList.map((cat, index) => (
-                <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
-                  <span>{cat}</span> {/* Directly display the category string */}
-                  <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDeleteCategory(cat)}>
-                    Delete
-                  </button>
+            <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
+              <h3 className="text-xl text-white mb-2">Edit Categories</h3>
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowCat(!showCat);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showCat ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+                {/* add droupdown button */}
+              </div>
+              {showCat && (
+                <div>
+                  <div className="flex">
+                    <input
+                      type="text"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="p-2 rounded-lg"
+                      placeholder="Enter new category"
+                    />
+                    <button onClick={handleAddCategory} className="ml-2 bg-green-500 text-white px-4 py-2 rounded">
+                      Add
+                    </button>
+                  </div>
+
+                  {/* Display Category List */}
+                  <div className="grid grid-cols-4 gap-1 mt-4">
+                    {categoryList.map((cat, index) => (
+                      <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
+                        <span>{cat}</span> {/* Directly display the category string */}
+                        <button
+                          className="bg-red-500 text-white px-3 py-1 rounded"
+                          onClick={() => handleDeleteCategory(cat)}>
+                          Delete
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
-        )}
-      </div>
         </div>
-        </div> 
       )}
-     
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Jobs from "./Jobs";
 import FootSection from "../components/footSection";
 import About from "../components/About";
 import Sidebar from "../Sidebar/Sidebar";
+
 import { useJobs } from "../context/jobsContext";
 
 const Home = () => {
@@ -64,6 +65,7 @@ const Home = () => {
             maxPrice,
             postingDate,
             employmentType,
+            jobCategory
           }) => {
             let match = true;
 
@@ -99,6 +101,13 @@ const Home = () => {
                 employmentType.toLowerCase() ===
                   selectedCategory.employmentType.toLowerCase();
             }
+            if (selectedCategory.jobCategory) {
+              match =
+                match &&
+                jobCategory ===
+                  selectedCategory.jobCategory;
+            }
+
 
             return match;
           }
@@ -193,10 +202,12 @@ const Home = () => {
             )}
           </div>
         </div>
+        
       </div>
       <div>
         <About />
       </div>
+     
       <div>
         <FootSection />
       </div>

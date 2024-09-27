@@ -62,7 +62,7 @@ const Card = ({ data ,setShowAlert }) => {
         )}
         <RWebShare
           data={{
-            text: `Job Hunt 4 u \n  *${jobTitle}*\n Description: ${description}\n`,
+            text: `Job Hunt 4 u \n  *${jobTitle}*\n Description: ${description}\n Follow Job Hunt 4 u WhatsApp community:\n https://chat.whatsapp.com/HUil1Eu2DZO4KcBaX9Qg4C \n \n`,
             url: `https://jobhunt4u.in/singlejob/${id}`,
             title: jobTitle,
           }}

@@ -5,6 +5,7 @@ import JobPostingData from './JobPostingData'
 import WorkExperience from './WorkExperience'
 import EmploymentType from './EmploymentType'
 import { useMediaQuery } from 'react-responsive';
+import Category from './Category'
 
 const Sidebar = ({ handleChange, handleClick, clearFilters }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -34,6 +35,7 @@ const Sidebar = ({ handleChange, handleClick, clearFilters }) => {
         <JobPostingData handleChange={handleChange} />
         <WorkExperience handleChange={handleChange} />
         <EmploymentType handleChange={handleChange} />
+        <Category handleChange={handleChange}/>
       </div>) : (<></>)}
 
     </div>

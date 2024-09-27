@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import CountUp from "react-countup";
+import Othersevice from "../components/OtherServices";
 import {
   AcademicCapIcon,
   ComputerDesktopIcon,
@@ -15,13 +17,26 @@ import {
 import { useJobs } from "../context/jobsContext";
 
 const About = () => {
-  const stats = [
-    { value: "6k", label: "daily active users" },
-    { value: "1,000+", label: "open job positions" },
-    { value: "9k", label: "Placement Served" },
-  ];
+  const [stats, setStats] = useState([
+    { value: 6000, label: "daily active users" },
+    { value: 1000, label: "open job positions" },
+    { value: 9050, label: "Placement Served" },
+  ]);
+
+  useEffect(() => {
+    // Randomly select values for daily active users and open job positions
+    const dailyUsers = Math.floor(Math.random() * (7000 - 6000 + 1)) + 6000;
+    const openPositions = Math.floor(Math.random() * (1100 - 1000 + 1)) + 1000;
+
+    // Update the stats with the new values
+    setStats((prevStats) => [
+      { value: dailyUsers, label: "daily active users" },
+      { value: openPositions, label: "open job positions" },
+      { value: 9050, label: "Placement Served" },
+    ]);
+  }, []);
   const { aboutContent, contactInfo } = useJobs();
-  
+
   const jobCategories = [
     { name: "Fintech", description: "Finance Tech", icon: <AcademicCapIcon className="w-6 h-6 text-gray-600" /> },
     {
@@ -71,7 +86,9 @@ const About = () => {
         <div className="flex flex-wrap justify-around text-center">
           {stats.map((stat, index) => (
             <div key={index} className="p-4">
-              <p className="text-4xl font-bold animated-gradient ">{stat.value}</p>
+              <p className="text-4xl font-bold animated-gradient">
+                <CountUp start={0} end={stat.value} duration={10} />+
+              </p>
               <p className="text-lg text-gray-500">{stat.label}</p>
             </div>
           ))}
@@ -79,26 +96,29 @@ const About = () => {
       </div>
 
       <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="contact">
-      <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
-        <span className="animated-gradient-header">Contact Us</span> Now
-      </h3>
-      <div className="text-center mb-6">
-        <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
-        <a href={`tel:${contactInfo.phone || ""}`}>
-          <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
-        </a>
+        <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
+          <span className="animated-gradient-header">Contact Us</span> Now
+        </h3>
+        <div className="text-center mb-6">
+          <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
+          <a href={`tel:${contactInfo.phone || ""}`}>
+            <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
+          </a>
+        </div>
+        <div className="text-center mb-6">
+          <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
+          <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
+            {contactInfo.email || ''}
+          </a>
+        </div>
+        <div className="text-center">
+          <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
+          <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
+        </div>
       </div>
-      <div className="text-center mb-6">
-        <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
-        <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
-          {contactInfo.email || ''}
-        </a>
+      <div>
+      <Othersevice/>
       </div>
-      <div className="text-center">
-        <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
-        <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
-      </div>
-    </div>
 
       <div className="mt-10">
         <h3 className="text-2xl font-bold text-gray-900 text-center">
