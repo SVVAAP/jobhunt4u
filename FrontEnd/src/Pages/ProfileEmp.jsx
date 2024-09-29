@@ -9,7 +9,7 @@ import { HiPencil, HiDotsVertical } from 'react-icons/hi';
 import Navbar from "../components/Navbar";
 
 function Profile() {
-  const { user, jobs, isLoading } = useJobs();
+  const { user, jobs, isLoading ,isLoggedIn } = useJobs();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -106,6 +106,8 @@ function Profile() {
 
   if (isLoading) {
     return <div>Loading...</div>;
+  } else if(isLoggedIn){
+    return <div>Not logged in</div>;
   }
 
   return (
