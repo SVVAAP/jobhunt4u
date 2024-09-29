@@ -142,7 +142,7 @@ function Profile() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  else if(isLoggedIn){
+  else if(!isLoggedIn){
     return <div>Not logged in</div>;
   }
 
