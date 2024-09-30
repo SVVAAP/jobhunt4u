@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ref, update, get, remove, set } from "firebase/database";
+import { ref, update, get, remove, set, push } from "firebase/database";
 import { database } from "../firebase";
 import { useJobs } from "../context/jobsContext";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -9,7 +9,7 @@ import Link from "@tiptap/extension-link";
 import TextStyle from "@tiptap/extension-text-style"; // Import TextStyle extension
 
 function EditPage() {
-  const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList } = useJobs();
+  const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList,sections, setSections } = useJobs();
   const [termsContent, setTermsContent] = useState(""); // State for Terms and Conditions content
   const [privacyPolicyContent, setPrivacyPolicyContent] = useState(""); // State for Privacy Policy content
   const [contactInfo, setContactInfo] = useState({
@@ -122,45 +122,58 @@ function EditPage() {
   }, [editor, termsEditor, privacyEditor]);
 
   const handleSave = () => {
-    const aboutRef = ref(database, "siteContent");
+  
+    const aboutRef = ref(database, "siteContent/aboutcontent");
     const termsRef = ref(database, "siteContent/terms");
     const privacyRef = ref(database, "siteContent/privacyPolicy");
 
+    // Validate sections to ensure there are no empty headings or paragraphs
+    const validSections = sections.filter(
+      (section) => section.heading.trim() !== "" && section.paragraph.trim() !== ""
+    );
+
+    // Check if valid sections exist
+    if (validSections.length === 0) {
+      alert("Please ensure all sections have a heading and a paragraph.");
+      return; // Prevent saving if no valid sections exist
+    }
+
     // Update the About Us content in Firebase
-    update(aboutRef, { about: aboutContent })
-      .then(() => {
-        alert("About Us content updated successfully!");
-      })
+    update(aboutRef, { about: aboutContent})
       .catch((error) => {
         console.error("Error updating About Us content: ", error);
       });
 
+      sections.forEach(section => {
+        const sectionRef = ref(database, "siteContent/aboutcontent/sections");
+        push(sectionRef, section)
+          .catch((error) => {
+            console.error("Error updating sections: ", error);
+          });
+      });
+
     // Update the Terms and Conditions content in Firebase
     update(termsRef, { terms: termsContent })
-      .then(() => {
-        alert("Terms and Conditions updated successfully!");
-      })
       .catch((error) => {
         console.error("Error updating Terms and Conditions: ", error);
       });
 
     // Update the Privacy Policy content in Firebase
     update(privacyRef, { policy: privacyPolicyContent })
-      .then(() => {
-        alert("Privacy Policy updated successfully!");
-      })
       .catch((error) => {
         console.error("Error updating Privacy Policy: ", error);
       });
 
     const contactRef = ref(database, "siteContent/contact");
     update(contactRef, contactInfo)
-      .then(() => {
-        alert("Contact information updated successfully!");
-      })
       .catch((error) => {
         console.error("Error updating contact information: ", error);
       });
+
+    alert("Updated Sucessfully")
+  };
+  const deleteSection = (indexToDelete) => {
+    setSections((prevSections) => prevSections.filter((_, index) => index !== indexToDelete));
   };
 
   const handleAddCategory = () => {
@@ -229,12 +242,23 @@ function EditPage() {
     setContactInfo((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSectionInputChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedSections = [...sections];
+    updatedSections[index][name] = value.trim(); // Trim the input value
+    setSections(updatedSections);
+  };
+
+  const addSection = () => {
+    setSections([...sections, { heading: "", paragraph: "" }]);
+  };
+
   const Toolbar = ({ editor }) => {
     const changeFontSize = (increase) => {
       // Get the current font size or set a default size if none exists
       const currentFontSize = editor.getAttributes("textStyle").fontSize || "16px";
       const newFontSize = increase ? `${parseInt(currentFontSize) + 2}px` : `${parseInt(currentFontSize) - 2}px`;
-console.log(currentFontSize);
+      console.log(currentFontSize);
       // Apply the new font size
       editor.chain().focus().setMark("textStyle", { fontSize: newFontSize }).run();
     };
@@ -336,6 +360,35 @@ console.log(currentFontSize);
                     [ Use the toolbar above to format and edit the content below. ]
                   </p>
                   <EditorContent editor={editor} className="p-4 border border-gray-300 rounded-lg bg-white" />
+
+                  {sections.map((section, index) => (
+                    <div className="m-4 p-2 flex space-x-5" key={index}>
+                      <input
+                        type="text"
+                        name="heading"
+                        placeholder="Enter heading"
+                        value={section.heading}
+                        onChange={(e) => handleSectionInputChange(index, e)}
+                        className="p-1"
+                      />
+                      <textarea
+                        name="paragraph"
+                        placeholder="Enter paragraph"
+                        value={section.paragraph}
+                        onChange={(e) => handleSectionInputChange(index, e)}
+                        className="w-full p-1"
+                      />
+                      <button
+                        onClick={() => deleteSection(index)} // Adding the delete handler here
+                        className="text-white bg-red-500 p-2 rounded hover:bg-red-600">
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  ))}
+
+                  <button onClick={addSection} className="px-4 py-2 bg-blue-500 text-white">
+                    Add Section
+                  </button>
                 </div>
               )}
             </div>

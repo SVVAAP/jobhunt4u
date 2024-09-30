@@ -87,7 +87,7 @@ const About = () => {
           {stats.map((stat, index) => (
             <div key={index} className="p-4">
               <p className="text-4xl font-bold animated-gradient">
-                <CountUp start={0} end={stat.value} duration={10} />+
+                <CountUp start={0} end={stat.value} duration={30} />+
               </p>
               <p className="text-lg text-gray-500">{stat.label}</p>
             </div>
