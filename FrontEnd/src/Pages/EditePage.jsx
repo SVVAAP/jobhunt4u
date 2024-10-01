@@ -144,13 +144,12 @@ function EditPage() {
         console.error("Error updating About Us content: ", error);
       });
 
-      sections.forEach(section => {
-        const sectionRef = ref(database, "siteContent/aboutcontent/sections");
-        push(sectionRef, section)
+        const sectionRef = ref(database, "siteContent/aboutcontent");
+        update(sectionRef, {sections})
           .catch((error) => {
             console.error("Error updating sections: ", error);
           });
-      });
+      
 
     // Update the Terms and Conditions content in Firebase
     update(termsRef, { terms: termsContent })

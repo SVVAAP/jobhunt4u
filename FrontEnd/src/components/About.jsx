@@ -15,6 +15,7 @@ import {
   GlobeAmericasIcon,
 } from "@heroicons/react/24/outline";
 import { useJobs } from "../context/jobsContext";
+import Carousel from "./Carousel";
 
 const About = () => {
   const [stats, setStats] = useState([
@@ -80,6 +81,7 @@ const About = () => {
           className="mt-4 text-lg text-justify p-4"
           dangerouslySetInnerHTML={{ __html: aboutContent.replace(/\n/g, "<br/>") }}
         ></p>
+        <Carousel/>
       </div>
 
       <div className="mt-10">

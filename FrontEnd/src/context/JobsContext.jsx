@@ -105,10 +105,8 @@ const [contactInfo, setContactInfo] = useState({
 
     const unsubscribe = onValue(sectionRef, (snapshot) => {
       const data = snapshot.val();
-      const fetchedSections = [];
-      for (let key in data) {
-        fetchedSections.push({ id: key, ...data[key] });
-      }
+      let fetchedSections = [];
+      fetchedSections=data;
       setSections(fetchedSections);
     });
 
