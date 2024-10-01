@@ -23,6 +23,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "emailjs-com": "^3.2.0",
+    "embla-carousel": "^8.3.0",
     "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
     "express": "^4.19.2",

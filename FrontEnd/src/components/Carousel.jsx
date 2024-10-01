@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useJobs } from "../context/jobsContext";
 
-function Carousel() {
+const Carousel = () => {
   const { sections } = useJobs();
+  const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false }); // Define the autoplay instance
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true }, // Options for emblaCarousel like looping
-    [Autoplay({ playOnInit: true, delay: 3000 })] // Autoplay configuration
+    { loop: true },
+    [autoplay] // Pass the autoplay instance to useEmblaCarousel
   );
 
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.reInit(); // Ensure Embla reinitializes if the API is ready
+      emblaApi.reInit(); // Reinitialize Embla when the API is ready
     }
   }, [emblaApi]);
 
@@ -26,11 +28,11 @@ function Carousel() {
         <div className="embla__container flex">
           {sections.map((data, index) => (
             <div
-              className="embla__slide w-5/6 flex-shrink-0 ring-2 ring-black m-4 rounded-lg shadow-2xl px-8 py-2" // Ensures each slide is full width
+              className="embla__slide w-5/6 flex-shrink-0 ring-2 ring-black m-4 rounded-lg shadow-2xl px-8 py-2 align-middle"
               key={index}
             >
               <div className="p-4">
-                <h2 className="text-xl font-bold animated-gardient m-2">{data.heading}</h2>
+                <h2 className="text-xl font-bold m-2">{data.heading}</h2>
                 <p>{data.paragraph}</p>
               </div>
             </div>
@@ -39,6 +41,6 @@ function Carousel() {
       </div>
     </div>
   );
-}
+};
 
 export default Carousel;
