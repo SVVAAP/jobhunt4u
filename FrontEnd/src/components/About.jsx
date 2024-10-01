@@ -95,8 +95,8 @@ const About = () => {
           ))}
         </div>
       </div>
-      <div className="flex space-x-0 justify-between align-middle">
-        <div className="mt-10 w-1/2 translate-x-5 p-8 rounded-lg " id="contact">
+      <div className="md:flex space-x-0 justify-between align-middle">
+        <div className="mt-10 md:w-1/2 md:translate-x-5 p-8 rounded-lg " id="contact">
           <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
             <span className="animated-gradient-header">Contact Us</span> Now
           </h3>
@@ -120,8 +120,8 @@ const About = () => {
             <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ""}</p>
           </div>
         </div>
-        <div className="w-3/4" id="map">
-          <div className="rounded-s-full p-5 px-10 translate-x-10  bg-gray-100  shadow-2xl">
+        <div className="md:w-3/4" id="map">
+          <div className="md:rounded-s-full p-3 md:p-5 md:px-10 md:translate-x-10  bg-gray-100  shadow-2xl">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d992841.4544403215!2d74.6143328746088!3d13.579273629093242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbcadd9041400a3%3A0xb7c8f19bc5d97a1d!2sJob%20Hunt%204%20U!5e0!3m2!1sen!2sin!4v1720962589516!5m2!1sen!2sin"
               width="100%"
