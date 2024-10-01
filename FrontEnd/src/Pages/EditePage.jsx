@@ -9,7 +9,7 @@ import Link from "@tiptap/extension-link";
 import TextStyle from "@tiptap/extension-text-style"; // Import TextStyle extension
 
 function EditPage() {
-  const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList,sections, setSections } = useJobs();
+  const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList, sections, setSections } = useJobs();
   const [termsContent, setTermsContent] = useState(""); // State for Terms and Conditions content
   const [privacyPolicyContent, setPrivacyPolicyContent] = useState(""); // State for Privacy Policy content
   const [contactInfo, setContactInfo] = useState({
@@ -122,7 +122,6 @@ function EditPage() {
   }, [editor, termsEditor, privacyEditor]);
 
   const handleSave = () => {
-  
     const aboutRef = ref(database, "siteContent/aboutcontent");
     const termsRef = ref(database, "siteContent/terms");
     const privacyRef = ref(database, "siteContent/privacyPolicy");
@@ -139,37 +138,31 @@ function EditPage() {
     }
 
     // Update the About Us content in Firebase
-    update(aboutRef, { about: aboutContent})
-      .catch((error) => {
-        console.error("Error updating About Us content: ", error);
-      });
+    update(aboutRef, { about: aboutContent }).catch((error) => {
+      console.error("Error updating About Us content: ", error);
+    });
 
-        const sectionRef = ref(database, "siteContent/aboutcontent");
-        update(sectionRef, {sections})
-          .catch((error) => {
-            console.error("Error updating sections: ", error);
-          });
-      
+    const sectionRef = ref(database, "siteContent/aboutcontent");
+    update(sectionRef, { sections }).catch((error) => {
+      console.error("Error updating sections: ", error);
+    });
 
     // Update the Terms and Conditions content in Firebase
-    update(termsRef, { terms: termsContent })
-      .catch((error) => {
-        console.error("Error updating Terms and Conditions: ", error);
-      });
+    update(termsRef, { terms: termsContent }).catch((error) => {
+      console.error("Error updating Terms and Conditions: ", error);
+    });
 
     // Update the Privacy Policy content in Firebase
-    update(privacyRef, { policy: privacyPolicyContent })
-      .catch((error) => {
-        console.error("Error updating Privacy Policy: ", error);
-      });
+    update(privacyRef, { policy: privacyPolicyContent }).catch((error) => {
+      console.error("Error updating Privacy Policy: ", error);
+    });
 
     const contactRef = ref(database, "siteContent/contact");
-    update(contactRef, contactInfo)
-      .catch((error) => {
-        console.error("Error updating contact information: ", error);
-      });
+    update(contactRef, contactInfo).catch((error) => {
+      console.error("Error updating contact information: ", error);
+    });
 
-    alert("Updated Sucessfully")
+    alert("Updated Sucessfully");
   };
   const deleteSection = (indexToDelete) => {
     setSections((prevSections) => prevSections.filter((_, index) => index !== indexToDelete));
@@ -377,17 +370,18 @@ function EditPage() {
                         onChange={(e) => handleSectionInputChange(index, e)}
                         className="w-full p-1"
                       />
+
                       <button
                         onClick={() => deleteSection(index)} // Adding the delete handler here
-                        className="text-white bg-red-500 p-2 rounded hover:bg-red-600">
+                        className="text-white bg-red-500 p-2 rounded hover:bg-red-600 ">
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
                   ))}
-
-                  <button onClick={addSection} className="px-4 py-2 bg-blue-500 text-white">
-                    Add Section
-                  </button>
+                  <div className="flex justify-center w-3/12 p-1 my-2 mx-auto text-3xl bg-white rounded-lg cursor-cell"
+                     onClick={addSection} >
+                      +
+                  </div>
                 </div>
               )}
             </div>
