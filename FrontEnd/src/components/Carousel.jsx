@@ -26,11 +26,11 @@ function Carousel() {
         <div className="embla__container flex">
           {sections.map((data, index) => (
             <div
-              className="embla__slide w-full flex-shrink-0 ring-2 ring-black m-4 rounded-lg" // Ensures each slide is full width
+              className="embla__slide w-5/6 flex-shrink-0 ring-2 ring-black m-4 rounded-lg shadow-2xl px-8 py-2" // Ensures each slide is full width
               key={index}
             >
               <div className="p-4">
-                <h2 className="text-xl font-bold">{data.heading}</h2>
+                <h2 className="text-xl font-bold animated-gardient m-2">{data.heading}</h2>
                 <p>{data.paragraph}</p>
               </div>
             </div>

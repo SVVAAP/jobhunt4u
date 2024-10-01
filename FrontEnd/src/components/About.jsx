@@ -79,9 +79,8 @@ const About = () => {
         </h2>
         <p
           className="mt-4 text-lg text-justify p-4"
-          dangerouslySetInnerHTML={{ __html: aboutContent.replace(/\n/g, "<br/>") }}
-        ></p>
-        <Carousel/>
+          dangerouslySetInnerHTML={{ __html: aboutContent.replace(/\n/g, "<br/>") }}></p>
+        <Carousel />
       </div>
 
       <div className="mt-10">
@@ -96,30 +95,46 @@ const About = () => {
           ))}
         </div>
       </div>
+      <div className="flex space-x-0 justify-between align-middle">
+        <div className="mt-10 w-1/2 p-8 rounded-lg " id="contact">
+          <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
+            <span className="animated-gradient-header">Contact Us</span> Now
+          </h3>
 
-      <div className="mt-10 bg-gray-100 p-8 rounded-lg shadow-md" id="contact">
-        <h3 className="text-3xl font-bold text-gray-900 text-center mb-4">
-          <span className="animated-gradient-header">Contact Us</span> Now
-        </h3>
-        <div className="text-center mb-6">
-          <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
-          <a href={`tel:${contactInfo.phone || ""}`}>
-            <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ''}</p>
-          </a>
+          <div className="text-center mb-6">
+            <p className="text-lg text-gray-700 mb-2">📞 Call Us:</p>
+            <a href={`tel:${contactInfo.phone || ""}`}>
+              <p className="text-xl font-semibold text-gray-900">{contactInfo.phone || ""}</p>
+            </a>
+          </div>
+          <div className="text-center mb-6">
+            <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
+            <a
+              href={`mailto:${contactInfo.email || ""}`}
+              className="text-xl font-semibold text-blue-600 hover:underline">
+              {contactInfo.email || ""}
+            </a>
+          </div>
+          <div className="text-center">
+            <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
+            <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ""}</p>
+          </div>
         </div>
-        <div className="text-center mb-6">
-          <p className="text-lg text-gray-700 mb-2">📧 Send Your Resume To:</p>
-          <a href={`mailto:${contactInfo.email || ''}`} className="text-xl font-semibold text-blue-600 hover:underline">
-            {contactInfo.email || ''}
-          </a>
-        </div>
-        <div className="text-center">
-          <p className="text-lg text-gray-700 mb-2">📍 Visit Us At:</p>
-          <p className="text-xl font-semibold text-gray-900">{contactInfo.address || ''}</p>
+        <div className="w-2/3" id="map">
+          <div className="rounded-s-full p-5 px-10 translate-x-10  bg-gray-100 shadow-sky-900 shadow-2xl">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d992841.4544403215!2d74.6143328746088!3d13.579273629093242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbcadd9041400a3%3A0xb7c8f19bc5d97a1d!2sJob%20Hunt%204%20U!5e0!3m2!1sen!2sin!4v1720962589516!5m2!1sen!2sin"
+              width="100%"
+              height="450"
+              style={{ border: "0" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"></iframe>
+          </div>
         </div>
       </div>
       <div>
-      <Othersevice/>
+        <Othersevice />
       </div>
 
       <div className="mt-10">
@@ -225,17 +240,6 @@ const About = () => {
             <div className="text-sm text-center md:text-base">Review and submit</div>
           </div>
         </div>
-      </div>
-
-      <div id="map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d992841.4544403215!2d74.6143328746088!3d13.579273629093242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbcadd9041400a3%3A0xb7c8f19bc5d97a1d!2sJob%20Hunt%204%20U!5e0!3m2!1sen!2sin!4v1720962589516!5m2!1sen!2sin"
-          width="100%"
-          height="450"
-          style={{ border: "0" }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   );
