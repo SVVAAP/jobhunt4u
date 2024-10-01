@@ -12,7 +12,7 @@ const FootSection = () => {
         <>
 
             <div>
-                <footer className="bg-black rounded-lg shadow m-6 dark:bg-gray-800">
+                <footer className="bg-black rounded-lg shadow mx-6 mb-6 dark:bg-gray-800">
                     <div className="w-full mx-auto max-w-screen-xl text-center p-2 px-6 md:flex md:items-center md:justify-between">
                         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/" className="hover:underline">JobHunt4U</a>. All Rights Reserved.
                         </span>

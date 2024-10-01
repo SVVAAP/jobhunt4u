@@ -72,7 +72,7 @@ const About = () => {
   const recruiterSteps = ["Register an account", "Create a new job listing", "Review and submit"];
 
   return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8" id="about">
+    <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl font-extrabold text-gray-900 sm:text-4xl">
           <span className="animated-gradient-header"> About</span> Us

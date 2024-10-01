@@ -29,7 +29,7 @@ const companies = [
 
 const CompanyCarousel = () => {
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6 mt-5">
       <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
       <span className="animated-gradient-header"> Our Other </span>Services
       </h2>
