@@ -35,7 +35,7 @@ const Location = ({ handleChange }) => {
           <input onChange={handleChange} type="radio" value="" name="location" />
           <span className="checkmark"></span>All
         </label>
-
+        
         <input
           type="text"
           placeholder="Search location"
@@ -61,7 +61,6 @@ const Location = ({ handleChange }) => {
               </div>
             ))}
           </div>
-        </div>
       </div>
     </div>
   );
