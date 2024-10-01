@@ -361,14 +361,14 @@ function EditPage() {
                         placeholder="Enter heading"
                         value={section.heading}
                         onChange={(e) => handleSectionInputChange(index, e)}
-                        className="p-1"
+                        className="p-1 rounded-md"
                       />
                       <textarea
                         name="paragraph"
                         placeholder="Enter paragraph"
                         value={section.paragraph}
                         onChange={(e) => handleSectionInputChange(index, e)}
-                        className="w-full p-1"
+                        className="w-full p-1 rounded-md"
                       />
 
                       <button
