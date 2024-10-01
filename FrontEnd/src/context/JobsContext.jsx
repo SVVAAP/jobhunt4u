@@ -18,6 +18,7 @@ export function JobsProvider({ children }) {
   const [userType, setUserType] = useState("");
   const [aboutContent, setAboutContent] = useState("");
   const [categoryList, setCategoryList] = useState([]);
+  const [sections, setSections] = useState([{ heading: "", paragraph: "" }]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -84,7 +85,7 @@ export function JobsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const aboutRef = ref(database, "siteContent/about");
+    const aboutRef = ref(database, "siteContent/aboutcontent/about");
 
     // Fetch the current content from Firebase
     onValue(aboutRef, (snapshot) => {
@@ -93,12 +94,24 @@ export function JobsProvider({ children }) {
       setIsLoading(false);
     });
   }, []);
+
 const [contactInfo, setContactInfo] = useState({
     phone: "",
     email: "",
     address: "",
   });
+ useEffect(() => {
+    const sectionRef = ref(database, "siteContent/aboutcontent/sections");
 
+    const unsubscribe = onValue(sectionRef, (snapshot) => {
+      const data = snapshot.val();
+      let fetchedSections = [];
+      fetchedSections=data;
+      setSections(fetchedSections);
+    });
+
+    return () => unsubscribe(); // Clean up the subscription
+  }, []);
   useEffect(() => {
     const contactRef = ref(database, "siteContent/contact");
     get(contactRef).then((snapshot) => {
@@ -120,7 +133,7 @@ const [contactInfo, setContactInfo] = useState({
   const mark = inboxMessages.some((message) => !message.seen);
 
   return (
-    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs ,categoryList, setCategoryList}}>
+    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs ,categoryList, setCategoryList,sections, setSections}}>
       {children}
     </JobContext.Provider>
   );
