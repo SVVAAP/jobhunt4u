@@ -4,7 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import a2z from "../assets/a2zpremiumdeals_logo.png";
 import alphonsomatrimony from "../assets/alphonsomatrimony.png";
 import Alphonsocyberservices from "../assets/alphonsoCyberService.png";
-import Alma from "../assets/AlmaEducation.jpg";
+import Alma from "../assets/AlmaEducation.png";
 const companies = [
   {
     id: 1,
