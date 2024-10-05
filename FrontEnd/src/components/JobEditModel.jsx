@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
+import { useJobs } from '../context/jobsContext';
 
 const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
   const [formData, setFormData] = useState({ ...job });
+  const { categoryList } = useJobs();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -181,14 +183,12 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
                   value={formData.jobCategory}
                   onChange={handleChange}
                   className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                >
-                  <option value="">Choose job category</option>
-                  <option value="Accounting/Finance">Accounting/Finance</option>
-                  <option value="IT/Software">IT/Software</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Education">Education</option>
-                  <option value="Sales">Sales</option>
+                ><option value="">Choose job category</option>
+                 {categoryList.map((cat, index) => (
+                      <option key={index} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
                 </select>
               </div>
 
