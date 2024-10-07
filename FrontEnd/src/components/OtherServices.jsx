@@ -38,14 +38,16 @@ const companies = [
 ];
 
 const CompanyCarousel = () => {
+  const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false }); // Define the autoplay instance
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, slidesToScroll: 1 },
-    [Autoplay({ playOnInit: true, delay: 3000 })] // Auto-slide every 3 seconds
+    { loop: true },
+    [autoplay] // Pass the autoplay instance to useEmblaCarousel
   );
 
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.reInit(); // Reinitialize Embla when necessary
+      emblaApi.reInit(); // Reinitialize Embla when the API is ready
     }
   }, [emblaApi]);
 

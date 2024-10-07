@@ -27,15 +27,18 @@ const Carousel = () => {
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container flex">
           {sections.map((data, index) => (
-            <div
-              className="embla__slide w-5/6 flex-shrink-0 ring-2 ring-black m-4 rounded-lg shadow-2xl px-8 py-2 align-middle"
-              key={index}
-            >
-              <div className="p-4">
-                <h2 className="text-xl font-bold m-2">{data.heading}</h2>
-                <p>{data.paragraph}</p>
-              </div>
-            </div>
+           <div
+           className="embla__slide w-5/6 flex-shrink-0 m-4 rounded-lg shadow-2xl p-0.5 animated-gradient-bg"
+           key={index}
+         >
+           <div className="bg-white m-auto h-full px-8 py-2 rounded-lg flex items-center justify-center align-middle ">
+             <div className="py-4">
+               <h2 className="text-2xl font-bold m-2 animated-gradient-text">{data.heading}</h2>
+               <p className="font-medium">{data.paragraph}</p>
+             </div>
+           </div>
+         </div>
+         
           ))}
         </div>
       </div>

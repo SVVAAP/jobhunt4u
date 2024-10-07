@@ -269,6 +269,16 @@ li {
   background: linear-gradient(45deg, darkblue, blue, green, darkgreen,red,darkred);
   background-size: 400% 400%;
   animation: gradient-flow 10s ease infinite;
+  
+}
+
+.animated-gradient-text {
+  background: linear-gradient(45deg, darkblue, blue, green, darkgreen,red,darkred);
+  background-size: 400% 400%;
+  animation: gradient-flow 10s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .animated-gradient-header {
   background: linear-gradient(45deg, #073cce, #4f99ee,green); /* Extracted colors from Tailwind */
