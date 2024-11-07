@@ -1,12 +1,39 @@
 // components/JobEditModal.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 import { useJobs } from '../context/jobsContext';
+import CreatableSelect from 'react-select/creatable';
+
 
 const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
-  const [formData, setFormData] = useState({ ...job });
+  const [formData, setFormData] = useState({});
   const { categoryList } = useJobs();
+  const [selectedSkills, setSelectedSkills] = useState(
+    job.skills ? job.skills.map(skill => ({ label: skill, value: skill })) : []
+  );
+  
+
+  // Initialize formData with default values if job is provided
+  useEffect(() => {
+    if (job) {
+      setFormData({
+        jobTitle: job.jobTitle || '',
+        companyName: job.companyName || '',
+        minPrice: job.minPrice || '',
+        maxPrice: job.maxPrice || '',
+        salaryType: job.salaryType || '',
+        jobLocation: job.jobLocation || '',
+        experienceLevel: job.experienceLevel || '',
+        skills: job.skills || '',
+        employmentType: job.employmentType || '',
+        jobCategory: job.jobCategory || '',
+        jobType: job.jobType || '',
+        workMode: job.workMode || '',
+        description: job.description || '',
+      });
+    }
+  }, [job]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,13 +43,26 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
     }));
   };
 
+  const handleSkillsChange = (selectedOptions) => {
+    setSelectedSkills(selectedOptions || []);
+    setFormData((prev) => ({
+      ...prev,
+      skills: selectedOptions ? selectedOptions.map(option => option.value) : [],
+    }));
+  };
+  
+
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await update(ref(database, `jobs/${job.id}`), formData);
-      onSave();
+      if (job && job.id) {
+        await update(ref(database, `jobs/${job.id}`), formData);
+        onSave();
+      } else {
+        console.error('Job ID is missing');
+      }
     } catch (error) {
-      console.error('Error updating job:', error);
+      console.error('Error updating job:', error.message);
     }
   };
 
@@ -143,37 +183,6 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
                 </select>
               </div>
 
-              {/* Required Skills Set */}
-              <div className="mb-3">
-                <label htmlFor="skills" className="block text-sm font-medium text-gray-700">Required Skills Set</label>
-                <input
-                  type="text"
-                  name="skills"
-                  id="skills"
-                  value={formData.skills}
-                  onChange={handleChange}
-                  className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                />
-              </div>
-
-              {/* Employment Type */}
-              <div className="mb-3">
-                <label htmlFor="employmentType" className="block text-sm font-medium text-gray-700">Employment Type</label>
-                <select
-                  name="employmentType"
-                  id="employmentType"
-                  value={formData.employmentType}
-                  onChange={handleChange}
-                  className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                >
-                  <option value="">Choose employment type</option>
-                  <option value="FullTime">Full Time</option>
-                  <option value="PartTime">Part Time</option>
-                  <option value="Contract">Contract</option>
-                  <option value="Internship">Internship</option>
-                </select>
-              </div>
-
               {/* Job Category */}
               <div className="mb-3">
                 <label htmlFor="jobCategory" className="block text-sm font-medium text-gray-700">Job Category</label>
@@ -183,53 +192,34 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
                   value={formData.jobCategory}
                   onChange={handleChange}
                   className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                ><option value="">Choose job category</option>
-                 {categoryList.map((cat, index) => (
-                      <option key={index} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
+                >
+                  <option value="">Choose job category</option>
+                  {categoryList && categoryList.map((cat, index) => (
+                    <option key={index} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              {/* Job Type */}
+              {/* required skillset */}
               <div className="mb-3">
-                <label htmlFor="jobType" className="block text-sm font-medium text-gray-700">Job Type</label>
-                <select
-                  name="jobType"
-                  id="jobType"
-                  value={formData.jobType}
-                  onChange={handleChange}
-                  className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                >
-                  <option value="">Choose job type</option>
-                  <option value="National">National</option>
-                  <option value="International">International</option>
-                </select>
+                <label className="block mb-2 text-sm font-medium text-gray-700">Required Skills</label>
+                <CreatableSelect
+                  isMulti
+                  value={selectedSkills}
+                  onChange={handleSkillsChange}
+                  options={selectedSkills}
+                  className="m-1 block w-full border-gray-300 rounded-sm shadow-sm"
+                />
               </div>
 
-              {/* Work Mode */}
-              <div className="mb-3">
-                <label htmlFor="workMode" className="block text-sm font-medium text-gray-700">Work Mode</label>
-                <select
-                  name="workMode"
-                  id="workMode"
-                  value={formData.workMode}
-                  onChange={handleChange}
-                  className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
-                >
-                  <option value="">Choose work mode</option>
-                  <option value="Remote">Remote</option>
-                  <option value="OnSite">On-Site</option>
-                  <option value="Hybrid">Hybrid</option>
-                </select>
-              </div>
 
               {/* Job Description */}
               <div className="mb-3">
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Job Description</label>
                 <textarea
-                  name="description"  // Changed to match 'description' key in formData
+                  name="description"
                   id="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -237,7 +227,6 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
                   rows="4"
                 ></textarea>
               </div>
-
             </div>
 
             <div className="px-5 py-3 bg-gray-100 text-right">
@@ -250,7 +239,7 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-sm text-white bg-blue rounded hover:bg-blue"
+                className="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
               >
                 Save Changes
               </button>

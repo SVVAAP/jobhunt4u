@@ -10,7 +10,8 @@ const Location = ({ handleChange }) => {
 
   useEffect(() => {
     if (jobs) {
-      const uniqueLocations = [...new Set(jobs.map(job => job.jobLocation))];
+      const uniqueLocations = [...new Set(jobs.map(job => job.jobLocation))]
+        .sort((a, b) => a.localeCompare(b)); // Sort locations alphabetically
       setLocations(uniqueLocations);
       setFilteredLocations(uniqueLocations); // Set initially to show all locations
     }
@@ -46,21 +47,21 @@ const Location = ({ handleChange }) => {
           className="form-input mt-1 mb-1 border-gray-300 p-2" 
         />
         
-          <div className="mt-1 max-h-40 overflow-y-auto  rounded">
-            {filteredLocations.map(location => (
-              <div key={location}>
-                <label className="sidebar-label-container">
-                  <input
-                    onChange={handleChange}
-                    type="radio"
-                    value={location.toLowerCase()}
-                    name="location"
-                  />
-                  <span className="checkmark"></span>{location}
-                </label>
-              </div>
-            ))}
-          </div>
+        <div className="mt-1 max-h-40 overflow-y-auto rounded">
+          {filteredLocations.map(location => (
+            <div key={location}>
+              <label className="sidebar-label-container">
+                <input
+                  onChange={handleChange}
+                  type="radio"
+                  value={location.toLowerCase()}
+                  name="location"
+                />
+                <span className="checkmark"></span>{location}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
