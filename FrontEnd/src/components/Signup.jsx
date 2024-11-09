@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, database, getDownloadURL, storage, ref as storageRef, uploadBytes } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { push, ref, set, update } from "firebase/database";
+import { get, push, ref, set, update } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
@@ -32,6 +32,48 @@ const Signup = () => {
   const [termsAccepted, setTermsAccepted] = useState(false); // State to check Terms acceptance
   const [timer, setTimer] = useState(0); // State to keep track of timer
 
+  const generateCandidateID = async () => {
+    const candiCounterRef = ref(database, "candidateCounter");
+  
+    try {
+      const snapshot = await get(candiCounterRef);
+      let candidateNumber = 1; // Default starting job number
+  
+      if (snapshot.exists()) {
+        candidateNumber = snapshot.val() + 1;
+      }
+      // Increment the counter in the database
+      await set(candiCounterRef, candidateNumber);
+  
+      // Format the job number into a job ID, e.g., "JV001"
+      return `JC00${String(candidateNumber).padStart(3, "0")}`;
+    } catch (error) {
+      console.error("Error generating job ID:", error);
+      return null;
+    }
+  };
+
+  const generateEmpID = async () => {
+    const empCounterRef = ref(database, "employeeCounter");
+  
+    try {
+      const snapshot = await get(empCounterRef);
+      let empNumber = 1; // Default starting job number
+  
+      if (snapshot.exists()) {
+        empNumber = snapshot.val() + 1;
+      }
+      // Increment the counter in the database
+      await set(empCounterRef, empNumber);
+  
+      // Format the job number into a job ID, e.g., "JV001"
+      return `JE${String(empNumber).padStart(3, "0")}`;
+    } catch (error) {
+      console.error("Error generating job ID:", error);
+      return null;
+    }
+  };
+  
   const navigate = useNavigate();
   const countries = Object.keys(stateObject); // Get the list of countries
 
@@ -121,8 +163,15 @@ const Signup = () => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        const userID = userType === "employer" ? await  generateEmpID(): await generateCandidateID();
+          if (!userID) {
+            console.error("Failed to generate job ID.");
+            return;
+          }
+
         // Initialize user data
         const userData = {
+          userID:userID,
           name,
           email,
           phone,

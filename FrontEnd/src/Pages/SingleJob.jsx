@@ -66,6 +66,7 @@ const SingleJob = () => {
   const auth = getAuth();
 const [applied, setApplied] = useState(false);
 
+
  useEffect(() => {
     const foundJob = allJobs.find((job) => job.id === jobId);
     setJob(foundJob);

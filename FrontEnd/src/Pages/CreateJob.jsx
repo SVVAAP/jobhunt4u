@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { database, storage } from "../firebase";
-import { ref, set, push, update } from "firebase/database";
+import { ref, set, push, update, get } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { useJobs } from "../context/jobsContext";
@@ -21,6 +21,28 @@ const CreateJob = () => {
     formState: { errors },
     setValue,
   } = useForm();
+
+  const generateJobID = async () => {
+    const jobCounterRef = ref(database, "jobCounter");
+  
+    try {
+      const snapshot = await get(jobCounterRef);
+      let jobNumber = 1; // Default starting job number
+  
+      if (snapshot.exists()) {
+        jobNumber = snapshot.val() + 1;
+      }
+      // Increment the counter in the database
+      await set(jobCounterRef, jobNumber);
+  
+      // Format the job number into a job ID, e.g., "JV001"
+      return `JV00${String(jobNumber).padStart(3, "0")}`;
+    } catch (error) {
+      console.error("Error generating job ID:", error);
+      return null;
+    }
+  };
+  
 
   useEffect(() => {
     if (user) {
@@ -50,9 +72,15 @@ const CreateJob = () => {
       } else {
         data.companyLogo = "https://cdn-icons-png.flaticon.com/128/4168/4168507.png"; // Default value if no logo is provided
       }
+      const jobID = await generateJobID();
+      if (!jobID) {
+        console.error("Failed to generate job ID.");
+        return;
+      }
 
       // Save data to Firebase Database
       const jobData = {
+        jobID:jobID,
         jobTitle: data.jobTitle,
         companyName: data.companyName,
         minPrice: data.minPrice,

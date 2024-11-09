@@ -20,9 +20,11 @@ function Profile() {
     phone: '',
     website: '',
     address: '',
+    logoUrl: '', // Add logo URL to profile data
   });
   const [postedJobs, setPostedJobs] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [logoFile, setLogoFile] = useState(null); // State to hold selected logo file
 
   useEffect(() => {
     if (user) {
@@ -32,8 +34,9 @@ function Profile() {
         phone: user.phone || '',
         website: user.website || '',
         address: user.address || '',
-        userType:user.userType||'',
-        name:user.name||'',
+        logoUrl: user.logoUrl || '', // Load logo URL if available
+        userType: user.userType || '',
+        name: user.name || '',
       });
 
       // Fetch jobs posted by the employer
@@ -71,23 +74,49 @@ function Profile() {
     }));
   };
 
+  const handleLogoChange = (e) => {
+    setLogoFile(e.target.files[0]); // Set the selected file to the logoFile state
+  };
+
+  const uploadLogo = async () => {
+    if (!logoFile) return null;
+
+    const storageRef = ref(storage, `companyLogos/${profileData.companyName}-${logoFile.name}`);
+    await uploadBytes(storageRef, logoFile);
+    return await getDownloadURL(storageRef);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const user = auth.currentUser;
       if (user) {
+        let logoUrl = profileData.logoUrl;
+
+        // Upload the logo if a new file is selected
+        if (logoFile) {
+          logoUrl = await uploadLogo();
+          setProfileData((prev) => ({ ...prev, logoUrl }));
+        }
+
+        // Update user data with logo URL
         await set(ref(database, `users/${auth.currentUser.uid}`), {
           companyName: profileData.companyName,
           email: profileData.email,
           phone: profileData.phone,
           website: profileData.website,
           address: profileData.address,
-          name:profileData.name,
-          userType:profileData.userType,
-          approved:user.approved ||"",
+          logoUrl: logoUrl || "", // Include logo URL in data
+          name: profileData.name,
+          userType: profileData.userType,
+          approved: user.approved || "",
         });
 
+        // Save logo URL in a separate "logos" directory, keyed by company name
+        await set(ref(database, `logos/${profileData.companyName}`), { logoUrl });
+
         setIsEditing(false);
+        setLogoFile(null); // Reset the logo file after upload
       }
     } catch (error) {
       console.error('Error updating user details: ', error);
@@ -96,7 +125,6 @@ function Profile() {
   };
 
   const handleContactAdmin = () => {
-    // Implement the functionality to contact the admin (e.g., open a contact form or send an email)
     alert("Contact Admin functionality not yet implemented.");
   };
 
@@ -106,34 +134,38 @@ function Profile() {
 
   if (isLoading) {
     return <div>Loading...</div>;
-  } else if(!isLoggedIn){
+  } else if (!isLoggedIn) {
     return <div>Not logged in</div>;
   }
 
   return (
     <>
       <Navbar />
-      <div className="w-screen h-full p-4 px-8 " >
-        <div className=" container flex justify-between content-center text-center m-auto p-4">
+      <div className="w-screen h-full p-4 px-8 ">
+        <div className="container flex justify-between content-center text-center m-auto p-4">
           <button
-            className="flex items-center  px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded-md font-extrabold hover:bg-red-600 hover:text-white focus:outline-none "
-            onClick={() => navigate(-1)}>
-            <i className="fa-solid fa-arrow-left-long  mr-2"></i>
+            className="flex items-center px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded-md font-extrabold hover:bg-red-600 hover:text-white focus:outline-none"
+            onClick={() => navigate(-1)}
+          >
+            <i className="fa-solid fa-arrow-left-long mr-2"></i>
             Back
           </button>
-          <button onClick={handleLogout} className=" bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
             <i className="fa-solid fa-right-from-bracket"></i> Logout
           </button>
         </div>
         <div className="relative bg-white shadow-md rounded-lg p-4">
-
           <div className="absolute top-4 right-4 flex items-center space-x-2">
-            {/* droupdown icon */}
-            <button onClick={toggleDropdown} className={`text-blue-500 cursor-pointer  text-2xl mr-4 `}>
-              <i className={`fa-solid fa-sort-down transition-transform duration-500 ${showDropdown ? 'rotate-180':''}`}></i>
+            <button onClick={toggleDropdown} className={`text-blue-500 cursor-pointer text-2xl mr-4`}>
+              <i
+                className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                  showDropdown ? 'rotate-180' : ''
+                }`}
+              ></i>
             </button>
-            {/* add droupdown button */}
-
           </div>
 
           <h1 className="text-2xl font-bold mb-4">Welcome, {profileData.companyName}!</h1>
@@ -141,12 +173,8 @@ function Profile() {
             Manage your job postings and company profile here.
           </p>
 
-          {/* Dropdown Menu */}
           {showDropdown && (
             <form onSubmit={handleSubmit} className="space-y-4 m-4">
-
-
-
               {showSuccessMessage && (
                 <div className="bg-green-100 p-4 rounded-lg mb-4 flex items-center">
                   <img
@@ -161,17 +189,14 @@ function Profile() {
                 </div>
               )}
 
-
-
               <div className="bg-gray-100 p-4 rounded-lg space-y-4">
-
                 {!isEditing && (
-                  <div className='flex justify-between shadow-sm'>
-                    <p className='ml-2 font-semibold'>Employer Profile </p> 
-                  <HiPencil
-                    onClick={handleEditClick}
-                    className=" top-4 right-2 text-blue-500 cursor-pointer text-xl"
-                  /> 
+                  <div className="flex justify-between shadow-sm">
+                    <p className="ml-2 font-semibold">Employer Profile </p>
+                    <HiPencil
+                      onClick={handleEditClick}
+                      className="top-4 right-2 text-blue-500 cursor-pointer text-xl"
+                    />
                   </div>
                 )}
                 <div className="formField">
@@ -234,6 +259,16 @@ function Profile() {
                   />
                 </div>
 
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">Upload Logo</label>
+                  <input
+                    type="file"
+                    onChange={handleLogoChange}
+                    className="formInput p-2 border rounded w-full"
+                    disabled={!isEditing}
+                  />
+                </div>
+
                 <div className="flex justify-between">
                   {isEditing && (
                     <button
@@ -248,26 +283,13 @@ function Profile() {
             </form>
           )}
 
-          {/* Logout Button */}
-          {/* {!isEditing && (
-          <button
-            onClick={handleLogout}
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
-            Logout
-          </button>
-        )} */}
-
-          {/* Contact Admin Button */}
           {!isEditing && (
-            <a href="mailto:CustomerCare@jobhunt4u.in?subject=Support Request By Employer&body=Hello,%0D%0AI need assistance with..." >
+            <a href="mailto:CustomerCare@jobhunt4u.in?subject=Support Request By Employer&body=Hello,%0D%0AI need assistance with...">
               Contact Admin - CustomerCare@jobhunt4u.in
             </a>
-
           )}
         </div>
 
-        {/* Posted Jobs Section */}
         <div className="mt-8">
           <h2 className="text-xl font-semibold">Your Posted Jobs</h2>
           {postedJobs.length > 0 ? (
