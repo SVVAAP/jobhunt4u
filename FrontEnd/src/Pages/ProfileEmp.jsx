@@ -113,7 +113,7 @@ function Profile() {
         });
 
         // Save logo URL in a separate "logos" directory, keyed by company name
-        await set(ref(database, `logos/${profileData.companyName}`), { logoUrl });
+        await set(ref(database, `logos/${profileData.companyName}`), { logoUrl,approved:false });
 
         setIsEditing(false);
         setLogoFile(null); // Reset the logo file after upload
