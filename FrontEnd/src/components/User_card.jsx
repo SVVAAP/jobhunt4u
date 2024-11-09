@@ -61,29 +61,36 @@ function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
     <div className="relative">
       <div className="bg-white shadow-lg rounded-lg p-4 border text-sm border-gray-200 mb-4">
         <div
-          key={index}
-          className={`grid ${
-            !Candidate ? "grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto_auto]" : "grid-cols-[1fr_1fr_1fr_1fr_auto_auto]"
-          } gap-5 items-center`}>
+         key={index}
+         className={`grid ${
+           !Candidate 
+             ? "grid-cols-[70px_100px_200px_1fr_1fr_1fr_100px_100px_50px]" // Adjust '100px' to your desired width
+             : "grid-cols-[70px_1fr_1fr_1fr_1fr_100px_50px]" // Same here for the candidate layout
+         } gap-2 items-center`}>         
           <div className="w-1/6">
+            <h2 className="text-lg font-semibold">ID</h2>
+            <p>{user.userID
+            }</p>
+          </div>
+          <div className="">
             <h2 className="text-lg font-semibold">Name</h2>
             <p>{user.name}</p>
           </div>
-          <div className="w-1/4">
+          <div className="">
             <h2 className="text-lg font-semibold">Email</h2>
             <p>{user.email}</p>
           </div>
-          <div className="w-1/6">
+          <div className="">
             <h2 className="text-lg font-semibold">Phone</h2>
             <p>{user.phone}</p>
           </div>
           {!Candidate && (
-            <div className="w-1/6">
+            <div className="">
               <h2 className="text-lg font-semibold">Company</h2>
               <p>{user.companyName}</p>
             </div>
           )}
-          <div className="w-1/6">
+          <div className="">
             <h2 className="text-lg font-semibold">Location</h2>
             {typeof user.location === "object" ? (
               <p>
@@ -94,7 +101,7 @@ function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
             )}
           </div>
           {!Candidate && (
-            <div className="w-1/6">
+            <div className="">
               <h2 className="text-lg font-semibold">Status</h2>
               <p>{user.status}</p>
             </div>

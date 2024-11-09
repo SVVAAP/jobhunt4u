@@ -178,6 +178,7 @@ const progressText =
     salaryType,
     workmode,
     jobCategory,
+    jobID,
   } = job;
 
   const handleBack = () => {
@@ -212,7 +213,10 @@ const progressText =
           />
 
           <div className="job-details flex-1">
+            <div className="flex justify-between">
             <h4 className="text-blue-600 mb-2 text-2xl font-bold">{companyName}</h4>
+            <h4  className="text-blue-600 mb-2 text-xl font-medium"> JOB ID : {jobID || ""}</h4>
+            </div>
             <h3 className="text-gray-800 text-xl font-semibold mb-4">{jobTitle}</h3>
 
             <div className="text-gray-600 text-base flex flex-col md:flex-row gap-4 mb-6">

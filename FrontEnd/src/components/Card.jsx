@@ -40,6 +40,7 @@ const Card = ({ data ,setShowAlert }) => {
     salaryType,
     applicants,
     status,
+    jobID,
   } = data;
 
   return (
@@ -48,8 +49,9 @@ const Card = ({ data ,setShowAlert }) => {
       style={{ backgroundImage: `url(${bg})`, backgroundSize: "cover", backgroundPosition: "center" }}
     >
       <div className="absolute top-0.1 flex items-center right-4 md:right-4 z-10" data-aos="fade-down" data-aos-delay="400">
-        {user && !candidate && (
-          <h1 className="font-bold me-5">
+        {user && !candidate ? (
+          <div className="me-5 p-1">
+          <h1 className="font-bold m-0.5">
             Applicants:{" "}
             {applicants ? (
               <span className="text-white ms-2 bg-red-700 rounded py-1 px-2">
@@ -59,6 +61,12 @@ const Card = ({ data ,setShowAlert }) => {
               " none"
             )}
           </h1>
+          <p className="m-0.5 font-medium">Job ID : {jobID}</p>
+          </div>
+        ):(
+          <div>
+             <p className="m-0.5 font-medium">Job ID : {jobID}</p>
+            </div>
         )}
         <RWebShare
           data={{

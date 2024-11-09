@@ -96,7 +96,6 @@ function Profile() {
         // Upload the logo if a new file is selected
         if (logoFile) {
           logoUrl = await uploadLogo();
-          setProfileData((prev) => ({ ...prev, logoUrl }));
         }
 
         // Update user data with logo URL

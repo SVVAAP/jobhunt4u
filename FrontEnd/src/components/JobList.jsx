@@ -54,14 +54,16 @@ function JobList() {
   // Filter jobs based on criteria
   const filteredJobs = jobs.filter((job) => {
     return (
-      (filters.jobTitle === "" || job.jobTitle.toLowerCase().includes(filters.jobTitle.toLowerCase())) &&
-      (filters.companyName === "" || job.companyName.toLowerCase().includes(filters.companyName.toLowerCase())) &&
-      (filters.jobLocation === "" || job.jobLocation.toLowerCase().includes(filters.jobLocation.toLowerCase())) &&
-      (filters.employmentType === "" ||
-        job.employmentType.toLowerCase().includes(filters.employmentType.toLowerCase())) &&
-      (filters.status === "" || job.status.toLowerCase().includes(filters.status.toLowerCase()))
+      (filters.jobTitle === "" || (job.jobTitle && job.jobTitle.toLowerCase().includes(filters.jobTitle.toLowerCase()))) &&
+      (filters.companyName === "" || (job.companyName && job.companyName.toLowerCase().includes(filters.companyName.toLowerCase()))) &&
+      (filters.jobLocation === "" || (job.jobLocation && job.jobLocation.toLowerCase().includes(filters.jobLocation.toLowerCase()))) &&
+      (filters.employmentType === "" || (job.employmentType && job.employmentType.toLowerCase().includes(filters.employmentType.toLowerCase()))) &&
+     // (filters.jobID === "" || (job.jobID && job.jobID.toString().includes(filters.jobID))) &&
+      (filters.status === "" || (job.status && job.status.toLowerCase().includes(filters.status.toLowerCase())))
     );
   });
+  
+  
 
   // Define handleApprove and handleDecline functions
   const handleApprove = (id,jobTitle,uid) => {
@@ -121,7 +123,7 @@ function JobList() {
           </button>
         </div>
 
-        <div className="filter-container grid grid-cols-1 md:grid-cols-4 gap-4 ">
+        <div className="filter-container grid grid-cols-1 md:grid-cols-5 gap-4 ">
           <input
             type="text"
             name="jobTitle"
@@ -152,6 +154,14 @@ function JobList() {
             value={filters.employmentType}
             onChange={handleFilterChange}
             placeholder="Filter by Employment Type"
+            className="p-2 border rounded"
+          />
+            <input
+            type="text"
+            name="employmentiD"
+            value={filters.jobID}
+            onChange={handleFilterChange}
+            placeholder="Filter by JOB ID"
             className="p-2 border rounded"
           />
         </div>

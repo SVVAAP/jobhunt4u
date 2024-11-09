@@ -18,6 +18,7 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
   useEffect(() => {
     if (job) {
       setFormData({
+        jobID:job.jobID || '',
         jobTitle: job.jobTitle || '',
         companyName: job.companyName || '',
         minPrice: job.minPrice || '',
@@ -90,6 +91,18 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
                   name="jobTitle"
                   id="jobTitle"
                   value={formData.jobTitle}
+                  onChange={handleChange}
+                  className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700">Job ID</label>
+                <input
+                  type="text"
+                  name="jobID"
+                  id="jobID"
+                  value={formData.jobID}
                   onChange={handleChange}
                   className="m-1 p-1 block w-full border-gray-300 rounded-sm shadow-sm"
                 />
@@ -239,7 +252,7 @@ const JobEditModal = ({ job, isOpen, onClose, onSave }) => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
+                className="px-4 py-2 text-sm text-white bg-sky-600 rounded hover:bg-blue-600"
               >
                 Save Changes
               </button>

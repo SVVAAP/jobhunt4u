@@ -9,7 +9,7 @@ import { FaRubleSign, FaRupeeSign } from 'react-icons/fa';
 
 const Card = ({ data, handleApprove, handleDecline }) => {
   const {user}=useJobs();
-  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description, status ,uid } = data;
+  const { id, companyLogo, jobTitle, companyName, jobLocation, employmentType, minPrice, maxPrice, postingDate, description, status ,uid ,jobID } = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const deleteJob = async () => {
@@ -53,6 +53,7 @@ const Card = ({ data, handleApprove, handleDecline }) => {
           <div className="card-details">
             <h4 className="text-primary mb-1">{companyName}</h4>
             <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
+            <h3 className="text-base font-semibold mb-2"> ID : {jobID}</h3>
             <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
               <span className="flex items-center gap-2"><FiMapPin /> {jobLocation}</span>
               <span className="flex items-center gap-2"><FiClock /> {employmentType}</span>
