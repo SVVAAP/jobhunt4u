@@ -14,8 +14,10 @@ function Candidate() {
           .filter(([_, user]) => user.userType === "candidate")
           .map(([id, user]) => ({ id, ...user })); // Ensure id is correctly added to the user object
         setCandidates(candidatesList.reverse());
+       // console.log(candidatesList.length);
       } else {
         setCandidates([]);
+        
       }
   }, []);
 });

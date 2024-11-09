@@ -8,7 +8,7 @@ import { database } from "../firebase";
 function UserCard({ user, index, Candidate, onDelete, onApproveDecline }) {
   const [showJobs, setShowJobs] = useState(false);
   const { jobs } = useJobs();
-  console.log(user.id);
+  //console.log(user.id);
 
   // Get jobs applied by the user
   const applied =
