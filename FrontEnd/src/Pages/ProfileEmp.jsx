@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie'; // Import the js-cookie library
-import { useJobs } from '../context/jobsContext';
-import { signOut } from 'firebase/auth';
-import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from '../firebase';
-import { useNavigate } from 'react-router-dom';
-import Card from '../components/Card2';
-import { HiPencil, HiDotsVertical } from 'react-icons/hi';
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie"; // Import the js-cookie library
+import { useJobs } from "../context/jobsContext";
+import { signOut } from "firebase/auth";
+import { auth, database, storage, ref, set, onValue, storageRef, uploadBytes, getDownloadURL } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import Card from "../components/Card2";
+import { HiPencil, HiDotsVertical } from "react-icons/hi";
 import Navbar from "../components/Navbar";
 
 function Profile() {
-  const { user, jobs, isLoading ,isLoggedIn } = useJobs();
+  const { user, jobs, isLoading, isLoggedIn } = useJobs();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [fileError, setFileError] = useState(null);
   const [profileData, setProfileData] = useState({
-    companyName: '',
-    email: '',
-    phone: '',
-    website: '',
-    address: '',
-    logoUrl: '', // Add logo URL to profile data
+    companyName: "",
+    email: "",
+    phone: "",
+    website: "",
+    address: "",
+    logoUrl: "", // Add logo URL to profile data
   });
   const [postedJobs, setPostedJobs] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -29,36 +30,59 @@ function Profile() {
   useEffect(() => {
     if (user) {
       setProfileData({
-        companyName: user.companyName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        website: user.website || '',
-        address: user.address || '',
-        logoUrl: user.logoUrl || '', // Load logo URL if available
-        userType: user.userType || '',
-        name: user.name || '',
+        companyName: user.companyName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        website: user.website || "",
+        address: user.address || "",
+        logoUrl: user.logoUrl || "", // Load logo URL if available
+        userType: user.userType || "",
+        name: user.name || "",
       });
 
       // Fetch jobs posted by the employer
-      const postedJobs = jobs.filter(job => job.postedBy === user.email);
+      const postedJobs = jobs.filter((job) => job.postedBy === user.email);
       setPostedJobs(postedJobs);
 
       // Check if the success message cookie is set
-      const messageShown = Cookies.get('accountCreatedMessageShown');
+      const messageShown = Cookies.get("accountCreatedMessageShown");
       if (!messageShown) {
         setShowSuccessMessage(true);
         // Set a cookie so the message is not shown again
-        Cookies.set('accountCreatedMessageShown', 'true', { expires: 365 }); // Cookie expires in 1 year
+        Cookies.set("accountCreatedMessageShown", "true", { expires: 365 }); // Cookie expires in 1 year
       }
     }
   }, [user, jobs]);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        setFileError("Invalid file type. Only JPG, PNG, and PDF files are allowed.");
+        e.target.value = null;
+        return;
+      }
+
+      if (file.size > maxSize) {
+        setFileError("File size exceeds 2MB. Please upload a smaller file.");
+        e.target.value = null;
+        return;
+      }
+
+      setFileError(null);
+      setLogoFile(file); // Set logo file here
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/'); // Redirect to the home page after logout
+      navigate("/"); // Redirect to the home page after logout
     } catch (error) {
-      console.error('Error signing out: ', error);
+      console.error("Error signing out: ", error);
     }
   };
 
@@ -74,57 +98,41 @@ function Profile() {
     }));
   };
 
-  const handleLogoChange = (e) => {
-    setLogoFile(e.target.files[0]); // Set the selected file to the logoFile state
-  };
-
   const uploadLogo = async () => {
     if (!logoFile) return null;
 
-    const storageRef = ref(storage, `companyLogos/${profileData.companyName}-${logoFile.name}`);
-    await uploadBytes(storageRef, logoFile);
-    return await getDownloadURL(storageRef);
+    const logoStorageRef = storageRef(storage, `companyLogos/${profileData.companyName}-${logoFile.name}`);
+    await uploadBytes(logoStorageRef, logoFile);
+    return await getDownloadURL(logoStorageRef);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = auth.currentUser;
-      if (user) {
+      if (auth.currentUser) {
         let logoUrl = profileData.logoUrl;
 
-        // Upload the logo if a new file is selected
         if (logoFile) {
           logoUrl = await uploadLogo();
         }
 
-        // Update user data with logo URL
-        await set(ref(database, `users/${auth.currentUser.uid}`), {
-          companyName: profileData.companyName,
-          email: profileData.email,
-          phone: profileData.phone,
-          website: profileData.website,
-          address: profileData.address,
-          logoUrl: logoUrl || "", // Include logo URL in data
-          name: profileData.name,
-          userType: profileData.userType,
-          approved: user.approved || "",
-        });
+        const updatedProfileData = {
+          ...profileData,
+          logoUrl: logoUrl || "",
+        };
 
-        // Save logo URL in a separate "logos" directory, keyed by company name
-        await set(ref(database, `logos/${profileData.companyName}`), { logoUrl,approved:false });
+        await set(ref(database, `users/${auth.currentUser.uid}`), updatedProfileData);
 
+        await set(ref(database, `logos/${profileData.companyName}`), { logoUrl, approved: false });
+
+        setProfileData(updatedProfileData);
         setIsEditing(false);
-        setLogoFile(null); // Reset the logo file after upload
+        setLogoFile(null);
       }
     } catch (error) {
       console.error('Error updating user details: ', error);
       setError('Failed to update user details.');
     }
-  };
-
-  const handleContactAdmin = () => {
-    alert("Contact Admin functionality not yet implemented.");
   };
 
   const toggleDropdown = () => {
@@ -144,15 +152,11 @@ function Profile() {
         <div className="container flex justify-between content-center text-center m-auto p-4">
           <button
             className="flex items-center px-2 mx-4 bg-slate-100/80 transition-transform hover:scale-105 text-red-600 ring-1 ring-red-600 rounded-md font-extrabold hover:bg-red-600 hover:text-white focus:outline-none"
-            onClick={() => navigate(-1)}
-          >
+            onClick={() => navigate(-1)}>
             <i className="fa-solid fa-arrow-left-long mr-2"></i>
             Back
           </button>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
+          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
             <i className="fa-solid fa-right-from-bracket"></i> Logout
           </button>
         </div>
@@ -161,16 +165,13 @@ function Profile() {
             <button onClick={toggleDropdown} className={`text-blue-500 cursor-pointer text-2xl mr-4`}>
               <i
                 className={`fa-solid fa-sort-down transition-transform duration-500 ${
-                  showDropdown ? 'rotate-180' : ''
-                }`}
-              ></i>
+                  showDropdown ? "rotate-180" : ""
+                }`}></i>
             </button>
           </div>
 
           <h1 className="text-2xl font-bold mb-4">Welcome, {profileData.companyName}!</h1>
-          <p className="text-lg mb-4">
-            Manage your job postings and company profile here.
-          </p>
+          <p className="text-lg mb-4">Manage your job postings and company profile here.</p>
 
           {showDropdown && (
             <form onSubmit={handleSubmit} className="space-y-4 m-4">
@@ -181,9 +182,7 @@ function Profile() {
                     alt="Success"
                     className="w-8 h-8 mr-2"
                   />
-                  <span className="text-green-700 text-lg font-medium">
-                    Your account is created successfully.
-                  </span>
+                  <span className="text-green-700 text-lg font-medium">Your account is created successfully.</span>
                   <span className="text-gray-700 ml-2">Let’s get started!</span>
                 </div>
               )}
@@ -205,7 +204,9 @@ function Profile() {
                     name="companyName"
                     value={profileData.companyName}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`formInput p-2 border rounded w-full ${
+                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                    }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -217,7 +218,9 @@ function Profile() {
                     name="email"
                     value={profileData.email}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`formInput p-2 border rounded w-full ${
+                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                    }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -229,7 +232,9 @@ function Profile() {
                     name="phone"
                     value={profileData.phone}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`formInput p-2 border rounded w-full ${
+                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                    }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -241,7 +246,9 @@ function Profile() {
                     name="website"
                     value={profileData.website}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`formInput p-2 border rounded w-full ${
+                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                    }`}
                     disabled={!isEditing}
                   />
                 </div>
@@ -253,12 +260,14 @@ function Profile() {
                     name="address"
                     value={profileData.address}
                     onChange={handleChange}
-                    className={`formInput p-2 border rounded w-full ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`formInput p-2 border rounded w-full ${
+                      !isEditing ? "bg-gray-200 cursor-not-allowed" : ""
+                    }`}
                     disabled={!isEditing}
                   />
                 </div>
 
-                <div className="formField">
+                {/* <div className="formField">
                   <label className="block text-gray-700 mb-1">Upload Logo</label>
                   <input
                     type="file"
@@ -266,14 +275,37 @@ function Profile() {
                     className="formInput p-2 border rounded w-full"
                     disabled={!isEditing}
                   />
+                </div> */}
+
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">Upload Logo</label>
+                  {isEditing ? (
+                    <>
+                      <p className="text-sm p-2">Only JPG, PNG, and PDF files are allowed.</p>
+                      <input
+                        type="file"
+                        name="logo"
+                        onChange={handleFileChange}
+                        className="formInput p-2 border rounded w-full"
+                      />
+                      {fileError && <p className="text-red-500 font-semibold mt-2">{fileError}</p>}
+                    </>
+                  ) : profileData.logoUrl ? (
+                    <a
+                      href={profileData.logoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 mt-2 block">
+                      <b>Your Company Logo - [click here to view]</b>
+                    </a>
+                  ) : (
+                    <p className="text-red-500 font-semibold mt-2">Please upload your Company Logo</p>
+                  )}
                 </div>
 
                 <div className="flex justify-between">
                   {isEditing && (
-                    <button
-                      type="submit"
-                      className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                    >
+                    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
                       Save Changes
                     </button>
                   )}

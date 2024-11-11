@@ -7,6 +7,7 @@ import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import TextStyle from "@tiptap/extension-text-style"; // Import TextStyle extension
+import LogosEdit from "../components/LogoEdit";
 
 function EditPage() {
   const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList, sections, setSections } = useJobs();
@@ -23,6 +24,7 @@ function EditPage() {
   const [showTerms, setShowTerms] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [showCat, setShowCat] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -378,9 +380,10 @@ function EditPage() {
                       </button>
                     </div>
                   ))}
-                  <div className="flex justify-center w-3/12 p-1 my-2 mx-auto text-3xl bg-white rounded-lg cursor-cell"
-                     onClick={addSection} >
-                      +
+                  <div
+                    className="flex justify-center w-3/12 p-1 my-2 mx-auto text-3xl bg-white rounded-lg cursor-cell"
+                    onClick={addSection}>
+                    +
                   </div>
                 </div>
               )}
@@ -545,6 +548,26 @@ function EditPage() {
                   </div>
                 </div>
               )}
+            </div>
+            <div className="mt-8 relative ring-2 ring-white p-2 rounded-lg">
+              <h3 className="text-xl text-white mb-2">View Logos</h3>
+              <div className="absolute text-center top-1 right-4 flex items-center space-x-2">
+                {/* droupdown icon */}
+                <button
+                  onClick={() => {
+                    setShowLogo(!showLogo);
+                  }}
+                  className={`text-white cursor-pointer  text-2xl mr-4 `}>
+                  <i
+                    className={`fa-solid fa-sort-down transition-transform duration-500 ${
+                      showLogo ? "rotate-180" : ""
+                    }`}></i>
+                </button>
+              </div>
+              {showLogo &&
+              <div>
+                <LogosEdit />
+              </div>}
             </div>
           </div>
         </div>
