@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CountUp from "react-countup";
 import Othersevice from "../components/OtherServices";
+import CompanyWeWorkWith from "../components/CompanyWeWorkWith";
 import {
   AcademicCapIcon,
   ComputerDesktopIcon,
@@ -135,6 +136,9 @@ const About = () => {
       </div>
       <div>
         <Othersevice />
+      </div>
+      <div>
+        <CompanyWeWorkWith />
       </div>
 
       <div className="mt-10">
