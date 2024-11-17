@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useJobs } from "../context/jobsContext";
 import Carousel from "./Carousel";
+import HorizontalLoop from "./Horizontal";
 
 const About = () => {
   const [stats, setStats] = useState([
@@ -139,6 +140,7 @@ const About = () => {
       </div>
       <div>
         <CompanyWeWorkWith />
+        {/* <HorizontalLoop/> */}
       </div>
 
       <div className="mt-10">

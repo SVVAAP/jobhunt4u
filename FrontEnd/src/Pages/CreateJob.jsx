@@ -7,6 +7,7 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage
 import { useNavigate } from "react-router-dom";
 import { useJobs } from "../context/jobsContext";
 import { getAuth } from "firebase/auth";
+import Loading from "../components/Loading";
 
 const CreateJob = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -157,7 +158,7 @@ const CreateJob = () => {
     { value: "writing skills", label: "Writing Skills" },
   ];
   if (isLoading) {
-    return <div>Loading....</div>;
+    return <Loading/>;
   } else {
     if (user && user.status && user.status === "approved") {
       return (

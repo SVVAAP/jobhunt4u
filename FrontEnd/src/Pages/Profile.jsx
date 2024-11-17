@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import { HiPencil } from "react-icons/hi";
 import Navbar from "../components/Navbar";
+import Loading from "../components/Loading";
 
 
 function Profile() {
@@ -140,7 +141,7 @@ function Profile() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
   else if(!isLoggedIn){
     return <div>Not logged in</div>;
