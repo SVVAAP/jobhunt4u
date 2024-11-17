@@ -8,6 +8,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import TextStyle from "@tiptap/extension-text-style"; // Import TextStyle extension
 import LogosEdit from "../components/LogoEdit";
+import Loading from "../components/Loading";
 
 function EditPage() {
   const { isLoading, aboutContent, setAboutContent, categoryList, setCategoryList, sections, setSections } = useJobs();
@@ -325,7 +326,7 @@ function EditPage() {
     <div className="m-3 rounded-lg p-5 bg-sky-800">
       <h2 className="text-2xl text-white font-bold mb-4">Edit About Section, Terms & Privacy Policy</h2>
       {isLoading ? (
-        <p>Loading...</p>
+        <Loading/>
       ) : (
         <div className="flex justify-items-center">
           <div className="bg-sky-600 w-full p-8 rounded-lg">

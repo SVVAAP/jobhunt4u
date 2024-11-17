@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, get } from "firebase/database";
 import { database } from "../firebase";
+import Loading from "./Loading";
 
 function PrivacyPolicyPage() {
   const [privacyPolicyContent, setPrivacyPolicyContent] = useState("");
@@ -35,7 +36,7 @@ function PrivacyPolicyPage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
       {loading ? (
-        <p>Loading...</p>
+        <Loading/>
       ) : (
         <div
           className="prose max-w-full"

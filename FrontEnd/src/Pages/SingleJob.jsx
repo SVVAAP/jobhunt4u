@@ -10,6 +10,7 @@ import card_image from "../assets/card_back.png";
 import background from "../assets/singlejob_background.png";
 import card_bg from "../assets/card_back2.png";
 import TermsAndConditions from "../components/TermsAndConditions";
+import Loading from "../components/Loading";
 
 const placeholderLogo = "https://cdn-icons-png.flaticon.com/128/4168/4168507.png";
 
@@ -93,11 +94,11 @@ const [applied, setApplied] = useState(false);
   
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (!job) {
-    return <div>Loading.....</div>;
+    return <Loading/>;
   }
 
   const applyJob = () => {
