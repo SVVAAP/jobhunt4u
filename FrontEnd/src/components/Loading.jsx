@@ -1,10 +1,10 @@
 import React from 'react';
-import { FourSquare } from 'react-loading-indicators'; 
+import { Atom } from 'react-loading-indicators'; 
 
 function Loading() {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white">
-      <FourSquare color="#42b6d4" size="large" />
+      <Atom color="#32cd32" size="medium" text="" textColor="" />
     </div>
   );
 }
