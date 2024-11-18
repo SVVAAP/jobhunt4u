@@ -99,7 +99,7 @@ function Applicant_card({ job, downloadExcel }) {
               {job.applicants.map((applicant, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 items-center bg-white p-2">
+                  className="grid grid-cols-[40px_2px_1fr_2px_1fr_2px_1fr_2px_1fr_2px_1fr_1fr] gap-2 ring-2 rounded my-2 items-center bg-white p-2">
                   <p className="text-center">{index + 1}</p>
                   <div className="w-full h-full bg-green-700 rounded-xl"></div>
                   <p>Name: {applicant?.name || "N/A"}</p>
@@ -118,7 +118,9 @@ function Applicant_card({ job, downloadExcel }) {
                       View
                     </a>
                   </p>
-                  <div className="flex space-x-3 justify-around">
+                  <div className="w-full h-full bg-green-700 rounded-xl"></div>
+                  <p>Date: {applicant?.date || "N/A"}</p>
+                  <div className="flex space-x-3 justify-start">
                     {applicant.applicationStatus === "pending" ? (
                       <div>
                         {" "}
