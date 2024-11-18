@@ -90,7 +90,7 @@ const Navbar = () => {
               <Link to="/login" className="py-2 px-5 border rounded flex items-center gap-2">
                 <i className="fa-solid fa-right-to-bracket"></i> Log in
               </Link>
-              <Link to="/signup" className="bg-blue py-2 px-5 text-white rounded flex items-center gap-2">
+              <Link to="/signup" className="bg-sky-600 py-2 text-white px-5 border rounded flex items-center gap-2">
                 <i className="fa-solid fa-user-plus"></i> Sign up
               </Link>
             </div>
@@ -127,12 +127,6 @@ const Navbar = () => {
                   <i className="fa-solid fa-user"></i> <span>Profile</span>
                 </Link>
               </li>):(<></>) }
-              {/* <li className="text-white py-2 flex items-center gap-2">
-                <button onClick={handleLogout} className="flex items-center gap-2">
-                  <i className="fa-solid fa-right-from-bracket"></i> Log out
-                </button>
-              </li> */}
-             
             </>
           ) : (
             <>
@@ -143,7 +137,7 @@ const Navbar = () => {
               </li>
               <li className=" py-2 flex items-center gap-2">
                 <Link to="/signup" onClick={handleMenuToggler} className="flex items-center gap-2">
-                  <i className="fa-solid fa-user-plus"></i> Sign up
+                  <i className="fa-solid text-black fa-user-plus"></i> Sign up
                 </Link>
               </li>
             </>

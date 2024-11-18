@@ -91,7 +91,15 @@ const [applied, setApplied] = useState(false);
   setApplied(isLoggedIn && user && user.appliedJobs && user.appliedJobs.includes(jobId))
 }, [jobId, allJobs, auth.currentUser,user,isLoggedIn,applicationStatus]);
 
-  
+function getCurrentDate(key) {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0'); // Ensure 2 digits
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = now.getFullYear();
+
+  const formattedDate = `${day}${month}${year}`; // Combine as DDMMYYYY
+  return formattedDate;
+}
 
   if (isLoading) {
     return <Loading/>;
@@ -124,6 +132,7 @@ const [applied, setApplied] = useState(false);
               ...userWithoutTypeAndAppliedJobs,
               uid: uid, // Add uid here
               applicationStatus: "pending",
+              date:getCurrentDate(),
             };
   
             // Use push to store the new applicant with a unique key

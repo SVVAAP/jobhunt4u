@@ -5,6 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, database } from '../firebase';
 import { ref, onValue } from "firebase/database";
 import Navbar from './Navbar';
+import Loading from './Loading';
 
 const PrivateRoute = ({ element: Component }) => {
   const [user, loading] = useAuthState(auth);
@@ -34,7 +35,7 @@ const PrivateRoute = ({ element: Component }) => {
   }, [user]);
 
   if (loading || isLoading) {
-    return <div className='flex justify-center'>Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {
