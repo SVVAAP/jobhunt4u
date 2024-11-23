@@ -368,7 +368,7 @@ const CreateJob = () => {
                 />
               </div>
               <div>
-                <button type="submit" className="create-job-btn bg-blue text-white px-4 py-2 rounded hover:bg-black">
+                <button type="submit" className="create-job-btn bg-sky-400 text-white px-4 py-2 rounded hover:bg-black">
                   Create Job
                 </button>
               </div>
@@ -381,8 +381,8 @@ const CreateJob = () => {
                     Your job has been posted. Our team will review it, and it will be updated on the portal within 24
                     hours.
                   </p>
-                  <div className="flex justify-end">
-                    <button onClick={handleClosePopup} className="bg-sky-500 text-white px-4 py-2 rounded hover:bg-blue">
+                  <div className="flex justify-center">
+                    <button onClick={handleClosePopup} className="bg-sky-800 text-white px-4 py-2 rounded hover:bg-blue">
                       Continue
                     </button>
                   </div>
