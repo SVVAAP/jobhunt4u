@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useJobs } from "../context/jobsContext";
 import * as XLSX from "xlsx"; // Update this line
 import Applicant_card from "./Applicant_card";
+import Loading from "./Loading";
 
 const Applicants = () => {
   const { jobs } = useJobs();
@@ -72,7 +73,7 @@ const Applicants = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (jobs.length === 0) {

@@ -157,7 +157,7 @@ const CreateJob = () => {
     { value: "financial literacy", label: "Financial Literacy" },
     { value: "writing skills", label: "Writing Skills" },
   ];
-  if (isLoading) {
+  if (isLoading && !user) {
     return <Loading/>;
   } else {
     if (user && user.status && user.status === "approved") {
@@ -382,7 +382,7 @@ const CreateJob = () => {
                     hours.
                   </p>
                   <div className="flex justify-end">
-                    <button onClick={handleClosePopup} className="bg-blue text-white px-4 py-2 rounded hover:bg-blue">
+                    <button onClick={handleClosePopup} className="bg-sky-500 text-white px-4 py-2 rounded hover:bg-blue">
                       Continue
                     </button>
                   </div>
@@ -392,8 +392,7 @@ const CreateJob = () => {
           </div>
         </div>
       );
-    } else {
-      if (user && user.status === "pending") {
+    } else if (user && user.status === "pending") {
         return (
           <div className="m-5 text-center">
             <h1 className="text-red text-2xl text-red-600 font-bold animate-pulse">
@@ -401,7 +400,7 @@ const CreateJob = () => {
             </h1>
           </div>
         );
-      } else {
+      } else if (user && user.status === "declined") {
         return (
           <div className="m-5 text-center">
             <h1 className="text-red text-2xl text-red-600  font-bold ">
@@ -410,8 +409,9 @@ const CreateJob = () => {
             </h1>
           </div>
         );
+      } else{
+        return <Loading/>;
       }
-    }
   }
 };
 

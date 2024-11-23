@@ -3,10 +3,13 @@ import { ref, onValue,update } from "firebase/database";
 import { getAuth } from "firebase/auth"; // Import required functions from Firebase Auth
 import { database } from "../firebase";
 import User_card from "./User_card";
+import { useJobs } from "../context/jobsContext";
+import Loading from "./Loading";
 
 function EmployeerDetails() {
   const [employers, setEmployers] = useState([]);
   const auth = getAuth(); // Get the Firebase Authentication instance
+  const {isLoading}=useJobs();
 
   useEffect(() => {
     const userRef = ref(database, "users");
@@ -66,6 +69,10 @@ function EmployeerDetails() {
         console.error("Error updating employer status: ", error);
       });
   };
+
+  if(isLoading){
+    return <Loading/>;
+  }
 
   return (
     <div className="p-4">
