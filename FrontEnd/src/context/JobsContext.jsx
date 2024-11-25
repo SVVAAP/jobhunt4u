@@ -19,6 +19,7 @@ export function JobsProvider({ children }) {
   const [aboutContent, setAboutContent] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [sections, setSections] = useState([{ heading: "", paragraph: "" }]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setIsLoading(true);
@@ -132,8 +133,17 @@ const [contactInfo, setContactInfo] = useState({
 
   const mark = inboxMessages.some((message) => !message.seen);
 
+  const calculatePageRange = () => {
+    const startIndex = (currentPage - 1) * 6;
+    const endIndex = startIndex + 6;
+    return { startIndex, endIndex };
+  };
+
+  const { startIndex, endIndex } = calculatePageRange();
+
   return (
-    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,setAboutContent ,contactInfo, allJobs ,categoryList, setCategoryList,sections, setSections}}>
+    <JobContext.Provider value={{ jobs, user, uid, isLoggedIn, isLoading, userType, inboxMessages, mark ,aboutContent,
+    setAboutContent ,contactInfo, allJobs ,categoryList, setCategoryList,sections, setSections,currentPage,setCurrentPage ,startIndex,endIndex}}>
       {children}
     </JobContext.Provider>
   );

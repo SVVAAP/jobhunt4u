@@ -9,14 +9,13 @@ import Sidebar from "../Sidebar/Sidebar";
 import { useJobs } from "../context/jobsContext";
 
 const Home = () => {
-  const { jobs, isLoading } = useJobs(); // Correctly invoke useJobs
+  const { jobs, isLoading ,currentPage,setCurrentPage,startIndex,endIndex } = useJobs(); // Correctly invoke useJobs
   const [selectedCategory, setSelectedCategory] = useState({});
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
   const [totalJobs, setTotalJobs] = useState(0);
   const [query, setQuery] = useState("");
   const [refreshSidebar, setRefreshSidebar] = useState(false);
+  const [isFilterApplied, setIsFilterApplied] = useState(false); // New state
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -28,12 +27,14 @@ const Home = () => {
       ...prevSelected,
       [name]: value,
     }));
+    setIsFilterApplied(true); // Set filter applied
   };
 
   const clearFilters = () => {
     setSelectedCategory({});
     setQuery("");
     setRefreshSidebar((prev) => !prev); // Toggle the state to force re-render
+    setIsFilterApplied(false);
   };
 
   const handleClick = (event) => {
@@ -42,6 +43,7 @@ const Home = () => {
       ...prevSelected,
       salaryType: value,
     }));
+    setIsFilterApplied(true); // Set filter applied
   };
 
   useEffect(() => {
@@ -116,20 +118,16 @@ const Home = () => {
 
       setFilteredJobs(filtered);
       setTotalJobs(filtered.length); // Update totalJobs based on filtered data
-      setCurrentPage(1); // Reset to the first page
+      if (isFilterApplied) {
+        setCurrentPage(1);
+      }
     };
 
     applyFilters();
   }, [jobs, selectedCategory, query]);
 
-  const calculatePageRange = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return { startIndex, endIndex };
-  };
-
   const nextPage = () => {
-    if (currentPage < Math.ceil(filteredJobs.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredJobs.length / 6)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -139,8 +137,6 @@ const Home = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-
-  const { startIndex, endIndex } = calculatePageRange();
   const paginatedJobs = filteredJobs.slice(startIndex, endIndex);
 
   return (
@@ -175,7 +171,7 @@ const Home = () => {
                 <p>No data found</p>
               </>
             )}
-            {totalJobs > itemsPerPage && (
+            {totalJobs > 6 && (
               <div className="flex justify-center mt-4 space-x-8 text-white">
                 <button
                   onClick={prevPage}
@@ -186,13 +182,13 @@ const Home = () => {
                 </button>
                 <span className="mx-2">
                   Page {currentPage} of{" "}
-                  {Math.ceil(filteredJobs.length / itemsPerPage)}
+                  {Math.ceil(filteredJobs.length / 6)}
                 </span>
                 <button
                   onClick={nextPage}
                   disabled={
                     currentPage ===
-                    Math.ceil(filteredJobs.length / itemsPerPage)
+                    Math.ceil(filteredJobs.length / 6)
                   }
                   className="hover:underline"
                 >
