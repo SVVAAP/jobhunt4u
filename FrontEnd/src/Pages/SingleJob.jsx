@@ -55,9 +55,8 @@ const SuccessPopup = ({ message, onClose }) => (
 );
 
 const SingleJob = () => {
-  const { allJobs, user, uid, isLoggedIn, userType } = useJobs();
+  const { allJobs, user, uid, isLoggedIn, userType ,isLoading} = useJobs();
   const { jobId } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showConditions, setShowConditions] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
