@@ -125,7 +125,7 @@ function LogosEdit() {
             <div>
               <img src={logo.logoUrl} alt="Company Logo" className="w-50 h-50 object-cover mx-auto rounded" />
               <p className="font-semibold text-white m-1">Company : {logo.id}</p>
-              <p className="font-semibold text-white m-1"> Visible : {logo.approved.toString().toUpperCase()}</p>
+              <p className="font-semibold text-white m-1"> Visible : {logo.approved ?logo.approved.toString().toUpperCase():"FALSE"}</p>
             </div>
             <div className="space-x-2 flex justify-between ">
               <button

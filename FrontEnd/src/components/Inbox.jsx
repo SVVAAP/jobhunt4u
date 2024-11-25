@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { getDatabase, ref, update, remove } from "firebase/database";
 import { useJobs } from "../context/jobsContext";
 import MessageCard from "./MessageCard";
+import { useMediaQuery } from 'react-responsive';
 
 const Inbox = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { uid, inboxMessages, mark } = useJobs();
   const inboxRef = useRef(null);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const toggleInbox = () => {
     setIsVisible(!isVisible);
@@ -48,11 +50,11 @@ const Inbox = () => {
 
   return (
     <>
-      <div className="relative inline-block">
+      <div className="relative flex ">
         <i
-          className="text-2xl text-primary mr-5 fa-solid fa-envelope"
+          className= {`${isMobile? "text-base":"text-2xl"} text-primary ${isMobile ? "mr-1" : "mr-5"} fa-solid fa-envelope`}
           onClick={toggleInbox}
-        ></i>
+        ></i> {isMobile && <p className="text-base ms-1 flex items-center gap-2">Inbox</p>}
         {mark && (
           <div className="absolute top-0 right-0 transform -translate-x-4 translate-y-0.5 w-3 h-3 bg-red-600 rounded-full"></div>
         )}
@@ -63,7 +65,7 @@ const Inbox = () => {
         className={`fixed top-0 right-0 z-20 h-full bg-gray-800 text-white shadow-lg transition-transform transform duration-500 ${
           isVisible ? "translate-x-0" : "translate-x-full"
         }`}
-        style={{ width: "25%", overflowY: "hidden" }}
+        style={{ width: `${isMobile ?"75%":"25%"}`, overflowY: "hidden" }}
       >
         <div className="p-4 relative">
           <button className="absolute top-4 right-12 text-white text-xl" onClick={deleteAllMessages}>

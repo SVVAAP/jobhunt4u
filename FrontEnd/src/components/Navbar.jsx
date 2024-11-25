@@ -109,11 +109,11 @@ const Navbar = () => {
       <div className={`px-4 bg-blend-screen py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
         <ul>
           {navItems.map(({ link, title, icon }) => (
-            <li key={link} className="text-base text-white py-2 flex items-center gap-2">
+            <li key={link} className="text-base py-2 flex items-center gap-2">
               <NavLink
                 onClick={() => handleLinkClick(link)}
                 to={link}
-                className={({ isActive }) => (isActive ? "active" : "")}
+                className={({ isActive }) => (isActive ? "active" : "text-black")}
               >
                 {icon} {title}
               </NavLink>
@@ -121,6 +121,7 @@ const Navbar = () => {
           ))}
           {isLoggedIn ? (
             <>
+             <Inbox />
               {location.pathname !== "/profile"  ?
               (<li className=" py-2 flex justify-normal items-center gap-2">
                 <Link to={isEmployer ? "/profile-emp" : "/profile"}>

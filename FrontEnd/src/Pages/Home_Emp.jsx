@@ -175,7 +175,7 @@ const Home_Emp = () => {
         <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
           <Link
           to="/post-job"
-            className="rounded-md text-white bg-blue px-3.5 py-2.5 text-sm  shadow-sm hover:bg-gray-100 hover:text-sky-900 font-bold  focus-visible:outline-2 focus-visible:outline-offset-2 "
+            className="rounded-md text-white bg-sky-700 px-3.5 py-2.5 text-sm  shadow-sm hover:bg-gray-100 hover:text-sky-900 font-bold  focus-visible:outline-2 focus-visible:outline-offset-2 "
            onClick={window.top}>
             Post a Job
           </Link>
