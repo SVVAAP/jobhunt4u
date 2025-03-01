@@ -112,7 +112,7 @@ const Signup = () => {
       to_email: email,
     };
 
-    emailjs.send("service_w9shb6j", userType==="candidate"?"template_9b9fk37":"template_gv8hq77", templateParams, "MZ-qy3k1Y1ct2suVP").then(
+    emailjs.send("service_6iar33a", userType==="candidate"?"template_be150gv":"template_gv8hq77", templateParams, "nq0XIkYT4cuoYUKQI").then(
       (result) => {
         console.log("OTP sent:", result.text);
       },
