@@ -112,7 +112,7 @@ const Signup = () => {
       to_email: email,
     };
 
-    emailjs.send("service_6iar33a", userType==="candidate"?"template_be150gv":"template_gv8hq77", templateParams, "nq0XIkYT4cuoYUKQI").then(
+    emailjs.send("service_6iar33a", userType==="candidate"?"template_be150gv":"template_be150gv", templateParams, "nq0XIkYT4cuoYUKQI").then(
       (result) => {
         console.log("OTP sent:", result.text);
       },
@@ -428,7 +428,7 @@ const Signup = () => {
               <div className="items-center text-center">
                 <button
                   type="submit"
-                  className="bg-blue hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-200 ">
+                  className=" bg-blue-600  hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-md transition duration-200 ">
                   Signup
                 </button>
               </div>
