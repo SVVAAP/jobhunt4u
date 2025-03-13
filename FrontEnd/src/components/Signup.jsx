@@ -10,12 +10,11 @@ import TermsAndConditions from "./TermsAndConditions";
 import { stateObject } from "../assets/Country+State+District-City-Data"; // Import the country-state-district data
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(null);
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [userType, setUserType] = useState("");
-  const [error, setError] = useState(null);
   const [companyName, setCompanyName] = useState("");
   const [resume, setResume] = useState(null);
   const [logo, setLogo] = useState(false);
@@ -117,7 +116,7 @@ const Signup = () => {
         console.log("OTP sent:", result.text);
       },
       (error) => {
-        setError("Failed to send OTP");
+        alert("Failed to send OTP");
         console.error("Error sending OTP:", error.text);
       }
     );
@@ -125,16 +124,16 @@ const Signup = () => {
 
   const openOtp = async () => {
     try {
+      if(!email) throw new Error("Please Enter Email");
       const generatedOtp = generateOtp();
       setSentOtp(generatedOtp); // Save OTP for later comparison
       sendOtpEmail(generatedOtp);
       setShowOtp(true);
-      setError(null);
+      //setError(null);
       setTimer(180); // Set timer for 3 minutes (180 seconds)
       alert("OTP Sent Successfully");
     } catch (error) {
-      setError(error.message);
-      console.error("Error sending OTP:", error);
+     alert(error.message);
     }
   };
 
@@ -145,7 +144,7 @@ const Signup = () => {
       alert("Email Verified Successfully!");
       setOtp(""); // Clear OTP input field
     } else {
-      setError("Invalid OTP");
+      alert("Invalid OTP");
     }
   };
 
@@ -153,7 +152,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (!termsAccepted) {
-      setError("You must accept the Terms and Conditions.");
+      alert("You must accept the Terms and Conditions.");
       return;
     }
 
@@ -191,12 +190,12 @@ const Signup = () => {
         console.log("User signed up:", user);
         navigate("/");
       } catch (error) {
-        setError(error.message);
-        console.error("Error signing up:", error);
+        alert(error.message);
+       // console.error("Error signing up:", error);
       }
     } else {
       alert("Verify your Email Please!!!");
-      setError("Email Not Verified");
+    //  setError("Email Not Verified");
     }
   };
 
@@ -208,7 +207,7 @@ const Signup = () => {
       return downloadURL;
     } catch (error) {
       console.error("Error uploading resume: ", error);
-      setError("Failed to upload resume.");
+      alert("Failed to upload resume.");
       return "";
     }
   };
@@ -236,7 +235,7 @@ const Signup = () => {
                 ? "bg-gradient-to-r from-sky-400 to-sky-600 scale-105 text-white"
                 : "bg-white"
             }`}>
-            Candidate
+            Job Seeker
           </button>
           <button
             onClick={() => handleUserType("employer")}
@@ -245,10 +244,11 @@ const Signup = () => {
                 ? "bg-gradient-to-r from-sky-400 to-sky-600 text-white scale-105"
                 : "bg-white"
             }`}>
-            Employer
+            Job Provider
           </button>
         </div>
-
+        {//error && <p className="text-red-500 mt-2 text-center">{error}</p>
+        }
         {/* Display Form Fields Based on Selection with Animation */}
         {userType && (
           <div className={`transition-opacity duration-700 ease-in ${userType ? "opacity-100" : "opacity-0"}`}>
@@ -439,7 +439,7 @@ const Signup = () => {
                     Login
                   </Link>
                 </p>
-                {error && <p className="text-red-500 mt-2">{error}</p>}
+               
               </div>
             </form>
           </div>

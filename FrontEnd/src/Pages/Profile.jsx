@@ -8,6 +8,8 @@ import Card from "../components/Card";
 import { HiPencil } from "react-icons/hi";
 import Navbar from "../components/Navbar";
 import Loading from "../components/Loading";
+import { stateObject } from "../assets/Country+State+District-City-Data"; // Import the country-state-district data
+
 
 
 function Profile() {
@@ -27,6 +29,31 @@ function Profile() {
     companyNames: "",
     resume: "",
   });
+  const [location, setLocation] = useState({ country: "", state: "", district: "" });
+
+useEffect(() => {
+  if (user && user.location) {
+    setLocation({
+      country: user.location.country || "",
+      state: user.location.state || "",
+      district: user.location.district || "",
+    });
+  }
+}, [user]);
+
+const handleCountryChange = (e) => {
+  setLocation({ ...location, country: e.target.value, state: "", district: "" });
+};
+
+const handleStateChange = (e) => {
+  setLocation({ ...location, state: e.target.value, district: "" });
+};
+
+const handleDistrictChange = (e) => {
+  setLocation({ ...location, district: e.target.value });
+};
+
+     const countries = Object.keys(stateObject); // Get the list of countries
 
   useEffect(() => {
     if (user) {
@@ -108,6 +135,7 @@ function Profile() {
         let resumeUrl = formData.resume instanceof File ? await uploadResume(formData.resume) : formData.resume;
 
         await set(ref(database, `users/${currentUser.uid}`), {
+          userID:user?.userID || "",
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
@@ -117,6 +145,7 @@ function Profile() {
           resumeUrl: resumeUrl,
           appliedJobs: currentUser.appliedJobs ?? [],
           userType: currentUser.userType ? currentUser.userType : 'candidate',
+          location: location,
         });
 
         setIsEditing(false);
@@ -216,7 +245,44 @@ function Profile() {
                 disabled={!isEditing}
               />
             </div>
-
+  {/* Country, State, District Selection */}
+              <div className="formField">
+                <label className="block text-gray-700 mb-1">Country</label>
+                <select value={location.country} onChange={handleCountryChange}  className={`formInput p-2 border rounded w-full ${!isEditing ? "bg-gray-200 cursor-not-allowed" : ""}`}  disabled={!isEditing}>
+                  <option value="">Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">State</label>
+                  <select value={location.state} onChange={handleStateChange}  className={`formInput p-2 border rounded w-full ${!isEditing ? "bg-gray-200 cursor-not-allowed" : ""}`}  disabled={!isEditing}>
+                    <option value="">Select State</option>
+                    {location?.country? Object.keys(stateObject[location.country]).map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    )):"Select Country"}
+                  </select>
+                </div>
+                <div className="formField">
+                  <label className="block text-gray-700 mb-1">District</label>
+                  <select
+                    value={location.district}
+                    onChange={handleDistrictChange}
+                    className={`formInput p-2 border rounded w-full ${!isEditing ? "bg-gray-200 cursor-not-allowed" : ""}`}
+                    disabled={!isEditing}>
+                    <option value="">Select District</option>
+                    {location.stete? stateObject[location.country][location.state].map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    )):"Select State"}
+                  </select>
+                </div>
             <div className="formField">
               <label className="block text-gray-700 mb-1">Work Status</label>
               <select
