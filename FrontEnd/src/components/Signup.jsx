@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { auth, database, getDownloadURL, storage, ref as storageRef, uploadBytes } from "../firebase";
+import { auth, database, getDownloadURL, storage, uploadBytes } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { get, push, ref, set, update } from "firebase/database";
+import { ref as storageRef} from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com"; // Import EmailJS
 import background from "../assets/signin_bg.png";
