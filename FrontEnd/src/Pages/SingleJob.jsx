@@ -11,6 +11,7 @@ import background from "../assets/singlejob_background.png";
 import card_bg from "../assets/card_back2.png";
 import TermsAndConditions from "../components/TermsAndConditions";
 import Loading from "../components/Loading";
+import html2canvas from "html2canvas"; // Import html2canvas
 
 const placeholderLogo = "https://cdn-icons-png.flaticon.com/128/4168/4168507.png";
 
@@ -47,7 +48,7 @@ const SuccessPopup = ({ message, onClose }) => (
       <p className="mb-4 text-gray-800" dangerouslySetInnerHTML={{ __html: message }} />
       <button
         onClick={onClose}
-        className="bg-blue-600 text-blue ring-2 ring-blue rounded px-8 py-1 hover:bg-blue-700 transition-all duration-300">
+        className="bg-blue-600 text-blue ring-2 ring-blue rounded-sm px-8 py-1 hover:bg-blue-700 transition-all duration-300">
         OK
       </button>
     </div>
@@ -197,19 +198,55 @@ const progressText =
       navigate("/");
     }
   };
+
+  const handleShare = async () => {
+    const jobDiv = document.getElementById('singlejob-div');
+  
+    if (navigator.share && jobDiv) {
+      try {
+        const canvas = await html2canvas(jobDiv, {
+          scale: 3,
+          useCORS: true,
+          logging: false,
+        });
+  
+        const dataUrl = canvas.toDataURL('image/png');
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], 'job_details.png', { type: 'image/png' });
+
+        await navigator.share({
+          files: [file],
+          text: `Check out this job opportunity: ${job.jobTitle} at ${job.companyName}. Apply here: ${window.location.href}`,
+        });
+  
+  
+      } catch (error) {
+        console.error('Error sharing:', error);
+        alert("Sharing failed. Please try again.");
+      }
+    } else {
+      alert('Web Share API is not supported in this browser.');
+    }
+  };
+
   return (
     <div
       className="bg-cover bg-center bg-blend-lighten"
       style={{ backgroundImage: `url(${background})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <Navbar className="bg-white" />
 
-      <div className="job-detail-container p-5 min-h-screen flex items-center justify-center relative">
+      <div className="job-detail-container p-5 min-h-screen flex items-center justify-center relative" id="singlejob-div">
         <div
           className="single-job bg-white shadow-lg rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 relative"
           style={{ backgroundImage: `url(${card_bg})`, backgroundSize: "cover", backgroundPosition: "center" }}>
           {/* Close button */}
+         
+       <button className="absolute top-0.5 right-12 text-sky-700 text-xl p-2 font-medium rounded-bl-lg rounded-tr-lg transition-transform duration-200 ease hover:scale-125"
+          onClick={handleShare}>
+            <i className="fa-solid fa-share-from-square"></i>
+          </button>
           <button
-            className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-none z-10"
+            className="absolute top-2 right-5 text-red-600 hover:text-red-800 focus:outline-hidden z-10"
             onClick={() => handleBack()}>
             <i className="fa-solid fa-xmark text-2xl"></i>
           </button>
